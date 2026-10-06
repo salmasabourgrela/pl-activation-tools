@@ -109,6 +109,7 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px}
   @media(max-width:760px){.grid2{grid-template-columns:1fr}}
   .section-h{grid-column:1/-1;margin:16px 0 -4px;display:flex;align-items:center;gap:8px}
+  .sec-note{grid-column:1/-1;margin:-10px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}
   .section-h::before{content:"";width:22px;height:5px;border-radius:3px;background:var(--sec,var(--olive))}
   .field{border-left:3px solid var(--line);padding:1px 0 1px 12px;min-width:0}
   .field.span2{grid-column:1/-1}
@@ -268,11 +269,11 @@
     <div class="how">
       <h2>How to use this tool</h2>
       <ul>
-        <li><strong>Explore a worked example.</strong> Pick one under <em>Worked example</em> and click <em>Add example</em> to see how a full set of statements fits together. Everything you do here stays in your own browser, so editing or deleting the examples won't change them for anyone else.</li>
-        <li><strong>Start your own statements.</strong> Click <em>+ New statement</em> and choose one of the four types. Use <em>Remove examples</em> or <em>Clear all</em> whenever you want a clean page.</li>
-        <li><strong>Fill in the fields.</strong> The draft statement builds as you type, colour-coded by element. When it reads well, click <em>Use as final statement</em> and put it in your own words.</li>
-        <li><strong>Rate impact intensity and likelihood</strong> to place each statement on the risk matrix, and link each response statement to the inherent risk it acts on.</li>
-        <li><strong>Your work stays in this browser.</strong> Use <em>Save progress</em> to keep a file, and <em>Export to Word</em> for your report.</li>
+        <li><strong>Explore a worked example.</strong> Choose one under <em>Worked example</em> and click <em>Add example</em> to see how a full set of four statements fits together. You can edit or remove the examples freely; changes stay on your device.</li>
+        <li><strong>Start your own statements.</strong> Click <em>+ New statement</em> and choose a type. A full set usually moves from impacts and inherent risk to responses and residual risk, first for today and then for the future.</li>
+        <li><strong>Fill in the fields.</strong> The hints under each field show how to phrase it, so the parts join up into one connected statement. The draft builds as you type, with each element in its own colour. When it reads well, click <em>Use as final statement</em> and make it your own by adding local names, voices and context.</li>
+        <li><strong>Rate each statement.</strong> Impact intensity × likelihood places an inherent risk statement on the matrix. Link each response statement to the inherent risk it acts on to see how far the responses reduce it.</li>
+        <li><strong>Save your work.</strong> Your statements stay in this browser. Use <em>Save progress</em> to keep a copy as a file, and <em>Export to Word</em> for your report.</li>
       </ul>
     </div>
   </header>
@@ -311,23 +312,23 @@
 <script>
 "use strict";
 
-/* Legend categories — match Reporting Guidelines statement elements */
+/* Statement elements (colour-coded in the draft) — match the Reporting Guidelines */
 const CATS = {
   attribute: { name: "Attribute", color: "var(--c-attribute)" },
-  value: { name: "Value", color: "var(--c-value)" },
+  value: { name: "Values", color: "var(--c-value)" },
   hazard: { name: "Hazard", color: "var(--c-hazard)" },
   exposure: { name: "Exposure", color: "var(--c-exposure)" },
   vulnerability: { name: "Vulnerability", color: "var(--c-vulnerability)" },
-  impact: { name: "Impacts (description)", color: "var(--c-impact)" },
+  impact: { name: "Impacts", color: "var(--c-impact)" },
   impactIntensity: { name: "Impact intensity", color: "var(--c-intensity)" },
-  likelihood: { name: "Likelihood (probability)", color: "var(--c-likelihood)" },
+  likelihood: { name: "Likelihood", color: "var(--c-likelihood)" },
   risk: { name: "Risk", color: "var(--c-risk)" },
-  confidence: { name: "Confidence level", color: "var(--c-confidence)" },
-  response: { name: "Response (adaptation, loss and damage)", color: "var(--c-response)" },
+  confidence: { name: "Confidence", color: "var(--c-confidence)" },
+  response: { name: "Responses", color: "var(--c-response)" },
   integrity: { name: "Integrity", color: "var(--c-integrity)" },
   authenticity: { name: "Authenticity", color: "var(--c-authenticity)" },
-  pathway: { name: "Heritage pathway", color: "var(--c-pathway)" },
-  scenario: { name: "Scenario / timeframe", color: "var(--c-scenario)" }
+  pathway: { name: "Pathway", color: "var(--c-pathway)" },
+  scenario: { name: "Scenario and timeframe", color: "var(--c-scenario)" }
 };
 
 const SCALE = {
@@ -357,7 +358,7 @@ const PATHWAYS = [
   "Protect", "Accommodate", "Revitalise", "Transform",
   "Retreat or relocate", "Release", "Record and remember", "Acknowledge and carry loss forward"
 ];
-/* Characterise adaptation / L&D actions (subset of the eight-theme framework) */
+/* Describing adaptation and loss and damage actions (subset of the eight-theme framework) */
 const RISK_ACTED_ON = [
   "Hazard or hazard pathway", "Exposure", "Vulnerability and adaptive capacity",
   "Experienced or anticipated impacts", "Residual risk and losses and damages"
@@ -375,138 +376,165 @@ const HERITAGE_CONTINUITY = [
 ];
 const TIMING_HORIZON = ["Near term", "Medium term", "Long term", "Very long term", "Beyond 2100"];
 
+/* ---------- shared field definitions and guidance ---------- */
+const H = {
+  attribute: "The feature of the heritage place or practice that carries its values. For example: “the sacred medicinal gardens”.",
+  value: "What the attribute means to people. For example: “cultural identity, spiritual well-being and intergenerational continuity”.",
+  observersNow: "Who is noticing the change. For example: “elders” or “herders and local authorities”.",
+  observersFuture: "Who has begun to notice the trend. For example: “elders” or “herders and local meteorologists”.",
+  hazardNow: "The climate hazard or change people are seeing. For example: “longer and more irregular droughts”.",
+  hazardFuture: "How the hazard may develop, written to follow “If …”. For example: “droughts continue to lengthen”.",
+  impactsNow: "What is already happening to the attribute and its values. Write in full sentences.",
+  impactsFuture: "How the attribute and its values could be affected. Write in full sentences.",
+  outcome: "A short phrase that follows “[attribute] may …”. For example: “begin to dry up entirely”.",
+  exposure: "Where and when the attribute meets the hazard, written to follow “[attribute] is / are …”. For example: “located on shallow soils and fully dependent on rainfall”.",
+  vulnerability: "What makes the attribute more easily harmed or less able to cope, as a list of factors. For example: “the lack of water infrastructure and dependence on specific plant species”.",
+  intensityReason: "What makes the impact high or low for this attribute and its values, written to follow “because …”. You can draw on climate projections, changes already observed, and community knowledge.",
+  likelihoodCondition: "What would need to happen for the impact to occur, written to follow “if …”. For example: “droughts continue to lengthen and no new water-management measures are introduced”.",
+  riskLevel: "Usually the level shown on the matrix below (impact intensity × likelihood). Choose another level only if you have a reason, and say why in the statement.",
+  riskOf: "The harm that could follow, written to follow “a risk of …”. For example: “losing critical medicinal species and the rituals that depend on them”.",
+  evidence: "What your confidence rests on. For example: “agreement between climate projections, observed trends and elders’ knowledge”.",
+  timeframe: "The period the statement looks at. For example: “by 2060” or “by the end of the century (2080–2100)”.",
+  scenario: "Pick a climate scenario (SSP) from the list, or type your own.",
+  who: "Who is acting. For example: “elders” or “herders and local government”.",
+  whoFuture: "Who has envisioned these responses. For example: “the community and stakeholders”.",
+  depth: "Coping deals with impacts as they happen; incremental adaptation adjusts what already exists; transformational adaptation changes the system itself.",
+  responsesNow: "What is being done to reduce the risk, written to follow “have begun …”. For example: “adjusting planting schedules and monitoring plant behaviour”.",
+  responsesFuture: "The adaptation responses envisioned, as a list. For example: “water harvesting, seed banks and modified ritual calendars”.",
+  potential: "What the responses could achieve, written to follow “which could …”. For example: “keep the gardens in use for rituals”.",
+  lossDamage: "What is done about losses that adaptation cannot prevent. For example: recording what is being lost, sharing knowledge, remembrance or mutual support.",
+  integrity: "Integrity is how whole and intact the attribute remains. Describe how the responses above, both adaptation and loss and damage, affect it.",
+  authenticity: "Authenticity is whether the attribute still truly expresses its values through its form, materials, use, practices and meaning. Describe how the responses above affect it.",
+  limits: "What holds the responses back, written to follow “However, …”.",
+  residualRisk: "The risk that remains after the responses. For example: “periodic livestock losses and continued pressure on mobile cultural practices”.",
+  residualImpacts: "The losses and damages expected even with the responses in place.",
+  horizonNow: "How long the responses are meant to keep working. Present statements describe today’s climate, so no climate scenario is needed.",
+  linkNow: "The present impacts and inherent risk statement these responses act on. It shows how far the responses reduce risk.",
+  linkFuture: "The future potential impacts and inherent risk statement these responses act on. It shows how far the responses reduce risk."
+};
+const F = {
+  attribute: { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage", hint: H.attribute },
+  value: { key: "value", label: "Values", cat: "value", kind: "text", sec: "Heritage", hint: H.value },
+  hazardTypes: { key: "hazardTypes", label: "Climate hazard types", cat: "hazard", kind: "multi", tag: "Climate hazards", sec: "Climate hazards", span: 2, opts: HAZARD_OPTS },
+  timeframe: { key: "timeframe", label: "Timeframe", cat: "scenario", kind: "text", sec: "Scenario", hint: H.timeframe },
+  scenario: { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: H.scenario },
+  intensity: { key: "impactIntensity", label: "Impact intensity", cat: "impactIntensity", kind: "select", sec: "Ratings", opts: SCALE.magnitude },
+  likelihood: { key: "likelihood", label: "Likelihood", cat: "likelihood", kind: "select", sec: "Ratings", opts: SCALE.likelihood },
+  riskLevel: { key: "riskLevel", label: "Inherent risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude, hint: H.riskLevel, span: 2 },
+  riskOf: { key: "riskOf", label: "Risk of what", cat: "risk", kind: "textarea", sec: "Ratings", span: 2, hint: H.riskOf },
+  confidence: { key: "confidence", label: "Confidence", cat: "confidence", kind: "select", sec: "Ratings", opts: SCALE.confidence },
+  evidence: { key: "evidenceBasis", label: "What your confidence is based on", cat: "confidence", kind: "textarea", sec: "Ratings", span: 2, hint: H.evidence },
+  integrityOutcome: { key: "integrityOutcome", label: "Integrity", cat: "integrity", kind: "textarea", sec: "Outcomes", hint: H.integrity },
+  authenticityOutcome: { key: "authenticityOutcome", label: "Authenticity", cat: "authenticity", kind: "textarea", sec: "Outcomes", hint: H.authenticity },
+  residualRisk: { key: "residualRisk", label: "Residual risk", cat: "risk", kind: "textarea", sec: "Outcomes", span: 2, hint: H.residualRisk },
+  riskActedOn: { key: "riskActedOn", label: "What the responses act on", cat: "risk", kind: "multi", tag: "Acts on", sec: "Describe the action", span: 2, opts: RISK_ACTED_ON },
+  responseFunction: { key: "responseFunction", label: "Main purpose of the responses", cat: "response", kind: "multi", tag: "Purpose", sec: "Describe the action", span: 2, opts: RESPONSE_FUNCTION },
+  pathways: { key: "heritagePathways", label: "Heritage pathway", cat: "pathway", kind: "multi", tag: "Pathway", sec: "Describe the action", span: 2, opts: PATHWAYS },
+  continuity: { key: "heritageContinuity", label: "How the heritage continues", cat: "pathway", kind: "multi", tag: "Heritage continuity", sec: "Describe the action", span: 2, opts: HERITAGE_CONTINUITY },
+  effectiveness: { key: "responseEffectiveness", label: "Response effectiveness", cat: "response", kind: "select", sec: "Ratings", opts: SCALE.effectiveness },
+  integrityRating: { key: "integrityRating", label: "Integrity rating", cat: "integrity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
+  authenticityRating: { key: "authenticityRating", label: "Authenticity rating", cat: "authenticity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
+  residualLevel: { key: "residualLevel", label: "Residual risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude }
+};
+
 const TYPES = {
   presentImpact: {
-    name: "Present Impacts & Inherent Risk",
-    short: "Present Impacts & Inherent Risk",
-    desc: "What is already happening to the attribute and the values it supports — before responses.",
+    name: "Present impacts and inherent risk",
+    short: "Present impacts and inherent risk",
+    desc: "What is already happening to the attribute and its values, before any response.",
     fields: [
-      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
-      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
-      { key: "hazard", label: "Hazard", cat: "hazard", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "observers", label: "Who observes", cat: "hazard", kind: "text", sec: "Qualitative" },
-      { key: "impacts", label: "Present impacts (description)", cat: "impact", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "impactIntensity", label: "Present impact intensity", cat: "impactIntensity", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
-      { key: "likelihood", label: "Likelihood of (potential) impact", cat: "likelihood", kind: "select", sec: "Quantitative", opts: SCALE.likelihood },
-      { key: "riskLevel", label: "Inherent risk level", cat: "risk", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
-      { key: "riskOf", label: "Risk of…", cat: "risk", kind: "textarea", sec: "Quantitative", span: 2 },
-      { key: "confidence", label: "Confidence level", cat: "confidence", kind: "select", sec: "Quantitative", opts: SCALE.confidence },
-      { key: "evidenceBasis", label: "Basis for confidence", cat: "confidence", kind: "textarea", sec: "Quantitative", span: 2 },
-      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+      F.attribute, F.value,
+      { key: "hazard", label: "Hazard", cat: "hazard", kind: "textarea", sec: "What is happening", span: 2, hint: H.hazardNow },
+      { key: "observers", label: "Who is observing this", cat: "hazard", kind: "text", sec: "What is happening", hint: H.observersNow },
+      { key: "impacts", label: "Present impacts", cat: "impact", kind: "textarea", sec: "What is happening", span: 2, hint: H.impactsNow },
+      { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "What is happening", span: 2, hint: H.exposure },
+      { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "What is happening", span: 2, hint: H.vulnerability },
+      F.intensity, F.likelihood, F.riskLevel, F.riskOf, F.confidence, F.evidence,
+      F.hazardTypes
     ],
     checklist: [
-      ["attribute", "Attribute"], ["value", "Value(s)"], ["hazard", "Hazard"],
-      ["impacts", "Present impacts (description)"], ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
+      ["attribute", "Attribute"], ["value", "Values"], ["hazard", "Hazard"],
+      ["impacts", "Present impacts"], ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
       ["impactIntensity", "Impact intensity"], ["likelihood", "Likelihood"], ["riskLevel", "Risk"], ["confidence", "Confidence"]
     ]
   },
   presentResidual: {
-    name: "Present Adaptation, Loss and Damage Responses & Residual Risk",
-    short: "Present Adaptation, Loss and Damage Responses & Residual Risk",
-    desc: "Current adaptation and responses to loss and damage, integrity and authenticity outcomes, pathways, and residual risk — including how the action is characterised.",
+    name: "Present adaptation, loss and damage responses and residual risk",
+    short: "Present adaptation, loss and damage responses and residual risk",
+    desc: "What is being done now, through adaptation and responses to loss and damage, how this affects integrity and authenticity, and the risk that remains.",
     fields: [
-      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
-      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
-      { key: "who", label: "Who is responding", cat: "response", kind: "text", sec: "Responses" },
-      { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE },
-      { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2 },
-      { key: "lossDamageResponses", label: "Responses to residual risk and loss & damage", cat: "risk", kind: "textarea", sec: "Responses", span: 2 },
-      { key: "integrityOutcome", label: "Integrity outcome", cat: "integrity", kind: "textarea", sec: "Outcomes", hint: "Integrity is how whole and intact the attribute remains. Describe how the responses above, both adaptation and responses to loss and damage, affect it." },
-      { key: "authenticityOutcome", label: "Authenticity outcome", cat: "authenticity", kind: "textarea", sec: "Outcomes", hint: "Authenticity is whether the attribute still truly expresses its values, through its form, materials, use, practices and meaning. Describe how the responses above affect it." },
-      { key: "limits", label: "Limits & constraints", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2 },
-      { key: "residualRisk", label: "Residual risk and remaining losses", cat: "risk", kind: "textarea", sec: "Outcomes", span: 2 },
-      { key: "riskActedOn", label: "Risk and consequence acted on", cat: "risk", kind: "multi", tag: "Risk acted on", sec: "Characterise the action", span: 2, opts: RISK_ACTED_ON },
-      { key: "responseFunction", label: "Primary response function", cat: "response", kind: "multi", tag: "Response function", sec: "Characterise the action", span: 2, opts: RESPONSE_FUNCTION },
-      { key: "heritagePathways", label: "Strategic pathway direction", cat: "pathway", kind: "multi", tag: "Pathway", sec: "Characterise the action", span: 2, opts: PATHWAYS },
-      { key: "heritageContinuity", label: "Forms of heritage continuity", cat: "pathway", kind: "multi", tag: "Heritage continuity", sec: "Characterise the action", span: 2, opts: HERITAGE_CONTINUITY },
-      { key: "timeHorizon", label: "Time horizon", cat: "scenario", kind: "select", sec: "Characterise the action", opts: TIMING_HORIZON, hint: "How far ahead these responses are meant to work. Present statements describe today's climate, so there is no climate scenario (SSP) here; you choose one in the future statements." },
-      { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "presentImpact", hint: "The present impacts & inherent risk statement these responses act on. It is used to show how far the responses reduce risk." },
-      { key: "responseEffectiveness", label: "Response effectiveness", cat: "response", kind: "select", sec: "Ratings", opts: SCALE.effectiveness },
-      { key: "integrityRating", label: "Integrity rating", cat: "integrity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
-      { key: "authenticityRating", label: "Authenticity rating", cat: "authenticity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
-      { key: "residualLevel", label: "Residual risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude },
-      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+      F.attribute, F.value,
+      { key: "who", label: "Who is responding", cat: "response", kind: "text", sec: "Responses", hint: H.who },
+      { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE, hint: H.depth },
+      { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.responsesNow },
+      { key: "lossDamageResponses", label: "Responses to loss and damage", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
+      F.integrityOutcome, F.authenticityOutcome,
+      { key: "limits", label: "Limits and constraints", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2, hint: H.limits },
+      F.residualRisk,
+      F.riskActedOn, F.responseFunction, F.pathways, F.continuity,
+      { key: "timeHorizon", label: "How far ahead the responses are designed to work", cat: "scenario", kind: "select", sec: "Describe the action", opts: TIMING_HORIZON, hint: H.horizonNow, span: 2 },
+      { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "presentImpact", hint: H.linkNow },
+      F.effectiveness, F.integrityRating, F.authenticityRating, F.residualLevel,
+      F.hazardTypes
     ],
     checklist: [
-      ["responses", "Adaptation responses"], ["lossDamageResponses", "Loss & damage / residual responses"],
+      ["responses", "Adaptation responses"], ["lossDamageResponses", "Responses to loss and damage"],
       ["integrityOutcome", "Integrity"], ["authenticityOutcome", "Authenticity"],
-      ["residualRisk", "Residual risk"], ["heritagePathways", "Pathway"], ["riskActedOn", "Risk acted on"], ["responseFunction", "Response function"]
+      ["residualRisk", "Residual risk"], ["heritagePathways", "Pathway"], ["riskActedOn", "What the responses act on"], ["responseFunction", "Main purpose"]
     ]
   },
   futureInherent: {
-    name: "Future Potential Impacts & Inherent Risk",
-    short: "Future Potential Impacts & Inherent Risk",
-    desc: "Future potential impacts and inherent risk before responses — for a chosen scenario and timeframe.",
+    name: "Future potential impacts and inherent risk",
+    short: "Future potential impacts and inherent risk",
+    desc: "What could happen to the attribute and its values under a chosen climate scenario and timeframe, before any response.",
     fields: [
-      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
-      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
-      { key: "timeframe", label: "Timeframe", cat: "scenario", kind: "text", sec: "Scenario" },
-      { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: "Pick a climate scenario (SSP) from the list, or type your own." },
-      { key: "observers", label: "Who observes / knowledge source", cat: "scenario", kind: "text", sec: "Scenario" },
-      { key: "hazard", label: "Hazard", cat: "hazard", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "possibleOutcome", label: "What may happen to the attribute", cat: "impact", kind: "text", sec: "Qualitative", span: 2 },
-      { key: "impacts", label: "Future potential impacts (description)", cat: "impact", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "Qualitative", span: 2 },
-      { key: "intensityReason", label: "Why the impact would be this severe", cat: "impactIntensity", kind: "textarea", sec: "Qualitative", span: 2, hint: "Explain what makes the impact high or low for this attribute and its values. You can draw on climate projections, changes already observed, and community knowledge and feedback." },
-      { key: "likelihoodCondition", label: "Conditions that make the impact likely", cat: "likelihood", kind: "textarea", sec: "Qualitative", span: 2, hint: "Describe what would need to happen for the impact to occur. For example: droughts continue to lengthen and no new water-management measures are introduced." },
-      { key: "impactIntensity", label: "Future impact intensity", cat: "impactIntensity", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
-      { key: "likelihood", label: "Likelihood of (potential) impact", cat: "likelihood", kind: "select", sec: "Quantitative", opts: SCALE.likelihood },
-      { key: "riskLevel", label: "Inherent risk level", cat: "risk", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
-      { key: "riskOf", label: "Risk of…", cat: "risk", kind: "textarea", sec: "Quantitative", span: 2 },
-      { key: "confidence", label: "Confidence level", cat: "confidence", kind: "select", sec: "Quantitative", opts: SCALE.confidence },
-      { key: "evidenceBasis", label: "Basis for confidence", cat: "confidence", kind: "textarea", sec: "Quantitative", span: 2 },
-      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+      F.attribute, F.value, F.timeframe, F.scenario,
+      { key: "observers", label: "Who has begun to notice this", cat: "scenario", kind: "text", sec: "Scenario", span: 2, hint: H.observersFuture },
+      { key: "hazard", label: "Hazard", cat: "hazard", kind: "textarea", sec: "What could happen", span: 2, hint: H.hazardFuture },
+      { key: "possibleOutcome", label: "What may happen to the attribute", cat: "impact", kind: "text", sec: "What could happen", span: 2, hint: H.outcome },
+      { key: "impacts", label: "Potential impacts", cat: "impact", kind: "textarea", sec: "What could happen", span: 2, hint: H.impactsFuture },
+      { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "What could happen", span: 2, hint: H.exposure },
+      { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "What could happen", span: 2, hint: H.vulnerability },
+      { key: "intensityReason", label: "Why the impact would be this severe", cat: "impactIntensity", kind: "textarea", sec: "What could happen", span: 2, hint: H.intensityReason },
+      { key: "likelihoodCondition", label: "Conditions that make the impact likely", cat: "likelihood", kind: "textarea", sec: "What could happen", span: 2, hint: H.likelihoodCondition },
+      F.intensity, F.likelihood, F.riskLevel, F.riskOf, F.confidence, F.evidence,
+      F.hazardTypes
     ],
     checklist: [
-      ["attribute", "Attribute"], ["value", "Value(s)"], ["scenario", "Scenario"], ["timeframe", "Timeframe"],
-      ["hazard", "Hazard"], ["impacts", "Future potential impacts (description)"],
+      ["attribute", "Attribute"], ["value", "Values"], ["scenario", "Scenario"], ["timeframe", "Timeframe"],
+      ["hazard", "Hazard"], ["impacts", "Potential impacts"],
       ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
       ["impactIntensity", "Impact intensity"], ["likelihood", "Likelihood"], ["riskLevel", "Risk"], ["confidence", "Confidence"]
     ]
   },
   futureResidual: {
-    name: "Future Adaptation, Loss and Damage Responses & Residual Risk",
-    short: "Future Adaptation, Loss and Damage Responses & Residual Risk",
-    desc: "Envisioned adaptation and responses to loss and damage for a scenario and timeframe — including integrity and authenticity outcomes, pathways, residual risk, and how the action is characterised.",
+    name: "Future adaptation, loss and damage responses and residual risk",
+    short: "Future adaptation, loss and damage responses and residual risk",
+    desc: "The responses envisioned for a chosen climate scenario and timeframe, how they would affect integrity and authenticity, and the risk that would remain.",
     fields: [
-      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
-      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
-      { key: "timeframe", label: "Timeframe", cat: "scenario", kind: "text", sec: "Scenario" },
-      { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: "Pick a climate scenario (SSP) from the list, or type your own." },
-      { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Scenario", opts: DEPTH_OF_CHANGE },
-      { key: "timeHorizon", label: "Time horizon", cat: "scenario", kind: "select", sec: "Scenario", opts: TIMING_HORIZON },
-      { key: "who", label: "Who envisions the responses", cat: "response", kind: "text", sec: "Responses" },
-      { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2 },
-      { key: "potential", label: "What the adaptation responses could achieve", cat: "response", kind: "textarea", sec: "Responses", span: 2 },
-      { key: "lossDamageResponses", label: "Responses to residual risk and loss & damage", cat: "risk", kind: "textarea", sec: "Responses", span: 2 },
-      { key: "integrityOutcome", label: "Integrity outcome", cat: "integrity", kind: "textarea", sec: "Outcomes", hint: "Integrity is how whole and intact the attribute remains. Describe how the responses above, both adaptation and responses to loss and damage, affect it." },
-      { key: "authenticityOutcome", label: "Authenticity outcome", cat: "authenticity", kind: "textarea", sec: "Outcomes", hint: "Authenticity is whether the attribute still truly expresses its values, through its form, materials, use, practices and meaning. Describe how the responses above affect it." },
-      { key: "limits", label: "Limits of adaptation", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2 },
-      { key: "residualRisk", label: "Residual risk and remaining losses", cat: "risk", kind: "textarea", sec: "Outcomes", span: 2 },
-      { key: "residualImpacts", label: "Residual impacts (losses & damages)", cat: "impact", kind: "textarea", sec: "Outcomes", span: 2 },
-      { key: "riskActedOn", label: "Risk and consequence acted on", cat: "risk", kind: "multi", tag: "Risk acted on", sec: "Characterise the action", span: 2, opts: RISK_ACTED_ON },
-      { key: "responseFunction", label: "Primary response function", cat: "response", kind: "multi", tag: "Response function", sec: "Characterise the action", span: 2, opts: RESPONSE_FUNCTION },
-      { key: "heritagePathways", label: "Strategic pathway direction", cat: "pathway", kind: "multi", tag: "Pathway", sec: "Characterise the action", span: 2, opts: PATHWAYS },
-      { key: "heritageContinuity", label: "Forms of heritage continuity", cat: "pathway", kind: "multi", tag: "Heritage continuity", sec: "Characterise the action", span: 2, opts: HERITAGE_CONTINUITY },
-      { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "futureInherent", hint: "The future potential impacts & inherent risk statement these responses act on. It is used to show how far the responses reduce risk." },
-      { key: "responseEffectiveness", label: "Response effectiveness", cat: "response", kind: "select", sec: "Ratings", opts: SCALE.effectiveness },
-      { key: "integrityRating", label: "Integrity rating", cat: "integrity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
-      { key: "authenticityRating", label: "Authenticity rating", cat: "authenticity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
-      { key: "residualLevel", label: "Residual risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude },
-      { key: "confidence", label: "Confidence level", cat: "confidence", kind: "select", sec: "Ratings", opts: SCALE.confidence },
-      { key: "evidenceBasis", label: "Basis for confidence", cat: "confidence", kind: "textarea", sec: "Ratings", span: 2 },
-      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+      F.attribute, F.value, F.timeframe, F.scenario,
+      { key: "who", label: "Who envisions the responses", cat: "response", kind: "text", sec: "Responses", hint: H.whoFuture },
+      { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE, hint: H.depth },
+      { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.responsesFuture },
+      { key: "potential", label: "What the adaptation responses could achieve", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.potential },
+      { key: "lossDamageResponses", label: "Responses to loss and damage", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
+      F.integrityOutcome, F.authenticityOutcome,
+      { key: "limits", label: "Limits of adaptation", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2, hint: H.limits },
+      F.residualRisk,
+      { key: "residualImpacts", label: "Remaining losses and damages", cat: "impact", kind: "textarea", sec: "Outcomes", span: 2, hint: H.residualImpacts },
+      F.riskActedOn, F.responseFunction, F.pathways, F.continuity,
+      { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "futureInherent", hint: H.linkFuture },
+      F.effectiveness, F.integrityRating, F.authenticityRating, F.residualLevel, F.confidence, F.evidence,
+      F.hazardTypes
     ],
     checklist: [
-      ["responses", "Adaptation responses"], ["lossDamageResponses", "Loss & damage / residual responses"],
+      ["responses", "Adaptation responses"], ["lossDamageResponses", "Responses to loss and damage"],
       ["integrityOutcome", "Integrity"], ["authenticityOutcome", "Authenticity"],
-      ["residualRisk", "Residual risk"], ["heritagePathways", "Pathway"], ["riskActedOn", "Risk acted on"], ["responseFunction", "Response function"], ["confidence", "Confidence"]
+      ["residualRisk", "Residual risk"], ["heritagePathways", "Pathway"], ["riskActedOn", "What the responses act on"], ["responseFunction", "Main purpose"], ["confidence", "Confidence"]
     ]
   }
 };
+
 
 /* ---------- scales & risk ---------- */
 function scaleNumeric(val) {
@@ -622,75 +650,117 @@ function migrateStatements(stmts) {
   });
 }
 
-/* ---------- draft templates (assemble like the gardens example) ---------- */
+
+/* ---------- draft statement templates ----------
+   f(key) returns the field value (colour-highlighted in the preview);
+   f(key, text) highlights a reworded version of that field instead. */
+function draftText(v) { return String(v == null ? "" : v).trim().replace(/\.+$/, ""); }
+function lowerFirst(t) { return /^[A-Z][a-z]/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t; }
+function upperFirst(t) { return t ? t.charAt(0).toUpperCase() + t.slice(1) : t; }
+function isPluralPhrase(t) {
+  const head = String(t || "").split(/\s+[—–-]\s+|,|\(|;/)[0].trim().toLowerCase();
+  if (/\sand\s/.test(head)) return true;
+  const w = (head.split(/\s+/).pop() || "");
+  return /[a-z]s$/.test(w) && !/(ss|us|is)$/.test(w);
+}
+function ratingWord(v) {
+  const s = String(v || "").trim();
+  const inBrackets = s.match(/\(([^)]+)\)\s*$/);
+  if (inBrackets) return inBrackets[1].trim().toLowerCase();
+  return s.replace(/^\d\s*—\s*/, "").toLowerCase();
+}
+function ratingNum(v) { const n = scaleNumeric(v); return n == null ? "" : ` (${Math.round(n)}/4)`; }
+function joinAnd(arr) { return arr.length < 2 ? (arr[0] || "") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1]; }
+
 function buildDraft(type, d, f) {
   const S = [];
   const has = k => { const v = d[k]; return Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim()); };
+  const t = k => draftText(d[k]);
+  const A = t("attribute"), plural = isPluralPhrase(A);
+  const be = plural ? "are" : "is";
+  const Ashort = A.split(/\s+[—–]\s+/)[0].trim() || A;
+  let mentions = 0;
+  const attrText = () => (mentions++ ? Ashort : A);
+  const attrStart = () => A ? f("attribute", upperFirst(attrText())) : "The attribute";
+  const attrMid = () => A ? f("attribute", attrText()) : "the attribute";
+  const tf = t("timeframe");
+  const rate = (k, extra) => f(k, ratingWord(d[k]) + (extra || "") + ratingNum(d[k]));
+
+  const riskSentence = () => {
+    let lvl = null;
+    if (has("riskLevel")) lvl = ratingWord(d.riskLevel);
+    else if (has("impactIntensity") && has("likelihood")) lvl = riskBandFromProduct(scaleNumeric(d.impactIntensity) * scaleNumeric(d.likelihood));
+    if (!lvl && !has("riskOf")) return;
+    const risk = lvl ? `a ${f("riskLevel", lvl + " inherent risk")}` : "an inherent risk";
+    S.push(`Overall, there is ${risk}${has("riskOf") ? " of " + f("riskOf", lowerFirst(t("riskOf")).replace(/^(a\s+)?risk\s+of\s+/i, "")) : ""}${has("value") ? ", placing " + f("value") + " at stake" : ""}.`);
+  };
+  const confidenceSentence = () => {
+    if (has("confidence")) S.push(`Confidence in this assessment is ${f("confidence", ratingWord(d.confidence))}${has("evidenceBasis") ? ", based on " + f("evidenceBasis", lowerFirst(t("evidenceBasis"))) : ""}.`);
+  };
+  const exposureSentence = () => { if (has("exposure")) S.push(`${attrStart()} ${be} ${f("exposure", lowerFirst(t("exposure")).replace(/^(is|are)\s+/i, ""))}.`); };
+  const vulnerabilitySentence = () => { if (has("vulnerability")) S.push(`The vulnerability of ${attrMid()} comes from ${f("vulnerability", lowerFirst(t("vulnerability")))}.`); };
 
   if (type === "presentImpact") {
-    if (has("hazard")) S.push(`${has("observers") ? f("observers") : "Community members"} report ${f("hazard")}${has("attribute") ? " affecting " + f("attribute") : ""}.`);
-    if (has("impacts")) S.push(`${f("impacts")}.`);
-    if (has("exposure")) S.push(`${has("attribute") ? f("attribute") + " are" : "They are"} ${f("exposure")}, making ${has("attribute") ? "them" : "it"} highly exposed.`);
-    if (has("vulnerability")) S.push(`${f("vulnerability")} illustrate the vulnerability of ${has("attribute") ? f("attribute") : "the attribute"}.`);
-    if (has("impactIntensity")) S.push(`Present impact intensity is rated ${f("impactIntensity")}.`);
-    if (has("likelihood")) S.push(`The likelihood of these impacts is rated ${f("likelihood")}.`);
-    if (has("impactIntensity") && has("likelihood")) {
-      const prod = scaleNumeric(d.impactIntensity) * scaleNumeric(d.likelihood);
-      const lvl = has("riskLevel") ? f("riskLevel") : riskBandLabel(prod);
-      S.push(`There is ${lvl} inherent risk${has("riskOf") ? " of " + f("riskOf") : ""}${has("value") ? ", placing " + f("value") + " at stake" : ""}.`);
-    } else if (has("riskOf") || has("riskLevel")) {
-      S.push(`There is a ${has("riskLevel") ? f("riskLevel") + " " : ""}risk${has("riskOf") ? " of " + f("riskOf") : ""}.`);
-    }
-    if (has("confidence")) S.push(`Confidence in this assessment is rated ${f("confidence")}${has("evidenceBasis") ? ", supported by " + f("evidenceBasis") : ""}.`);
+    if (has("hazard")) S.push(`${has("observers") ? f("observers", upperFirst(t("observers"))) : "Community members"} report ${f("hazard", lowerFirst(t("hazard")))}${A ? " affecting " + attrMid() : ""}.`);
+    if (has("impacts")) S.push(`${f("impacts", upperFirst(t("impacts")))}.`);
+    exposureSentence();
+    vulnerabilitySentence();
+    const parts = [];
+    if (has("impactIntensity")) parts.push(rate("impactIntensity", " in intensity"));
+    if (has("likelihood")) parts.push(rate("likelihood"));
+    if (parts.length) S.push(`These impacts are rated ${parts.join(" and ")}.`);
+    riskSentence();
+    confidenceSentence();
   }
 
   if (type === "futureInherent") {
     if (has("hazard")) {
-      S.push(`If ${f("hazard")}${has("timeframe") ? " " + f("timeframe") : ""}${has("observers") ? ", as " + f("observers") + " have begun to observe" : ""}, ${has("attribute") ? f("attribute") : "this attribute"}${has("possibleOutcome") ? " may " + f("possibleOutcome") : " may be deeply affected"}.`);
+      const hz = lowerFirst(t("hazard")).replace(/^if\s+/i, "");
+      const outcome = has("possibleOutcome") ? f("possibleOutcome", lowerFirst(t("possibleOutcome")).replace(/^may\s+/i, "")) : "be deeply affected";
+      S.push(`If ${f("hazard", hz)}${tf ? " " + f("timeframe", lowerFirst(tf)) : ""}${has("observers") ? ", as " + f("observers", lowerFirst(t("observers"))) + " have begun to observe" : ""}, ${attrMid()} may ${outcome}.`);
     }
-    if (has("impacts")) S.push(`${f("impacts")}.`);
-    if (has("exposure")) S.push(`${has("attribute") ? f("attribute") + " are" : "The attribute is"} ${f("exposure")}, making ${has("attribute") ? "them" : "it"} highly exposed to changing climate patterns.`);
-    if (has("vulnerability")) S.push(`${f("vulnerability")} illustrate the high vulnerability of ${has("attribute") ? f("attribute") : "the attribute"}.`);
-    if (has("impactIntensity")) {
-      S.push(`The potential impacts are expected to be ${f("impactIntensity").replace(/^\d\s*—\s*/, "").toLowerCase()}${has("intensityReason") ? " because " + f("intensityReason") : ""}.`);
-    }
-    if (has("likelihood")) {
-      S.push(`The impacts are considered ${f("likelihood").replace(/^\d\s*—\s*/, "").toLowerCase()}${has("likelihoodCondition") ? " if " + f("likelihoodCondition") : ""}${has("scenario") ? " under " + f("scenario") : ""}.`);
-    }
-    if (has("impactIntensity") && has("likelihood")) {
-      const prod = scaleNumeric(d.impactIntensity) * scaleNumeric(d.likelihood);
-      const lvl = has("riskLevel") ? f("riskLevel") : riskBandLabel(prod);
-      S.push(`There is a ${lvl} risk${has("riskOf") ? " of " + f("riskOf") : ""}.`);
-    } else if (has("riskLevel") || has("riskOf")) {
-      S.push(`There is a ${has("riskLevel") ? f("riskLevel") + " " : ""}risk${has("riskOf") ? " of " + f("riskOf") : ""}.`);
-    }
-    if (has("confidence")) S.push(`There is ${f("confidence").replace(/^\d\s*—\s*/, "").toLowerCase()} confidence in this risk assessment${has("evidenceBasis") ? ". The assessment is supported by " + f("evidenceBasis") : ""}.`);
+    if (has("impacts")) S.push(`${f("impacts", upperFirst(t("impacts")))}.`);
+    exposureSentence();
+    vulnerabilitySentence();
+    if (has("impactIntensity")) S.push(`These impacts would be ${rate("impactIntensity", " in intensity")}${has("intensityReason") ? " because " + f("intensityReason", lowerFirst(t("intensityReason")).replace(/^because\s+/i, "")) : ""}.`);
+    if (has("likelihood")) S.push(`${has("scenario") ? "Under " + f("scenario") + ", they" : "They"} are considered ${rate("likelihood")}${has("likelihoodCondition") ? " if " + f("likelihoodCondition", lowerFirst(t("likelihoodCondition")).replace(/^if\s+/i, "")) : ""}.`);
+    riskSentence();
+    confidenceSentence();
   }
 
   if (type === "presentResidual" || type === "futureResidual") {
-    const mode = (d.adaptationMode || "").trim();
-    const paths = Array.isArray(d.heritagePathways) && d.heritagePathways.length ? d.heritagePathways.join(" / ") : "";
+    const who = t("who"), whoPlural = isPluralPhrase(who || "the community");
     if (type === "futureResidual" && has("responses")) {
-      const transformative = /transform/i.test(mode);
-      const intro = transformative
-        ? `${has("timeframe") ? "By " + String(d.timeframe).replace(/^by\s+/i, "") + ", under" : "Under"}${has("scenario") ? " " + f("scenario") + " conditions," : ""} adaptation has transformed`
-        : `${has("timeframe") ? f("timeframe") + ", the community has" : "The community has"} implemented adaptations`;
-      S.push(`${intro}${has("who") ? " envisioned by " + f("who") : ""}, including ${f("responses")}${has("potential") ? ", which could " + f("potential") : ""}.`);
+      const lead = [tf ? f("timeframe", upperFirst(tf)) : "", has("scenario") ? "under " + f("scenario") : ""].filter(Boolean).join(", ");
+      S.push(`${lead ? lead + ", the" : "The"} adaptation responses envisioned${who ? " by " + f("who") : ""} include ${f("responses", lowerFirst(t("responses")))}${has("potential") ? ", which could " + f("potential", lowerFirst(t("potential")).replace(/^(which\s+)?could\s+/i, "")) : ""}.`);
     } else if (has("responses")) {
-      S.push(`In response, ${has("who") ? f("who") : "the community"} have begun ${f("responses")}.`);
+      S.push(`In response, ${who ? f("who") : "the community"} ${whoPlural ? "have" : "has"} begun ${f("responses", lowerFirst(t("responses")).replace(/^(have|has)\s+begun\s+/i, ""))}.`);
     }
-    if (has("lossDamageResponses")) S.push(`Responses to residual risk and loss and damage include ${f("lossDamageResponses")}.`);
-    if (has("responseEffectiveness")) S.push(`Response effectiveness is rated ${f("responseEffectiveness")}.`);
-    if (has("attribute") && (has("integrityOutcome") || has("integrityRating") || has("authenticityOutcome") || has("authenticityRating"))) {
-      S.push(`These measures support ${f("attribute")}${has("value") ? " and " + f("value") : ""}${has("integrityRating") ? "; integrity is " + f("integrityRating").toLowerCase() : ""}${has("integrityOutcome") ? " (" + f("integrityOutcome") + ")" : ""}${has("authenticityRating") ? "; authenticity is " + f("authenticityRating").toLowerCase() : ""}${has("authenticityOutcome") ? " (" + f("authenticityOutcome") + ")" : ""}.`);
+    const mode = String(d.adaptationMode || "");
+    if (/coping/i.test(mode)) S.push(`These responses are mainly a way of ${f("adaptationMode", "coping")} with the impacts.`);
+    else if (/incremental/i.test(mode)) S.push(`They are a form of ${f("adaptationMode", "incremental adaptation")}.`);
+    else if (/transform/i.test(mode)) S.push(`They are a form of ${f("adaptationMode", "transformational adaptation")}.`);
+    if (A && has("value")) S.push(`They aim to sustain ${attrMid()} and the ${f("value")} ${plural ? "they support" : "it supports"}.`);
+    if (has("lossDamageResponses")) S.push(`Responses to loss and damage include ${f("lossDamageResponses", lowerFirst(t("lossDamageResponses")))}.`);
+    if (has("responseEffectiveness")) S.push(`Overall, these responses are ${f("responseEffectiveness", ratingWord(d.responseEffectiveness) + ratingNum(d.responseEffectiveness))}.`);
+    const quality = (rk, ok, label) => {
+      if (!has(rk) && !has(ok)) return;
+      const outcome = has(ok) ? f(ok, lowerFirst(t(ok))) : "";
+      if (has(rk)) S.push(`${label} is ${f(rk, ratingWord(d[rk]))}${outcome ? ": " + outcome : ""}.`);
+      else S.push(`In terms of ${label.toLowerCase()}, ${outcome}.`);
+    };
+    quality("integrityRating", "integrityOutcome", "Integrity");
+    quality("authenticityRating", "authenticityOutcome", "Authenticity");
+    if (has("limits")) S.push(`However, ${f("limits", lowerFirst(t("limits")).replace(/^however,?\s+/i, ""))}.`);
+    if (has("residualLevel") || has("residualRisk")) {
+      const lvl = has("residualLevel") ? `A ${f("residualLevel", ratingWord(d.residualLevel) + ratingNum(d.residualLevel))} residual risk remains` : "Some residual risk remains";
+      S.push(`${lvl}${has("residualRisk") ? ": " + f("residualRisk", lowerFirst(t("residualRisk"))) : ""}.`);
     }
-    if (has("limits")) S.push(`However, ${f("limits")}.`);
-    if (has("residualRisk") || has("residualLevel")) {
-      const pathNote = paths ? `, reflecting ${paths} pathways` : "";
-      S.push(`Residual risk remains ${has("residualLevel") ? f("residualLevel") : "present"}${has("residualRisk") ? " — " + f("residualRisk") : ""}${pathNote}.`);
+    if (has("residualImpacts")) S.push(`Remaining losses and damages include ${f("residualImpacts", lowerFirst(t("residualImpacts")))}.`);
+    if (Array.isArray(d.heritagePathways) && d.heritagePathways.length) {
+      S.push(`The responses follow the ${f("heritagePathways", joinAnd(d.heritagePathways.map(p => "‘" + p + "’")))} ${d.heritagePathways.length > 1 ? "pathways" : "pathway"}.`);
     }
-    if (has("residualImpacts")) S.push(`The residual impacts include ${f("residualImpacts")}.`);
-    if (has("confidence")) S.push(`This assessment is made with ${f("confidence")} confidence${has("evidenceBasis") ? ", based on " + f("evidenceBasis") : ""}.`);
+    confidenceSentence();
   }
   return S;
 }
@@ -701,7 +771,7 @@ const GARDENS_EXAMPLE = {
   statements: [
     {
       type: "presentImpact",
-      label: "Sacred gardens — present impacts & inherent risk",
+      label: "Sacred gardens — present impacts and inherent risk",
       data: {
         attribute: "the sacred medicinal gardens",
         value: "cultural identity, spiritual well-being, and intergenerational continuity",
@@ -721,16 +791,16 @@ const GARDENS_EXAMPLE = {
     },
     {
       type: "presentResidual",
-      label: "Sacred gardens — present adaptation, loss and damage responses & residual risk",
+      label: "Sacred gardens — present adaptation, loss and damage responses and residual risk",
       data: {
         attribute: "the sacred medicinal gardens",
         value: "cultural identity, spiritual well-being, and intergenerational continuity",
         adaptationMode: "Coping",
-        who: "Elders",
+        who: "elders",
         responses: "adjusting planting and harvesting schedules and increasing monitoring of plant behaviour",
         lossDamageResponses: "documenting plants that no longer bloom reliably, sharing remedy knowledge across households, and providing mutual support when ceremonial preparations fail",
-        integrityOutcome: "maintaining key elements of integrity (gardens with native plant species)",
-        authenticityOutcome: "upholding the authenticity of ritual practice and ecological knowledge",
+        integrityOutcome: "the gardens keep their native plant species and key features",
+        authenticityOutcome: "ritual practice and ecological knowledge are still upheld, although remedy preparation is becoming harder",
         limits: "because the gardens still depend on rainfall and shallow soils, integrity is under growing pressure and authenticity of traditional remedy preparation is becoming strained",
         residualRisk: "ecological loss, irregular blooming, and cultural disconnection that coping measures cannot fully avert",
         residualLevel: "2 — Moderate",
@@ -748,12 +818,12 @@ const GARDENS_EXAMPLE = {
     },
     {
       type: "futureInherent",
-      label: "Sacred gardens — future potential impacts & inherent risk by 2060",
+      label: "Sacred gardens — future potential impacts and inherent risk by 2060",
       data: {
-        attribute: "our sacred medicinal gardens",
+        attribute: "the sacred medicinal gardens",
         value: "cultural identity, spiritual well-being, and intergenerational continuity",
         timeframe: "by 2060",
-        scenario: "SSP2-4.5",
+        scenario: "SSP2-4.5 (intermediate emissions)",
         observers: "elders",
         hazard: "droughts continue to lengthen",
         possibleOutcome: "begin to dry up entirely",
@@ -774,19 +844,19 @@ const GARDENS_EXAMPLE = {
     },
     {
       type: "futureResidual",
-      label: "Sacred gardens — future adaptation, loss and damage responses & residual risk by 2060",
+      label: "Sacred gardens — future adaptation, loss and damage responses and residual risk by 2060",
       data: {
         attribute: "the sacred medicinal gardens",
         value: "belonging, resilience and well-being",
         timeframe: "By 2060",
-        scenario: "SSP2-4.5",
+        scenario: "SSP2-4.5 (intermediate emissions)",
         adaptationMode: "Incremental adaptation",
         timeHorizon: "Medium term",
         who: "the community and stakeholders",
         responses: "water-harvesting infrastructure, seed-banks for key species and modified ritual calendars",
         potential: "preserve garden function for ritual use while securing a larger share of the original species assemblage",
         lossDamageResponses: "recording species already lost, co-creating remembrance practices for plants that cannot be restored, and revitalising remedy knowledge with substituted or banked species",
-        integrityOutcome: "integrity maintained in a modified, rather than original, form",
+        integrityOutcome: "the gardens remain whole, though in a modified rather than original form",
         authenticityOutcome: "material culture, knowledge and practice systems continue to align with cultural identity and healing traditions, even as timing and species composition evolve",
         limits: "the ecosystem is altered and practices have shifted, so authenticity is clearly evolving; some original species may not return",
         residualRisk: "degradation under persistent aridity and extreme heat, and non-economic losses to species-specific ritual meaning",
@@ -812,14 +882,14 @@ const EXAMPLE = {
   statements: [
     {
       type: "presentImpact",
-      label: "Mobile pastoralism — present impacts & inherent risk",
+      label: "Mobile pastoralism — present impacts and inherent risk",
       data: {
         attribute: "mobile pastoralism — the seasonal herd movements across pasturelands and water sources practised by around 170,000 herders",
         value: "livelihoods, cultural identity, and continuity of mobile pastoral culture",
         observers: "Herders and local authorities",
         hazard: "more frequent and compound dzud events, recurring drought, and increasingly uneven seasonal rainfall",
         impacts: "In the winter and spring of 2023–2024, roughly 90% of the basin experienced dzud conditions and approximately three million head of livestock were lost, undermining the economic and livelihood foundations of many herder households. These changes threaten herding livelihoods, seasonal mobility traditions, and the transmission of pastoral knowledge to younger generations",
-        exposure: "dependent directly on open pasturelands, natural water sources, and the freedom to move herds seasonally across the steppe",
+        exposure: "directly dependent on open pasturelands, natural water sources, and the freedom to move herds seasonally across the steppe",
         vulnerability: "Livestock numbers exceeding pasture carrying capacity, limited financial capacity to absorb dzud losses, and water and vegetation decline linked to mining",
         impactIntensity: "4 — Very high",
         likelihood: "4 — Very likely",
@@ -832,7 +902,7 @@ const EXAMPLE = {
     },
     {
       type: "presentResidual",
-      label: "Mobile pastoralism — present adaptation, loss and damage responses & residual risk",
+      label: "Mobile pastoralism — present adaptation, loss and damage responses and residual risk",
       data: {
         attribute: "mobile pastoralism",
         value: "livelihoods, cultural identity, and continuity of mobile pastoral culture",
@@ -859,16 +929,16 @@ const EXAMPLE = {
     },
     {
       type: "futureInherent",
-      label: "Mobile pastoralism — future potential impacts & inherent risk 2080–2100",
+      label: "Mobile pastoralism — future potential impacts and inherent risk 2080–2100",
       data: {
         attribute: "mobile pastoralism and traditional herding",
-        value: "livelihoods, mobile cultural identity, intergenerational knowledge",
-        timeframe: "By 2080–2100",
-        scenario: "high-emissions SSP5-8.5",
-        observers: "herders and meteorological records",
+        value: "livelihoods, mobile cultural identity and intergenerational knowledge",
+        timeframe: "by the end of the century (2080–2100)",
+        scenario: "SSP5-8.5 (very high emissions)",
+        observers: "herders and local meteorologists",
         hazard: "warming, uneven seasonal rainfall, and sequential drought–dzud cycles become more regular",
-        possibleOutcome: "reach existential-level risk",
-        impacts: "The 2023–2024 dzud, and the 2024 flood when the Kherlen exceeded its danger threshold by 14 cm, already show how compounding hazards strain herding households. Projected continued sharp warming, longer heatwaves, more uneven precipitation, and more frequent compound dzud and drought events will likely lead to sustained pasture degradation, water scarcity, and weakened ecosystem recovery capacity, with herd losses, shrinking usable pasture, and forced reductions in mobility. These disruptions threaten herding livelihoods, seasonal rituals and festivals tied to the pastoral calendar, and accelerate youth migration away from herding life",
+        possibleOutcome: "face an existential threat",
+        impacts: "The 2023–2024 dzud, and the 2024 flood when the Kherlen exceeded its danger threshold by 14 cm, already show how compounding hazards strain herding households. Projected continued sharp warming, longer heatwaves, more uneven precipitation, and more frequent compound dzud and drought events could lead to sustained pasture degradation, water scarcity, and weakened ecosystem recovery capacity, with herd losses, shrinking usable pasture, and forced reductions in mobility. These disruptions threaten herding livelihoods and the seasonal rituals and festivals tied to the pastoral calendar, and could accelerate youth migration away from herding life",
         exposure: "wholly dependent on open pasture, natural water sources, and the freedom to move herds seasonally",
         vulnerability: "Pasture carrying capacity already being exceeded, limited financial buffers, monitoring gaps, and growing pressure from mining and land-use change",
         intensityReason: "they could affect both the physical survival of herding livelihoods and the continuation of mobile cultural identity and knowledge transmission",
@@ -885,12 +955,12 @@ const EXAMPLE = {
     },
     {
       type: "futureResidual",
-      label: "Mobile pastoralism — future adaptation, loss and damage responses & residual risk 2080–2100",
+      label: "Mobile pastoralism — future adaptation, loss and damage responses and residual risk 2080–2100",
       data: {
         attribute: "mobile herding systems",
-        value: "livelihoods, mobile cultural identity, intergenerational knowledge",
-        timeframe: "By 2080–2100",
-        scenario: "high-emissions SSP5-8.5",
+        value: "livelihoods, mobile cultural identity and intergenerational knowledge",
+        timeframe: "by the end of the century (2080–2100)",
+        scenario: "SSP5-8.5 (very high emissions)",
         adaptationMode: "Incremental adaptation",
         timeHorizon: "Long term",
         who: "herders, local government, and basin stakeholders",
@@ -899,7 +969,7 @@ const EXAMPLE = {
         lossDamageResponses: "documenting and teaching traditional mobility knowledge that may no longer be practicable on every route, community memorialisation of lost herds, psychosocial support after dzud, and revitalising pastoral festivals in adapted form",
         integrityOutcome: "herding systems continue in adapted form",
         authenticityOutcome: "mobility traditions evolve under pressure but remain culturally meaningful",
-        limits: "unlikely to fully offset sudden extreme events, uncertainty in climate trajectories, and financial and institutional constraints",
+        limits: "these measures are unlikely to fully offset sudden extreme events, and uncertainty in climate trajectories and financial and institutional constraints remain",
         residualRisk: "periodic livestock losses and continued pressure on mobile cultural practices",
         residualImpacts: "episodic dzud losses, reduced pasture productivity in dry years, and gradual changes in migration patterns",
         residualLevel: "2 — Moderate",
@@ -961,9 +1031,22 @@ const X_TICKS = { 1: "Very unlikely", 2: "Unlikely", 3: "Likely", 4: "Very likel
 const SSP_OPTIONS = ["SSP1-2.6 (low emissions)", "SSP2-4.5 (intermediate emissions)", "SSP3-7.0 (high emissions)", "SSP5-8.5 (very high emissions)"];
 const TYPE_TAB = { presentImpact: "Present · inherent", presentResidual: "Present · residual", futureInherent: "Future · inherent", futureResidual: "Future · residual" };
 const SEC_COLOR = {
-  "Heritage": "var(--amber)", "Scenario": "var(--teal-dk)", "Qualitative": "var(--teal)", "Quantitative": "var(--orange)",
-  "Responses": "var(--olive)", "Outcomes": "var(--olive-dk)", "Characterise the action": "var(--teal-dk)", "Ratings": "var(--orange)", "Hazard tags": "var(--orange-dk)"
+  "Heritage": "var(--amber)", "Scenario": "var(--teal-dk)", "What is happening": "var(--teal)", "What could happen": "var(--teal)",
+  "Responses": "var(--olive)", "Outcomes": "var(--olive-dk)", "Describe the action": "var(--teal-dk)", "Ratings": "var(--orange)", "Climate hazards": "var(--orange-dk)"
 };
+/* one short line under each section heading */
+const SEC_NOTE = {
+  "Heritage": "What matters, and why it matters to people.",
+  "What is happening": "From the hazard to its impacts, and what makes the attribute exposed and vulnerable.",
+  "What could happen": "How the hazard may develop, what it could do to the attribute, and why.",
+  "Scenario": "The period and climate scenario this statement looks at.",
+  "Responses": "What people are doing, or plan to do, to adapt and to address loss and damage.",
+  "Outcomes": "What the responses mean for the attribute, and what remains at risk.",
+  "Describe the action": "Tick all that apply. These become tags under the draft, not part of the sentence.",
+  "Ratings": "Each scale runs from 1 (lowest) to 4 (highest). The risk chart below updates as you choose.",
+  "Climate hazards": "Tags for comparing statements. They are not added to the sentence."
+};
+const FLOW_NOTE = "A full set usually starts with impacts and inherent risk, then describes the responses and the risk that remains, first for today and then for the future.";
 const EXAMPLES = { kherlen: () => EXAMPLE, gardens: () => GARDENS_EXAMPLE };
 function bandNum(p) { return p >= 12 ? 4 : p >= 8 ? 3 : p >= 4 ? 2 : 1; }
 function lvl(v) { const n = scaleNumeric(v); return n == null ? null : Math.min(4, Math.max(1, Math.round(n))); }
@@ -1018,10 +1101,17 @@ function changeText(d) {
 function bandTag(n) { return n ? `<span class="bandtag"><i style="background:${BAND_VAR(n)}"></i>${lvlLabel(n)}</span>` : `<span class="dash">—</span>`; }
 
 /* ---------- example statements: flag them so they can be removed as a group ---------- */
+/* labels from earlier versions used "&" — compare without it */
+const normLabel = t => String(t || "").toLowerCase().replace(/\s*&\s*/g, " and ").replace(/\s+/g, " ").trim();
 function markExamples() {
   const byLabel = {};
-  Object.entries(EXAMPLES).forEach(([k, get]) => get().statements.forEach(st => { byLabel[st.label] = k; }));
-  state.statements.forEach(s => { if (!s.example && byLabel[s.label]) s.example = byLabel[s.label]; });
+  Object.entries(EXAMPLES).forEach(([k, get]) => get().statements.forEach(st => { byLabel[normLabel(st.label)] = { k, label: st.label }; }));
+  state.statements.forEach(s => {
+    const hit = byLabel[normLabel(s.label)];
+    if (!hit) return;
+    if (!s.example) s.example = hit.k;
+    if (s.example === hit.k) s.label = hit.label;
+  });
 }
 const exampleSiteNames = () => Object.values(EXAMPLES).map(g => g().siteName);
 
@@ -1256,7 +1346,7 @@ function renderTabs() {
   }));
   el.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => {
     const s = state.statements.find(x => x.id === b.dataset.del);
-    if (s) deleteStatements([s.id], `Deleted ${numOf(s)} · ${shortName(s, 30)}`);
+    if (s) deleteStatements([s.id], `Deleted S${numOf(s)} · ${shortName(s, 30)}`);
   }));
   const exIds = state.statements.filter(s => s.example).map(s => s.id);
   const tools = $("tabsTools");
@@ -1264,7 +1354,7 @@ function renderTabs() {
     (state.statements.length ? `<button class="btn link danger" id="btnClearAll" type="button">Clear all</button>` : "");
   $("btnRemoveEx")?.addEventListener("click", () => deleteStatements(exIds, `Removed ${exIds.length} example statement${exIds.length > 1 ? "s" : ""}`));
   $("btnClearAll")?.addEventListener("click", () => {
-    if (!confirm("Remove all statements? You can undo straight after.")) return;
+    if (!confirm("Remove all statements, including your own? You can undo straight after.")) return;
     deleteStatements(state.statements.map(s => s.id), "Cleared all statements");
   });
 }
@@ -1279,7 +1369,7 @@ function bindTypeCards(root) {
 }
 function renderChooser() {
   const ed = $("editor");
-  ed.innerHTML = `<div class="card"><div class="rlabel">New statement — choose a type</div>${typeCardsHTML()}</div>`;
+  ed.innerHTML = `<div class="card"><div class="rlabel">Choose a statement type</div><p class="unit" style="margin-top:0">${FLOW_NOTE}</p>${typeCardsHTML()}</div>`;
   bindTypeCards(ed);
 }
 function showChooser() { state.view = "new"; renderAll(); }
@@ -1326,9 +1416,10 @@ function multiSummary(sel) {
 
 function emptyHTML() {
   return `<div class="card empty">
-    <div class="intro"><h2>Start with a statement</h2><p>Pick a statement type, or add a worked example.</p>
-      <button class="btn amber" data-empty="kherlen">Add Kherlen example</button>
-      <button class="btn amber" data-empty="gardens">Add gardens example</button></div>
+    <div class="intro"><h2>Start your first statement</h2><p>Choose a type below, or add a worked example to see how a full set of statements fits together.</p>
+      <button class="btn amber" data-empty="kherlen">Add Kherlen River Basin example</button>
+      <button class="btn amber" data-empty="gardens">Add sacred gardens example</button></div>
+    <p class="unit">${FLOW_NOTE}</p>
     ${typeCardsHTML()}</div>`;
 }
 function bindEmpty(root) {
@@ -1349,7 +1440,11 @@ function renderEditor() {
   let lastSec = "";
   const fieldsHtml = T.fields.map(fd => {
     let h = "";
-    if (fd.sec !== lastSec) { lastSec = fd.sec; h += `<div class="rlabel section-h" style="--sec:${SEC_COLOR[fd.sec] || "var(--olive)"}">${fd.sec}</div>`; }
+    if (fd.sec !== lastSec) {
+      lastSec = fd.sec;
+      h += `<div class="rlabel section-h" style="--sec:${SEC_COLOR[fd.sec] || "var(--olive)"}">${fd.sec}</div>`;
+      if (SEC_NOTE[fd.sec]) h += `<p class="sec-note">${SEC_NOTE[fd.sec]}</p>`;
+    }
     return h + fieldHTML(fd, s.data[fd.key], s);
   }).join("");
   const usedCats = [...new Set(T.fields.filter(fd => fd.kind !== "multi" && fd.kind !== "link").map(fd => fd.cat))];
@@ -1374,19 +1469,19 @@ function renderEditor() {
     <div class="rlabel">Draft statement</div>
     <div class="card accent-a">
       <div class="keyrow">${usedCats.map(k => `<span class="key"><i style="background:${CATS[k].color}"></i>${CATS[k].name}</span>`).join("")}</div>
-      <div class="preview" id="preview"></div>
+      <div class="preview" id="preview" aria-live="off"></div>
       <div class="actions">
         <button class="btn" id="btnCopyDraft">Copy draft</button>
         <button class="btn primary" id="btnUseDraft">Use as final statement</button>
       </div>
       <div class="rlabel" style="margin-top:20px">Final statement</div>
-      <textarea class="final" id="finalText" placeholder="Click “Use as final statement” above, then edit the wording here in your own words.">${esc(s.final || "")}</textarea>
+      <textarea class="final" id="finalText" placeholder="Click “Use as final statement”, then rewrite it here in your own words. Add local names, voices and context, and cut anything that doesn’t fit.">${esc(s.final || "")}</textarea>
       <div id="staleNote"></div>
       <div class="actions">
         <button class="btn" id="btnCopyFinal">Copy final statement</button>
         <span class="count" id="wordCount"></span>
       </div>
-      <div class="tabs-head" style="margin-top:16px"><span class="rlabel">Includes</span><span class="prog" id="progress"></span></div>
+      <div class="tabs-head" style="margin-top:16px"><span class="rlabel">Elements covered</span><span class="prog" id="progress"></span></div>
       <div class="checks" id="checklist"></div>
     </div>`;
 
@@ -1442,7 +1537,7 @@ function useDraftAsFinal(s) {
 function updateStale(s) {
   const el = $("staleNote"); if (!el) return;
   const stale = s.final && s.final.trim() && s.finalDraft && s.finalDraft !== draftPlain(s);
-  const html = stale ? `<div class="stale">The draft has changed since you used it. <button class="btn small" id="btnRefreshFinal" type="button">Update final statement</button></div>` : "";
+  const html = stale ? `<div class="stale">You have changed some fields since making the final statement. <button class="btn small" id="btnRefreshFinal" type="button">Replace with the new draft</button></div>` : "";
   if (el._html === html && el._sid === s.id) return;
   el._html = html; el._sid = s.id;
   el.innerHTML = html;
@@ -1467,7 +1562,9 @@ function changeType(s, newType) {
   s.data = migrateData(s.data, s.type);
   /* keep the statement name in step with its type (e.g. "Dome — future potential impacts & inherent risk") */
   const oldName = TYPES[oldType].name, newName = TYPES[newType].name;
-  const m = String(s.label || "").match(new RegExp(escRe(oldName), "i"));
+  /* earlier names used "&" instead of "and" */
+  const pattern = escRe(oldName).replace(/ and /g, " (?:and|&) ");
+  const m = String(s.label || "").match(new RegExp(pattern, "i"));
   if (m) s.label = s.label.replace(m[0], m.index === 0 ? newName : newName.charAt(0).toLowerCase() + newName.slice(1));
   /* the final statement was written for the previous type, so clear it */
   const hadFinal = !!(s.final && s.final.trim());
@@ -1513,8 +1610,8 @@ function renderRatingCard(s) {
     else {
       const b = r.suggested;
       status = `<div class="status ${BAND_STATUS[b]}">${BAND_NAMES[b]} inherent risk`;
-      if (!r.entered) status += `<span class="sub">No risk level entered yet. <button class="btn small" id="btnUseSuggested">Use ${lvlLabel(b)}</button></span>`;
-      else if (r.entered !== b) status += `<span class="sub">Entered level (${esc(s.data.riskLevel)}) differs from the matrix. <button class="btn small" id="btnUseSuggested">Use ${lvlLabel(b)}</button></span>`;
+      if (!r.entered) status += `<span class="sub">No inherent risk level chosen yet. <button class="btn small" id="btnUseSuggested">Use ${lvlLabel(b)}</button></span>`;
+      else if (r.entered !== b) status += `<span class="sub">The level you chose (${esc(s.data.riskLevel)}) differs from the matrix. If you keep it, say why in the statement. <button class="btn small" id="btnUseSuggested">Use ${lvlLabel(b)}</button></span>`;
       status += `</div>`;
     }
     card.innerHTML = `<div class="rgrid"><div>${matrixSVG(pts, { cell: 64, small: true, id: "ed", aria: "Where this statement sits on the inherent risk matrix" })}${bandKeysHTML(false)}</div><div>${chips}${status}</div></div>`;
@@ -1545,22 +1642,28 @@ function renderRatingCard(s) {
       ? `<div class="status amber">Choose the inherent risk statement these responses act on, so the tool can show how far they reduce risk.<span class="sub"><button class="btn small" id="btnPickLink" type="button">Choose statement</button></span></div>`
       : `<div class="status amber">There is no ${TYPES[want].short.toLowerCase()} statement to compare with yet.<span class="sub"><button class="btn small" id="btnMakeLink" type="button">Create one from this statement</button> It copies the attribute, values${isFuture(s.type) ? ", timeframe and scenario" : ""} so you only add the impacts and ratings.</span></div>`;
   }
+  else if (!res) status = `<div class="status amber">Choose a residual risk level to see how far the responses reduce risk.<span class="sub">Compared with S${numOf(link)} · ${esc(displayLabel(link))}</span></div>`;
+  else if (!inh) status = `<div class="status amber">S${numOf(link)} has no inherent risk rating yet. Rate its impact intensity and likelihood to see the change.<span class="sub"><button class="btn small" id="btnOpenLink" type="button">Open S${numOf(link)}</button></span></div>`;
   else if (d != null) status = `<div class="status ${d < 0 ? "green" : d === 0 ? "amber" : "red"}">${d < 0 ? "Risk reduced" : d === 0 ? "No change in risk level" : "Risk increased"} · ${changeText(d)}<span class="sub">S${numOf(link)} · ${esc(displayLabel(link))}</span></div>`;
   card.innerHTML = `<div class="rgrid"><div>${trackSVG(inh, res)}
       <div class="readouts"><span><span class="b">inherent</span> <b>${inh || "—"}</b></span><span><span class="b">change</span> <b>${d == null ? "—" : d === 0 ? "0" : (d < 0 ? "−" : "+") + Math.abs(d)}</b></span><span><span class="b">residual</span> <b>${res || "—"}</b></span></div></div>
     <div>${chips}${status}</div></div>`;
   $("btnPickLink")?.addEventListener("click", () => gotoField("linkedInherent"));
   $("btnMakeLink")?.addEventListener("click", () => createLinkedInherent(s));
+  $("btnOpenLink")?.addEventListener("click", () => openStatementById(link.id));
 }
 
 function draftSentences(s, highlight) {
   const T = TYPES[s.type];
   const catOf = {}; T.fields.forEach(fd => catOf[fd.key] = fd.cat);
-  const f = key => {
+  /* f(key) = the field as typed; f(key, text) = a reworded version of it (both colour-marked in the preview) */
+  const f = (key, text) => {
     const raw = s.data[key];
-    const v = Array.isArray(raw) ? raw.join(", ") : String(raw || "").trim().replace(/\.+$/, "");
+    const v = text != null ? String(text) : Array.isArray(raw) ? raw.join(", ") : String(raw || "").trim().replace(/\.+$/, "");
     if (!v) return "";
-    return highlight ? `<mark style="--m:${CATS[catOf[key]].color}" title="${esc(CATS[catOf[key]].name)}">${esc(v)}</mark>` : v;
+    const c = CATS[catOf[key]];
+    if (!highlight || !c) return highlight ? esc(v) : v;
+    return `<mark style="--m:${c.color}" title="${esc(c.name)}">${esc(v)}</mark>`;
   };
   return buildDraft(s.type, s.data, f);
 }
@@ -1582,7 +1685,7 @@ function updatePreview() {
   const sentences = draftSentences(s, true);
   const tags = tagSummary(s);
   const tagsHtml = tags.length ? `<div class="tagline">` + tags.map(([l, v]) => `<span class="tag"><b>${l}:</b> ${esc(v)}</span>`).join("") + `</div>` : "";
-  $("preview").innerHTML = (sentences.length ? sentences.join(" ") : `<span class="ph">Your draft assembles here as you fill in the fields.</span>`) + tagsHtml;
+  $("preview").innerHTML = (sentences.length ? sentences.join(" ") : `<span class="ph">Your draft builds here as you fill in the fields. Each colour shows which element of the statement a phrase comes from.</span>`) + tagsHtml;
   renderRatingCard(s);
   const T = TYPES[s.type];
   let done = 0;
@@ -1655,12 +1758,12 @@ function renderOverview() {
     </div>
     <div class="ovgrid">
       <div class="card accent-o"><div class="rlabel">Inherent risk matrix</div>
-        ${pts.length ? matrixSVG(pts, { cell: 80, id: "ov", openable: true, aria: "Inherent risk matrix of all statements" }) : `<p class="none">No statement rated yet.</p>`}
+        ${pts.length ? matrixSVG(pts, { cell: 80, id: "ov", openable: true, aria: "Inherent risk matrix of all statements" }) : `<p class="none">No statements rated yet. Rate impact intensity and likelihood to place them here.</p>`}
         ${bandKeysHTML(true)}
-        ${unplaced.length ? `<p class="none" style="margin:8px 0 0">Not placed yet: ${unplaced.map(s => "S" + numOf(s)).join(", ")}</p>` : ""}
+        ${unplaced.length ? `<p class="none" style="margin:8px 0 0">Not rated yet: ${unplaced.map(s => "S" + numOf(s)).join(", ")}</p>` : ""}
       </div>
       <div class="card accent-t"><div class="rlabel">Inherent → residual risk</div>
-        ${rows.length ? dumbbellSVG(rows, { id: "ov" }) + DUMBBELL_KEYS : `<p class="none">No response statements yet.</p>`}
+        ${rows.length ? dumbbellSVG(rows, { id: "ov" }) + DUMBBELL_KEYS : `<p class="none">No response statements yet. Add one to compare inherent and residual risk.</p>`}
       </div>
     </div>
     <div class="rlabel" style="margin-top:22px">All ratings</div>
@@ -1698,7 +1801,7 @@ function addStatement(type) {
   $("stmtLabel")?.focus();
 }
 function loadExampleKey(key) {
-  const example = EXAMPLES[key](), label = key === "gardens" ? "Sacred gardens example" : "Kherlen example";
+  const example = EXAMPLES[key](), label = key === "gardens" ? "Sacred gardens example" : "Kherlen River Basin example";
   const existing = state.statements.findIndex(s => s.example === key);
   if (existing >= 0) {
     state.current = existing; state.view = "editor"; renderAll(); persist();
@@ -1799,11 +1902,11 @@ function exportDoc() {
   const order = ["presentImpact", "presentResidual", "futureInherent", "futureResidual"];
   let body = `<h1 style="color:#183C1C">${TOOL_NAME}</h1>`;
   if (state.siteName) body += `<h2 style="color:#4a5f4a">${esc(state.siteName)}</h2>`;
-  body += `<p><i>Preserving Legacies statement builder · ${new Date().toLocaleDateString()}</i></p>`;
+  body += `<p><i>Preserving Legacies · exported ${new Date().toLocaleDateString()}</i></p>`;
   order.forEach(tp => {
     const group = state.statements.filter(s => s.type === tp);
     if (!group.length) return;
-    body += `<h2 style="color:${isResidual(tp) ? "#4f6b2f" : "#0a7a86"}">${TYPES[tp].name} Statements</h2>`;
+    body += `<h2 style="color:${isResidual(tp) ? "#4f6b2f" : "#0a7a86"}">${TYPES[tp].name}</h2>`;
     group.forEach(s => {
       body += `<h3>S${numOf(s)} — ${esc(displayLabel(s))}</h3>`;
       const text = (s.final && s.final.trim()) ? s.final : draftPlain(s);
@@ -1820,7 +1923,7 @@ $("siteName").addEventListener("input", e => { state.siteName = e.target.value; 
 $("btnLoadEx").addEventListener("click", () => loadExampleKey($("exSel").value));
 $("btnSaveJson").addEventListener("click", () => {
   download((state.siteName || "risk-statements").replace(/\s+/g, "-") + "-statements.json", JSON.stringify(state, null, 2), "application/json");
-  toast("Progress saved");
+  toast("Progress saved to a file");
 });
 $("btnLoadJson").addEventListener("click", () => $("fileInput").click());
 $("fileInput").addEventListener("change", e => {
@@ -1837,7 +1940,7 @@ $("fileInput").addEventListener("change", e => {
       if (state.current == null || state.current >= state.statements.length) state.current = state.statements.length ? 0 : -1;
       state.view = "editor";
       renderAll(); persist(); toast("Progress loaded", "Undo", () => restoreSnapshot(snap), 8000);
-    } catch (err) { toast("Could not load file"); }
+    } catch (err) { toast("Could not read that file. Choose a .json file saved from this tool."); }
   };
   reader.readAsText(file);
   e.target.value = "";
