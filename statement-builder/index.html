@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inherent and Residual Impacts and Risks, Adaptation and Responses to Losses and Damages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --limestone:#eae5d6; --panel:#f6f3ed; --card:rgba(255,255,255,.55); --ink:#183C1C; --ink-soft:#4a5f4a;
+    --teal:#0DA5B5; --teal-dk:#0a7a86; --teal-lt:#d3ecef;
+    --orange:#F26422; --orange-dk:#b64518; --orange-lt:#fde3d7;
+    --amber:#D8842C; --amber-txt:#8a4f16; --amber-lt:#f6e4d1;
+    --olive:#799D4B; --olive-dk:#4f6b2f; --olive-txt:#33502f; --olive-lt:#e4ebd8;
+    --plum:#8f5c78; --plum-lt:#eee0e7;
+    --line:rgba(24,60,28,.16); --line-solid:#c8cab8; --eqbg:#ece6d5; --muted:rgba(24,60,28,.74); --green:#5f8a3a; --cta:#c94b16;
+    --serif:'Poppins','Segoe UI',system-ui,sans-serif;
+    --sans:'Inter','Segoe UI',system-ui,sans-serif;
+    --mono:'Poppins','Segoe UI',system-ui,sans-serif;
+    /* statement elements — Preserving Legacies palette, grouped in families */
+    --c-attribute:#D8842C; --c-value:#8f5c78; --c-hazard:#F26422; --c-exposure:#0DA5B5;
+    --c-vulnerability:#b64518; --c-impact:#0a7a86; --c-intensity:#075a63; --c-likelihood:#a5631d;
+    --c-risk:#8c3001; --c-confidence:#4a5f4a; --c-response:#799D4B; --c-integrity:#4f6b2f;
+    --c-authenticity:#6e4a60; --c-pathway:#33502f; --c-scenario:#8a8570;
+    /* risk bands: one-hue ramp on the PL orange (validated: monotone, light end >= 2:1 on panel) */
+    --band-1:#e99677; --band-2:#dd6738; --band-3:#b94610; --band-4:#8c3001;
+    --inh:#0DA5B5; --res:#F26422;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--limestone);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;padding:36px 26px 40px}
+  .wrap{max-width:1000px;margin:0 auto}
+  .pl-logo{display:block;height:40px;width:auto;max-width:100%;margin:0 0 18px}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+  h1{font-family:var(--serif);font-weight:600;font-size:36px;line-height:1.15;margin:0 0 14px}
+  h2{font-family:var(--serif);font-weight:600;font-size:19px;margin:0;line-height:1.25}
+  h3{font-family:var(--serif);font-weight:600;font-size:17px;margin:0;line-height:1.25}
+  header{padding-top:52px}
+  .lede{font-size:16.5px;margin:0}
+  .rule{height:4px;margin:28px 0 30px;border-radius:2px;background:linear-gradient(90deg,var(--teal) 0 25%,var(--olive) 25% 50%,var(--amber) 50% 75%,var(--orange) 75% 100%)}
+  .how{border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:8px;padding:20px 22px;margin:0 0 34px;background:rgba(255,255,255,.42)}
+  .how h2{font-size:17px;margin:0 0 12px}
+  .how ul{margin:0;padding-left:20px}
+  .how li{margin:0 0 8px;font-size:15px}
+  .how li:last-child{margin-bottom:0}
+
+  .controls{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:center;margin:0 0 30px}
+  .picker{display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%;min-width:0}
+  .picker select,.picker input{max-width:100%;min-width:0}
+  .picker label,.rlabel{font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .picker label{font-size:12px}
+  .rlabel{display:block;margin:0 0 8px}
+  .filebtns{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+  #siteName{width:230px}
+  select,input[type=text],textarea{font-family:var(--sans);font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:7px;padding:8px 12px}
+  select{cursor:pointer;max-width:100%}
+  .btn{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:9px 16px;cursor:pointer;font-weight:600;font-family:var(--serif);font-size:13.5px;color:var(--ink);
+    display:inline-flex;align-items:center;gap:6px;transition:transform .14s ease,background .14s ease}
+  .btn:hover{background:#fff;transform:translateY(-1px)}
+  .btn.primary,.btn.teal{background:var(--cta);border-color:var(--cta);color:#fff;font-size:14.5px;padding:10px 20px}
+  .btn.primary:hover,.btn.teal:hover{background:#b8430f}
+  .btn.amber{background:var(--card);border:1.5px solid var(--orange);color:var(--orange-dk)}
+  .btn.amber:hover{background:#fff}
+  .btn.small{padding:5px 11px;font-size:12.5px;border-radius:6px}
+  .btn.link{background:transparent;border-color:transparent;padding:4px 8px;font-size:12.5px;color:var(--muted)}
+  .btn.link:hover{background:rgba(255,255,255,.55);color:var(--ink);transform:none}
+  .btn.link.danger:hover{background:var(--orange-lt);color:var(--orange-dk)}
+  .btn .ic{font-size:1rem;line-height:1}
+  button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+  /* statement tabs: teal = impacts & inherent risk, olive = responses & residual risk */
+  .tabs-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .tabs-head .rlabel{margin:0}
+  .tabs-tools{display:flex;gap:4px;flex-wrap:wrap}
+  .tabs{display:flex;flex-wrap:wrap;gap:0 4px;margin:0 0 24px;border-bottom:1px solid var(--line)}
+  .tab{--a:var(--teal);--a-dk:var(--teal-dk);background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;
+    padding:8px 10px 7px;font:500 15px var(--sans);color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:baseline;gap:6px;max-width:100%}
+  .tab.res{--a:var(--olive);--a-dk:var(--olive-dk)}
+  .tab.ov{--a:var(--orange);--a-dk:var(--orange-dk)}
+  .tab.add{--a:var(--ink);--a-dk:var(--ink)}
+  .tab:hover{color:var(--ink)}
+  .tab .n{font-family:var(--serif);font-weight:600;color:var(--a-dk);font-variant-numeric:tabular-nums}
+  .tab .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:22ch}
+  .tab .kind{font-size:12px;color:var(--muted);white-space:nowrap}
+  .tab.active{color:var(--ink);border-bottom-color:var(--a)}
+  .tab.active .nm{font-weight:600}
+  .tabwrap{display:inline-flex;align-items:center;margin-bottom:-1px;max-width:100%}
+  .tabwrap .tab{margin-bottom:0;padding-right:4px}
+  .tab-x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:.95rem;line-height:1;padding:3px 6px;border-radius:6px;margin-right:4px}
+  .tab-x:hover{color:var(--orange-dk);background:var(--orange-lt)}
+  .num{--a-dk:var(--teal-dk);display:inline-flex;align-items:center;justify-content:center;min-width:1.5rem;height:1.5rem;padding:0 .3rem;border-radius:999px;
+    background:var(--a-dk);color:#fff;font-size:.72rem;font-weight:600;font-variant-numeric:tabular-nums;flex:none}
+  .num.res{--a-dk:var(--olive-dk)}
+  .num.future{background:#fff;color:var(--a-dk);box-shadow:inset 0 0 0 2px var(--a-dk)}
+
+  /* cards */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:20px 22px;margin-bottom:24px}
+  .card.stmt{--a:var(--teal);--a-dk:var(--teal-dk);--a-lt:var(--teal-lt);border-top:4px solid var(--a)}
+  .card.stmt.res{--a:var(--olive);--a-dk:var(--olive-dk);--a-lt:var(--olive-lt)}
+  .card-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .card-head .title{flex:1 1 calc(100% - 44px);min-width:0;font-family:var(--serif);font-weight:600;font-size:19px;background:transparent;border-color:transparent;padding:4px 8px;margin-left:-8px}
+  .card-head .title:hover,.card-head .title:focus{background:#fff;border-color:var(--line)}
+  .card-head select{font-size:13.5px;padding:6px 10px;background:#fff;border-color:var(--a);color:var(--ink);font-weight:500}
+  .card-head .grow{flex:1}
+  .unit{font-size:14px;color:var(--muted);max-width:66ch;margin:8px 0 6px}
+
+  /* fields */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .section-h{grid-column:1/-1;margin:16px 0 -4px;display:flex;align-items:center;gap:8px}
+  .section-h::before{content:"";width:22px;height:5px;border-radius:3px;background:var(--sec,var(--olive))}
+  .field{border-left:3px solid var(--line);padding:1px 0 1px 12px;min-width:0}
+  .field.span2{grid-column:1/-1}
+  .field label.fl,.field .fl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:500;font-size:14.5px;margin-bottom:5px}
+  .el{display:inline-flex;align-items:center;gap:5px;font-weight:400;font-size:12px;color:var(--muted);white-space:nowrap}
+  .el i,.key i{width:.6rem;height:.6rem;border-radius:999px;display:inline-block}
+  .field textarea,.field input[type=text],.field select{width:100%;background:#fff}
+  .hint{margin:-2px 0 7px;font-size:13px;line-height:1.45;color:var(--muted);max-width:90ch}
+  .field textarea{min-height:66px;resize:vertical;line-height:1.45}
+  .chk-group{display:flex;flex-wrap:wrap;gap:6px}
+  .chk{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 8px;font-size:.8rem;cursor:pointer}
+  .chk input{accent-color:var(--teal-dk);margin:0;cursor:pointer}
+  .chk:has(input:checked){background:var(--teal-lt);border-color:var(--teal);color:#075a63;font-weight:500}
+  details.more{background:#fff;border:1px solid var(--line);border-radius:7px;padding:0 12px}
+  details.more summary{cursor:pointer;padding:9px 0;font-size:.86rem;color:var(--ink-soft);list-style:none;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸";color:var(--orange-dk);transition:transform .15s}
+  details.more[open] summary::before{transform:rotate(90deg)}
+  details.more summary .sel{display:inline-flex;gap:5px;flex-wrap:wrap}
+  details.more summary .sel span{background:var(--orange-lt);border:1px solid var(--orange);color:#9a3a12;border-radius:999px;padding:1px 9px;font-size:.76rem;font-weight:500}
+  details.more .chk-group{padding:2px 0 12px}
+  details.more .chk:has(input:checked){background:var(--orange-lt);border-color:var(--orange);color:#9a3a12}
+  details.more .chk input{accent-color:var(--orange-dk)}
+
+  /* risk panels */
+  .rgrid{display:grid;grid-template-columns:350px 1fr;gap:26px;align-items:start}
+  @media(max-width:820px){.rgrid{grid-template-columns:1fr}}
+  .hev{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+  .hevchip{flex:1;min-width:110px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--ca,var(--teal));border-radius:9px;padding:9px 12px 10px}
+  .hevchip .k{font-family:var(--serif);font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .hevchip .r{font-family:var(--serif);font-weight:600;font-size:1.25rem;color:var(--ct,var(--teal-dk));line-height:1.15;font-variant-numeric:tabular-nums}
+  .hevchip .r small{font-size:.75rem;color:var(--ink-soft);font-weight:500}
+  .hevchip .n{font-size:.74rem;color:var(--ink-soft);margin-top:3px}
+  .hevchip .r .st{font-size:15px;line-height:1.3;flex-wrap:wrap;overflow-wrap:anywhere}
+  .hevchip{min-width:130px}
+  .status{border-radius:8px;padding:10px 13px;font-size:15px;font-weight:500;margin-top:10px}
+  .status.green{background:rgba(95,138,58,.14);border:1px solid var(--green);color:#3f5f26}
+  .status.amber{background:rgba(216,132,44,.15);border:1px solid var(--amber);color:var(--amber-txt)}
+  .status.red{background:rgba(242,100,34,.14);border:1px solid var(--orange);color:#9a3a12}
+  .status .sub{font-weight:400;font-size:.84rem;margin-top:4px;display:block}
+  .status .btn{margin-left:4px}
+  .readouts{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:.8rem;font-variant-numeric:tabular-nums}
+  .readouts .b{color:var(--ink-soft)}
+  .readouts b{font-weight:600}
+  .meter{display:inline-flex;gap:3px;vertical-align:middle;margin-top:4px}
+  .meter span{width:1.3rem;height:.45rem;border-radius:2px}
+  .st{display:inline-flex;align-items:center;gap:6px}
+  .st b{display:inline-flex;width:1.05rem;height:1.05rem;border-radius:999px;color:#fff;font:600 .66rem var(--sans);align-items:center;justify-content:center}
+  .keys{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--ink-soft);margin-top:8px;align-items:center}
+  .keys .sw{display:inline-block;width:.75rem;height:.75rem;border-radius:3px;vertical-align:-1px;margin-right:5px}
+  .keys .dot{display:inline-block;width:.75rem;height:.75rem;border-radius:999px;vertical-align:-1px;margin-right:5px}
+  .none{color:var(--muted);font-style:italic;font-size:.88rem}
+
+  /* charts */
+  svg.chart{display:block;width:100%;height:auto;overflow:visible;font-family:var(--sans)}
+  svg.chart text{fill:var(--ink)}
+  svg.chart .axis-t{fill:var(--ink-soft);font-size:11px}
+  svg.chart .axis-title{fill:var(--ink-soft);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+  svg.chart .hit{cursor:pointer}
+  svg.chart .hit:focus{outline:none}
+  svg.chart .hit:focus .focus-ring,svg.chart .hit:hover .focus-ring{stroke:var(--amber);stroke-width:3}
+  svg.chart .cellhit:hover rect{opacity:.86}
+  .chart-tip{position:fixed;z-index:60;pointer-events:none;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;
+    box-shadow:0 8px 24px rgba(24,60,28,.12);padding:8px 11px;font-size:.8rem;max-width:320px;opacity:0;transition:opacity .12s}
+  .chart-tip.show{opacity:1}
+  .chart-tip .tv{font-weight:600;font-size:.9rem;display:block}
+  .chart-tip .tl{color:var(--ink-soft);display:block}
+
+  /* draft & final */
+  .keyrow{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.74rem;color:var(--ink-soft);margin:0 0 10px}
+  .key{display:inline-flex;align-items:center;gap:5px}
+  .preview{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:16px;line-height:1.8;min-height:70px}
+  .preview .ph{color:var(--muted);font-style:italic}
+  .preview mark{color:var(--ink);background:color-mix(in srgb,var(--m) 22%,#fff);box-shadow:inset 0 -2px 0 var(--m);padding:1px 3px;border-radius:3px}
+  .tagline{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+  .tag{background:var(--limestone);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--ink-soft)}
+  .tag b{font-weight:600;color:var(--ink)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0;align-items:center}
+  .actions .count{margin-left:auto;font-size:.78rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .final{width:100%;min-height:140px;background:#fff;font-size:16px;line-height:1.6;resize:vertical;padding:12px 14px;border-radius:8px}
+  .checks{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .ck{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:2px 10px;font-size:.76rem}
+  .ck.done{background:var(--olive-lt);border-color:var(--olive);color:var(--olive-txt);font-weight:500}
+  .ck.done::before{content:"✓ "}
+  button.ck{cursor:pointer;font-family:var(--sans)}
+  button.ck:not(.done):hover{border-color:var(--orange);color:var(--orange-dk)}
+  .stale{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 0;font-size:14px;color:var(--amber-txt);background:var(--amber-lt);border:1px solid var(--amber);border-radius:8px;padding:6px 10px}
+  .field.flash{animation:flash 1.4s ease-out}
+  @keyframes flash{0%{background:var(--amber-lt)}100%{background:transparent}}
+  .prog{display:inline-flex;align-items:center;gap:8px}
+  .prog .bar{width:90px;height:6px;border-radius:3px;background:#e0dac9;overflow:hidden}
+  .prog .bar span{display:block;height:100%;background:var(--olive);border-radius:3px}
+
+  /* type chooser */
+  .types{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.types{grid-template-columns:1fr}}
+  .typecard{--a:var(--teal);--a-dk:var(--teal-dk);--a-lt:var(--teal-lt);text-align:left;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--a);
+    border-radius:9px;padding:20px 20px 18px;cursor:pointer;font:inherit;color:var(--ink);display:flex;flex-direction:column;gap:10px;
+    transition:transform .14s ease,box-shadow .14s ease}
+  .typecard.res{--a:var(--olive);--a-dk:var(--olive-dk);--a-lt:var(--olive-lt)}
+  .typecard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(24,60,28,.14)}
+  .typecard h3{font-size:19px}
+  .typecard .tk{display:flex;gap:8px;align-items:center;font-family:var(--serif);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--a-dk);font-weight:600}
+  .typecard p{margin:0;font-size:13.5px;color:var(--muted)}
+  .num.tdot{min-width:0;width:12px;height:12px;padding:0}
+  .num.tdot.future{box-shadow:inset 0 0 0 2px var(--a-dk)}
+
+  /* overview */
+  .ovgrid{display:grid;grid-template-columns:minmax(300px,440px) 1fr;gap:22px;align-items:start}
+  @media(max-width:980px){.ovgrid{grid-template-columns:1fr}}
+  .ovgrid .card{margin-bottom:0}
+  .card.accent-o{border-top:4px solid var(--orange)}
+  .card.accent-t{border-top:4px solid var(--teal)}
+  .card.accent-a{border-top:4px solid var(--amber)}
+  .table-wrap{overflow-x:auto;padding:6px 8px}
+  table.ratings{width:100%;min-width:820px;border-collapse:collapse;font-size:.8rem}
+  table.ratings th{text-align:left;font-family:var(--serif);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    font-weight:600;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:bottom}
+  table.ratings td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.ratings tr:last-child td{border-bottom:none}
+  table.ratings td.stmt{min-width:170px}
+  table.ratings td.stmt small{display:block;color:var(--ink-soft);font-size:.72rem}
+  table.ratings tbody tr{cursor:pointer}
+  table.ratings tbody tr:hover td{background:rgba(255,255,255,.7)}
+  .bandtag{display:inline-flex;align-items:baseline;gap:5px}
+  .bandtag i{flex:none;transform:translateY(1px)}
+  .bandtag i{width:.7rem;height:.7rem;border-radius:3px;display:inline-block}
+  .dash{color:var(--muted)}
+
+  .empty{padding:24px 24px 22px}
+  .empty .intro{margin-bottom:20px}
+  .empty .intro h2{font-size:23px}
+  .empty .intro p{color:var(--muted);font-size:15px;margin:.4rem 0 1rem}
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+  footer p{margin:0}
+  footer .credit{margin:8px 0 0}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:9px 10px 9px 15px;border-radius:8px;opacity:0;transform:translateY(6px);
+    transition:opacity .2s,transform .2s;pointer-events:none;font-size:.88rem;z-index:50;display:flex;gap:12px;align-items:center;max-width:calc(100vw - 40px)}
+  .toast.show{opacity:1;transform:none;pointer-events:auto}
+  .toast button{background:#f3c58f;color:var(--ink);border:0;border-radius:8px;padding:4px 10px;font:600 .82rem var(--sans);cursor:pointer}
+  .toast button:empty{display:none}
+  @media(max-width:600px){
+    body{padding:26px 17px 32px}
+    header{padding-top:14px}
+    h1{font-size:28px}
+    .how{padding:18px 18px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}.btn:hover,.typecard:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Inherent and Residual Impacts and Risks, Adaptation and Responses to Losses and Damages</h1>
+    <p class="lede">This tool helps you bring what you know about your heritage places and cultural practices together into clear, connected statements. It guides you from the hazards, exposure and vulnerability they face, to the impacts and risks that follow, and on to the adaptation and loss and damage responses that shape what remains, today and in the future.</p>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="how">
+      <h2>How to use this tool</h2>
+      <ul>
+        <li><strong>Explore a worked example.</strong> Pick one under <em>Worked example</em> and click <em>Add example</em> to see how a full set of statements fits together. Everything you do here stays in your own browser, so editing or deleting the examples won't change them for anyone else.</li>
+        <li><strong>Start your own statements.</strong> Click <em>+ New statement</em> and choose one of the four types. Use <em>Remove examples</em> or <em>Clear all</em> whenever you want a clean page.</li>
+        <li><strong>Fill in the fields.</strong> The draft statement builds as you type, colour-coded by element. When it reads well, click <em>Use as final statement</em> and put it in your own words.</li>
+        <li><strong>Rate impact intensity and likelihood</strong> to place each statement on the risk matrix, and link each response statement to the inherent risk it acts on.</li>
+        <li><strong>Your work stays in this browser.</strong> Use <em>Save progress</em> to keep a file, and <em>Export to Word</em> for your report.</li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+  <div class="controls">
+    <div class="picker"><label for="siteName">Site</label><input type="text" id="siteName" placeholder="Heritage place / site name"></div>
+    <div class="picker"><label for="exSel">Worked example</label>
+      <select id="exSel"><option value="kherlen">Kherlen River Basin — mobile pastoralism</option><option value="gardens">Sacred medicinal gardens</option></select>
+      <button class="btn amber" id="btnLoadEx">Add example</button>
+    </div>
+    <div class="filebtns">
+      <button class="btn" id="btnSaveJson">Save progress</button>
+      <button class="btn" id="btnLoadJson">Load progress</button>
+      <input type="file" id="fileInput" accept=".json" style="display:none">
+      <button class="btn teal" id="btnExportDoc">Export to Word</button>
+    </div>
+  </div>
+
+  <div class="tabs-head">
+    <span class="rlabel">Your statements</span>
+    <div class="tabs-tools" id="tabsTools"></div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+
+  <div id="editor"></div>
+  </main>
+
+  <footer>
+    Statements follow the Preserving Legacies Reporting Guidelines. Once you have downloaded this file, the tool works without an internet connection.
+    <p class="credit">Developed by <b>Salma Sabour</b> for the Preserving Legacies Activation Sites programme, with contributions from the wider team, including Khansa Bouaziz, Tina Paterno, Sarah Forgesson, Victoria Herrmann and many others.</p>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastBtn" type="button"></button></div>
+<div class="chart-tip" id="chartTip" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+
+/* Legend categories — match Reporting Guidelines statement elements */
+const CATS = {
+  attribute: { name: "Attribute", color: "var(--c-attribute)" },
+  value: { name: "Value", color: "var(--c-value)" },
+  hazard: { name: "Hazard", color: "var(--c-hazard)" },
+  exposure: { name: "Exposure", color: "var(--c-exposure)" },
+  vulnerability: { name: "Vulnerability", color: "var(--c-vulnerability)" },
+  impact: { name: "Impacts (description)", color: "var(--c-impact)" },
+  impactIntensity: { name: "Impact intensity", color: "var(--c-intensity)" },
+  likelihood: { name: "Likelihood (probability)", color: "var(--c-likelihood)" },
+  risk: { name: "Risk", color: "var(--c-risk)" },
+  confidence: { name: "Confidence level", color: "var(--c-confidence)" },
+  response: { name: "Response (adaptation, loss and damage)", color: "var(--c-response)" },
+  integrity: { name: "Integrity", color: "var(--c-integrity)" },
+  authenticity: { name: "Authenticity", color: "var(--c-authenticity)" },
+  pathway: { name: "Heritage pathway", color: "var(--c-pathway)" },
+  scenario: { name: "Scenario / timeframe", color: "var(--c-scenario)" }
+};
+
+const SCALE = {
+  magnitude: ["4 — Very high", "3 — High", "2 — Moderate", "1 — Low"],
+  likelihood: ["4 — Very likely", "3 — Likely", "2 — Unlikely", "1 — Very unlikely"],
+  confidence: ["4 — Very high", "3 — High", "2 — Moderate", "1 — Low"],
+  effectiveness: ["4 — Very high (very effective)", "3 — High (effective)", "2 — Moderate (moderately effective)", "1 — Low (somewhat effective)"],
+  integrity: ["Maintained", "At risk", "Compromised"]
+};
+
+const HAZARD_OPTS = [
+  "Extreme heat / heatwaves", "Mean warming / shifting seasons", "Cold spells / frost", "Winter extremes / dzud",
+  "Drought", "Aridity / drying", "Heavy precipitation / pluvial flooding", "River flooding", "Landslides / debris flows", "Fire weather / wildfires",
+  "Severe wind storms / tropical cyclones", "Sand and dust storms",
+  "Heavy snowfall / ice storms / hail", "Snow avalanches", "Glacier / ice sheet loss", "Permafrost thaw", "Lake, river or sea-ice loss",
+  "Relative sea level rise", "Coastal flooding / storm surge", "Coastal erosion",
+  "Marine heatwaves", "Ocean warming / deoxygenation", "Ocean acidification",
+  "Air pollution weather", "Biological / ecological (pests, pathogens, species shifts)", "Compound / cascading hazards", "Other"
+];
+const HAZARD_ALIASES = {
+  "Sea level rise": "Relative sea level rise", "Extreme heat/heatwaves": "Extreme heat / heatwaves",
+  "Droughts": "Drought", "Extreme rainfall/floods": "Heavy precipitation / pluvial flooding",
+  "Storms/tropical cyclones": "Severe wind storms / tropical cyclones", "Wildfires": "Fire weather / wildfires",
+  "Landslides": "Landslides / debris flows", "Biological": "Biological / ecological (pests, pathogens, species shifts)"
+};
+const PATHWAYS = [
+  "Protect", "Accommodate", "Revitalise", "Transform",
+  "Retreat or relocate", "Release", "Record and remember", "Acknowledge and carry loss forward"
+];
+/* Characterise adaptation / L&D actions (subset of the eight-theme framework) */
+const RISK_ACTED_ON = [
+  "Hazard or hazard pathway", "Exposure", "Vulnerability and adaptive capacity",
+  "Experienced or anticipated impacts", "Residual risk and losses and damages"
+];
+const RESPONSE_FUNCTION = [
+  "Anticipate and prepare", "Avoid or reduce risk", "Respond and cope",
+  "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"
+];
+const DEPTH_OF_CHANGE = ["Coping", "Incremental adaptation", "Transformational adaptation"];
+const HERITAGE_CONTINUITY = [
+  "Maintained in situ", "Adapted in situ", "Relocated", "Sustained through continued practice",
+  "Transmitted across generations", "Revitalised", "Transformed or reinterpreted",
+  "Recorded or documented", "Remembered or memorialised", "Released or allowed to change",
+  "Lost, disconnected or inaccessible"
+];
+const TIMING_HORIZON = ["Near term", "Medium term", "Long term", "Very long term", "Beyond 2100"];
+
+const TYPES = {
+  presentImpact: {
+    name: "Present Impacts & Inherent Risk",
+    short: "Present Impacts & Inherent Risk",
+    desc: "What is already happening to the attribute and the values it supports — before responses.",
+    fields: [
+      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
+      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
+      { key: "hazard", label: "Hazard", cat: "hazard", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "observers", label: "Who observes", cat: "hazard", kind: "text", sec: "Qualitative" },
+      { key: "impacts", label: "Present impacts (description)", cat: "impact", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "impactIntensity", label: "Present impact intensity", cat: "impactIntensity", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
+      { key: "likelihood", label: "Likelihood of (potential) impact", cat: "likelihood", kind: "select", sec: "Quantitative", opts: SCALE.likelihood },
+      { key: "riskLevel", label: "Inherent risk level", cat: "risk", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
+      { key: "riskOf", label: "Risk of…", cat: "risk", kind: "textarea", sec: "Quantitative", span: 2 },
+      { key: "confidence", label: "Confidence level", cat: "confidence", kind: "select", sec: "Quantitative", opts: SCALE.confidence },
+      { key: "evidenceBasis", label: "Basis for confidence", cat: "confidence", kind: "textarea", sec: "Quantitative", span: 2 },
+      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+    ],
+    checklist: [
+      ["attribute", "Attribute"], ["value", "Value(s)"], ["hazard", "Hazard"],
+      ["impacts", "Present impacts (description)"], ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
+      ["impactIntensity", "Impact intensity"], ["likelihood", "Likelihood"], ["riskLevel", "Risk"], ["confidence", "Confidence"]
+    ]
+  },
+  presentResidual: {
+    name: "Present Adaptation, Loss and Damage Responses & Residual Risk",
+    short: "Present Adaptation, Loss and Damage Responses & Residual Risk",
+    desc: "Current adaptation and responses to loss and damage, integrity and authenticity outcomes, pathways, and residual risk — including how the action is characterised.",
+    fields: [
+      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
+      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
+      { key: "who", label: "Who is responding", cat: "response", kind: "text", sec: "Responses" },
+      { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE },
+      { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2 },
+      { key: "lossDamageResponses", label: "Responses to residual risk and loss & damage", cat: "risk", kind: "textarea", sec: "Responses", span: 2 },
+      { key: "integrityOutcome", label: "Integrity outcome", cat: "integrity", kind: "textarea", sec: "Outcomes", hint: "Integrity is how whole and intact the attribute remains. Describe how the responses above, both adaptation and responses to loss and damage, affect it." },
+      { key: "authenticityOutcome", label: "Authenticity outcome", cat: "authenticity", kind: "textarea", sec: "Outcomes", hint: "Authenticity is whether the attribute still truly expresses its values, through its form, materials, use, practices and meaning. Describe how the responses above affect it." },
+      { key: "limits", label: "Limits & constraints", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2 },
+      { key: "residualRisk", label: "Residual risk and remaining losses", cat: "risk", kind: "textarea", sec: "Outcomes", span: 2 },
+      { key: "riskActedOn", label: "Risk and consequence acted on", cat: "risk", kind: "multi", tag: "Risk acted on", sec: "Characterise the action", span: 2, opts: RISK_ACTED_ON },
+      { key: "responseFunction", label: "Primary response function", cat: "response", kind: "multi", tag: "Response function", sec: "Characterise the action", span: 2, opts: RESPONSE_FUNCTION },
+      { key: "heritagePathways", label: "Strategic pathway direction", cat: "pathway", kind: "multi", tag: "Pathway", sec: "Characterise the action", span: 2, opts: PATHWAYS },
+      { key: "heritageContinuity", label: "Forms of heritage continuity", cat: "pathway", kind: "multi", tag: "Heritage continuity", sec: "Characterise the action", span: 2, opts: HERITAGE_CONTINUITY },
+      { key: "timeHorizon", label: "Time horizon", cat: "scenario", kind: "select", sec: "Characterise the action", opts: TIMING_HORIZON, hint: "How far ahead these responses are meant to work. Present statements describe today's climate, so there is no climate scenario (SSP) here; you choose one in the future statements." },
+      { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "presentImpact", hint: "The present impacts & inherent risk statement these responses act on. It is used to show how far the responses reduce risk." },
+      { key: "responseEffectiveness", label: "Response effectiveness", cat: "response", kind: "select", sec: "Ratings", opts: SCALE.effectiveness },
+      { key: "integrityRating", label: "Integrity rating", cat: "integrity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
+      { key: "authenticityRating", label: "Authenticity rating", cat: "authenticity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
+      { key: "residualLevel", label: "Residual risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude },
+      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+    ],
+    checklist: [
+      ["responses", "Adaptation responses"], ["lossDamageResponses", "Loss & damage / residual responses"],
+      ["integrityOutcome", "Integrity"], ["authenticityOutcome", "Authenticity"],
+      ["residualRisk", "Residual risk"], ["heritagePathways", "Pathway"], ["riskActedOn", "Risk acted on"], ["responseFunction", "Response function"]
+    ]
+  },
+  futureInherent: {
+    name: "Future Potential Impacts & Inherent Risk",
+    short: "Future Potential Impacts & Inherent Risk",
+    desc: "Future potential impacts and inherent risk before responses — for a chosen scenario and timeframe.",
+    fields: [
+      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
+      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
+      { key: "timeframe", label: "Timeframe", cat: "scenario", kind: "text", sec: "Scenario" },
+      { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: "Pick a climate scenario (SSP) from the list, or type your own." },
+      { key: "observers", label: "Who observes / knowledge source", cat: "scenario", kind: "text", sec: "Scenario" },
+      { key: "hazard", label: "Hazard", cat: "hazard", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "possibleOutcome", label: "What may happen to the attribute", cat: "impact", kind: "text", sec: "Qualitative", span: 2 },
+      { key: "impacts", label: "Future potential impacts (description)", cat: "impact", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "Qualitative", span: 2 },
+      { key: "intensityReason", label: "Why the impact would be this severe", cat: "impactIntensity", kind: "textarea", sec: "Qualitative", span: 2, hint: "Explain what makes the impact high or low for this attribute and its values. You can draw on climate projections, changes already observed, and community knowledge and feedback." },
+      { key: "likelihoodCondition", label: "Conditions that make the impact likely", cat: "likelihood", kind: "textarea", sec: "Qualitative", span: 2, hint: "Describe what would need to happen for the impact to occur. For example: droughts continue to lengthen and no new water-management measures are introduced." },
+      { key: "impactIntensity", label: "Future impact intensity", cat: "impactIntensity", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
+      { key: "likelihood", label: "Likelihood of (potential) impact", cat: "likelihood", kind: "select", sec: "Quantitative", opts: SCALE.likelihood },
+      { key: "riskLevel", label: "Inherent risk level", cat: "risk", kind: "select", sec: "Quantitative", opts: SCALE.magnitude },
+      { key: "riskOf", label: "Risk of…", cat: "risk", kind: "textarea", sec: "Quantitative", span: 2 },
+      { key: "confidence", label: "Confidence level", cat: "confidence", kind: "select", sec: "Quantitative", opts: SCALE.confidence },
+      { key: "evidenceBasis", label: "Basis for confidence", cat: "confidence", kind: "textarea", sec: "Quantitative", span: 2 },
+      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+    ],
+    checklist: [
+      ["attribute", "Attribute"], ["value", "Value(s)"], ["scenario", "Scenario"], ["timeframe", "Timeframe"],
+      ["hazard", "Hazard"], ["impacts", "Future potential impacts (description)"],
+      ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
+      ["impactIntensity", "Impact intensity"], ["likelihood", "Likelihood"], ["riskLevel", "Risk"], ["confidence", "Confidence"]
+    ]
+  },
+  futureResidual: {
+    name: "Future Adaptation, Loss and Damage Responses & Residual Risk",
+    short: "Future Adaptation, Loss and Damage Responses & Residual Risk",
+    desc: "Envisioned adaptation and responses to loss and damage for a scenario and timeframe — including integrity and authenticity outcomes, pathways, residual risk, and how the action is characterised.",
+    fields: [
+      { key: "attribute", label: "Attribute", cat: "attribute", kind: "text", sec: "Heritage" },
+      { key: "value", label: "Value(s)", cat: "value", kind: "text", sec: "Heritage" },
+      { key: "timeframe", label: "Timeframe", cat: "scenario", kind: "text", sec: "Scenario" },
+      { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: "Pick a climate scenario (SSP) from the list, or type your own." },
+      { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Scenario", opts: DEPTH_OF_CHANGE },
+      { key: "timeHorizon", label: "Time horizon", cat: "scenario", kind: "select", sec: "Scenario", opts: TIMING_HORIZON },
+      { key: "who", label: "Who envisions the responses", cat: "response", kind: "text", sec: "Responses" },
+      { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2 },
+      { key: "potential", label: "What the adaptation responses could achieve", cat: "response", kind: "textarea", sec: "Responses", span: 2 },
+      { key: "lossDamageResponses", label: "Responses to residual risk and loss & damage", cat: "risk", kind: "textarea", sec: "Responses", span: 2 },
+      { key: "integrityOutcome", label: "Integrity outcome", cat: "integrity", kind: "textarea", sec: "Outcomes", hint: "Integrity is how whole and intact the attribute remains. Describe how the responses above, both adaptation and responses to loss and damage, affect it." },
+      { key: "authenticityOutcome", label: "Authenticity outcome", cat: "authenticity", kind: "textarea", sec: "Outcomes", hint: "Authenticity is whether the attribute still truly expresses its values, through its form, materials, use, practices and meaning. Describe how the responses above affect it." },
+      { key: "limits", label: "Limits of adaptation", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2 },
+      { key: "residualRisk", label: "Residual risk and remaining losses", cat: "risk", kind: "textarea", sec: "Outcomes", span: 2 },
+      { key: "residualImpacts", label: "Residual impacts (losses & damages)", cat: "impact", kind: "textarea", sec: "Outcomes", span: 2 },
+      { key: "riskActedOn", label: "Risk and consequence acted on", cat: "risk", kind: "multi", tag: "Risk acted on", sec: "Characterise the action", span: 2, opts: RISK_ACTED_ON },
+      { key: "responseFunction", label: "Primary response function", cat: "response", kind: "multi", tag: "Response function", sec: "Characterise the action", span: 2, opts: RESPONSE_FUNCTION },
+      { key: "heritagePathways", label: "Strategic pathway direction", cat: "pathway", kind: "multi", tag: "Pathway", sec: "Characterise the action", span: 2, opts: PATHWAYS },
+      { key: "heritageContinuity", label: "Forms of heritage continuity", cat: "pathway", kind: "multi", tag: "Heritage continuity", sec: "Characterise the action", span: 2, opts: HERITAGE_CONTINUITY },
+      { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "futureInherent", hint: "The future potential impacts & inherent risk statement these responses act on. It is used to show how far the responses reduce risk." },
+      { key: "responseEffectiveness", label: "Response effectiveness", cat: "response", kind: "select", sec: "Ratings", opts: SCALE.effectiveness },
+      { key: "integrityRating", label: "Integrity rating", cat: "integrity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
+      { key: "authenticityRating", label: "Authenticity rating", cat: "authenticity", kind: "select", sec: "Ratings", opts: SCALE.integrity },
+      { key: "residualLevel", label: "Residual risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude },
+      { key: "confidence", label: "Confidence level", cat: "confidence", kind: "select", sec: "Ratings", opts: SCALE.confidence },
+      { key: "evidenceBasis", label: "Basis for confidence", cat: "confidence", kind: "textarea", sec: "Ratings", span: 2 },
+      { key: "hazardTypes", label: "Climate hazard type(s)", cat: "hazard", kind: "multi", tag: "Hazard type(s)", sec: "Hazard tags", span: 2, opts: HAZARD_OPTS }
+    ],
+    checklist: [
+      ["responses", "Adaptation responses"], ["lossDamageResponses", "Loss & damage / residual responses"],
+      ["integrityOutcome", "Integrity"], ["authenticityOutcome", "Authenticity"],
+      ["residualRisk", "Residual risk"], ["heritagePathways", "Pathway"], ["riskActedOn", "Risk acted on"], ["responseFunction", "Response function"], ["confidence", "Confidence"]
+    ]
+  }
+};
+
+/* ---------- scales & risk ---------- */
+function scaleNumeric(val) {
+  if (!val || !String(val).trim()) return null;
+  const s = String(val).trim();
+  const m = s.match(/^(\d+)/);
+  if (m) return +m[1];
+  const v = s.toLowerCase();
+  const exact = {
+    low: 1, unlikely: 1, "very unlikely": 1, reduced: 2,
+    moderate: 2, medium: 2, possible: 2, likely: 2,
+    "moderate to high": 2.5, "likely to highly likely": 2.5, "medium to high": 2.5,
+    high: 3, "highly likely": 3, "very likely": 3,
+    "very high": 4, "almost certain": 4
+  };
+  if (exact[v] != null) return exact[v];
+  if (/very high|almost certain|highly likely/.test(v)) return 3;
+  if (/\bhigh\b/.test(v)) return 3;
+  if (/moderate|medium|likely/.test(v)) return 2;
+  if (/low|unlikely/.test(v)) return 1;
+  return null;
+}
+function riskBandFromProduct(p) {
+  if (p >= 12) return "very high";
+  if (p >= 8) return "high";
+  if (p >= 4) return "moderate";
+  return "low";
+}
+function riskBandLabel(p) {
+  const b = riskBandFromProduct(p);
+  return { 4: "4 — Very high", 3: "3 — High", 2: "2 — Moderate", 1: "1 — Low" }[
+    { "very high": 4, high: 3, moderate: 2, low: 1 }[b]
+  ];
+}
+function suggestRiskLevel(intensity, likelihood) {
+  const i = scaleNumeric(intensity), l = scaleNumeric(likelihood);
+  if (i == null || l == null) return null;
+  return riskBandLabel(i * l);
+}
+function normalizeScaleValue(val, kind) {
+  if (!val || !String(val).trim()) return val;
+  const s = String(val).trim();
+  if (/^\d\s*—/.test(s)) return s;
+  const n = scaleNumeric(s);
+  if (n == null) return val;
+  const r = Math.min(4, Math.max(1, Math.round(n)));
+  const arr = kind === "likelihood" ? SCALE.likelihood : kind === "confidence" ? SCALE.confidence : kind === "effectiveness" ? SCALE.effectiveness : SCALE.magnitude;
+  return arr[4 - r];
+}
+function migrateHazardTypes(arr) {
+  if (!Array.isArray(arr)) return arr;
+  const out = [];
+  arr.forEach(h => { const m = HAZARD_ALIASES[h] || h; if (!out.includes(m)) out.push(m); });
+  return out;
+}
+function migrateData(d, type) {
+  const out = { ...(d || {}) };
+  if (out.hazardTrend && !out.hazard) out.hazard = out.hazardTrend;
+  if (out.hazardCondition && !out.likelihoodCondition) out.likelihoodCondition = out.hazardCondition;
+  if (out.missingMeasures && out.likelihoodCondition && !String(out.likelihoodCondition).includes(out.missingMeasures))
+    out.likelihoodCondition = (out.likelihoodCondition + " and no " + out.missingMeasures + " are introduced").trim();
+  else if (out.missingMeasures && !out.likelihoodCondition)
+    out.likelihoodCondition = "no " + out.missingMeasures + " are introduced";
+  if (out.observedImpacts && !out.impacts) out.impacts = out.observedImpacts;
+  if (out.expectedImpacts && !out.impacts) out.impacts = out.expectedImpacts;
+  if (out.currentSignals && out.impacts && !String(out.impacts).includes(out.currentSignals))
+    out.impacts = out.currentSignals + " " + out.impacts;
+  else if (out.currentSignals && !out.impacts) out.impacts = out.currentSignals;
+  if (out.valuesThreatened && out.impacts && !String(out.impacts).includes(out.valuesThreatened))
+    out.impacts = out.impacts + " These disruptions threaten " + out.valuesThreatened + ".";
+  else if (out.impactsOnValues && out.impacts && !String(out.impacts).includes(out.impactsOnValues))
+    out.impacts = out.impacts + " These disruptions threaten " + out.impactsOnValues + ".";
+  if (out.vulnFactors && !out.vulnerability) out.vulnerability = out.vulnFactors;
+  if (out.impactLikelihood && !out.likelihood) out.likelihood = out.impactLikelihood;
+  if (out.measures && !out.responses) out.responses = out.measures;
+  if (out.adaptationMode === "Transition") out.adaptationMode = "Incremental adaptation";
+  if (out.adaptationMode === "Transforming") out.adaptationMode = "Transformational adaptation";
+  if (out.adaptationMode === "Coping") out.adaptationMode = "Coping";
+  // map old heritage pathway labels
+  if (Array.isArray(out.heritagePathways)) {
+    const pathMap = {
+      "Protect & Maintain": "Protect", "Accommodate & Adjust": "Accommodate",
+      "Revitalise & Regenerate": "Revitalise", "Transform": "Transform",
+      "Retreat & Relocate": "Retreat or relocate", "Curate & Reframe Loss": "Acknowledge and carry loss forward"
+    };
+    out.heritagePathways = out.heritagePathways.map(p => pathMap[p] || p);
+  }
+  if (Array.isArray(out.hazardTypes)) out.hazardTypes = migrateHazardTypes(out.hazardTypes);
+  const kinds = {
+    impactIntensity: "magnitude", likelihood: "likelihood", riskLevel: "magnitude", confidence: "confidence",
+    residualLevel: "magnitude", responseEffectiveness: "effectiveness"
+  };
+  Object.entries(kinds).forEach(([k, kind]) => { if (out[k]) out[k] = normalizeScaleValue(out[k], kind); });
+  return out;
+}
+function uid() { return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function migrateStatements(stmts) {
+  const seen = new Set();
+  return stmts.map(s => {
+    let id = s.id && !seen.has(s.id) ? s.id : uid();
+    seen.add(id);
+    s = { ...s, id };
+    let type = s.type;
+    let d = { ...(s.data || {}) };
+    if (type === "futureExploratory") type = "futureInherent";
+    if (type === "adaptationOutcome") {
+      const future = /incremental|transform/i.test(d.adaptationMode || "") || d.adaptationMode === "Transition" || d.adaptationMode === "Transforming" ||
+        (d.timeframe && String(d.timeframe).toLowerCase() !== "present");
+      type = future ? "futureResidual" : "presentResidual";
+      if (d.measures && !d.responses) d.responses = d.measures;
+    }
+    return { ...s, type, data: migrateData(d, type) };
+  });
+}
+
+/* ---------- draft templates (assemble like the gardens example) ---------- */
+function buildDraft(type, d, f) {
+  const S = [];
+  const has = k => { const v = d[k]; return Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim()); };
+
+  if (type === "presentImpact") {
+    if (has("hazard")) S.push(`${has("observers") ? f("observers") : "Community members"} report ${f("hazard")}${has("attribute") ? " affecting " + f("attribute") : ""}.`);
+    if (has("impacts")) S.push(`${f("impacts")}.`);
+    if (has("exposure")) S.push(`${has("attribute") ? f("attribute") + " are" : "They are"} ${f("exposure")}, making ${has("attribute") ? "them" : "it"} highly exposed.`);
+    if (has("vulnerability")) S.push(`${f("vulnerability")} illustrate the vulnerability of ${has("attribute") ? f("attribute") : "the attribute"}.`);
+    if (has("impactIntensity")) S.push(`Present impact intensity is rated ${f("impactIntensity")}.`);
+    if (has("likelihood")) S.push(`The likelihood of these impacts is rated ${f("likelihood")}.`);
+    if (has("impactIntensity") && has("likelihood")) {
+      const prod = scaleNumeric(d.impactIntensity) * scaleNumeric(d.likelihood);
+      const lvl = has("riskLevel") ? f("riskLevel") : riskBandLabel(prod);
+      S.push(`There is ${lvl} inherent risk${has("riskOf") ? " of " + f("riskOf") : ""}${has("value") ? ", placing " + f("value") + " at stake" : ""}.`);
+    } else if (has("riskOf") || has("riskLevel")) {
+      S.push(`There is a ${has("riskLevel") ? f("riskLevel") + " " : ""}risk${has("riskOf") ? " of " + f("riskOf") : ""}.`);
+    }
+    if (has("confidence")) S.push(`Confidence in this assessment is rated ${f("confidence")}${has("evidenceBasis") ? ", supported by " + f("evidenceBasis") : ""}.`);
+  }
+
+  if (type === "futureInherent") {
+    if (has("hazard")) {
+      S.push(`If ${f("hazard")}${has("timeframe") ? " " + f("timeframe") : ""}${has("observers") ? ", as " + f("observers") + " have begun to observe" : ""}, ${has("attribute") ? f("attribute") : "this attribute"}${has("possibleOutcome") ? " may " + f("possibleOutcome") : " may be deeply affected"}.`);
+    }
+    if (has("impacts")) S.push(`${f("impacts")}.`);
+    if (has("exposure")) S.push(`${has("attribute") ? f("attribute") + " are" : "The attribute is"} ${f("exposure")}, making ${has("attribute") ? "them" : "it"} highly exposed to changing climate patterns.`);
+    if (has("vulnerability")) S.push(`${f("vulnerability")} illustrate the high vulnerability of ${has("attribute") ? f("attribute") : "the attribute"}.`);
+    if (has("impactIntensity")) {
+      S.push(`The potential impacts are expected to be ${f("impactIntensity").replace(/^\d\s*—\s*/, "").toLowerCase()}${has("intensityReason") ? " because " + f("intensityReason") : ""}.`);
+    }
+    if (has("likelihood")) {
+      S.push(`The impacts are considered ${f("likelihood").replace(/^\d\s*—\s*/, "").toLowerCase()}${has("likelihoodCondition") ? " if " + f("likelihoodCondition") : ""}${has("scenario") ? " under " + f("scenario") : ""}.`);
+    }
+    if (has("impactIntensity") && has("likelihood")) {
+      const prod = scaleNumeric(d.impactIntensity) * scaleNumeric(d.likelihood);
+      const lvl = has("riskLevel") ? f("riskLevel") : riskBandLabel(prod);
+      S.push(`There is a ${lvl} risk${has("riskOf") ? " of " + f("riskOf") : ""}.`);
+    } else if (has("riskLevel") || has("riskOf")) {
+      S.push(`There is a ${has("riskLevel") ? f("riskLevel") + " " : ""}risk${has("riskOf") ? " of " + f("riskOf") : ""}.`);
+    }
+    if (has("confidence")) S.push(`There is ${f("confidence").replace(/^\d\s*—\s*/, "").toLowerCase()} confidence in this risk assessment${has("evidenceBasis") ? ". The assessment is supported by " + f("evidenceBasis") : ""}.`);
+  }
+
+  if (type === "presentResidual" || type === "futureResidual") {
+    const mode = (d.adaptationMode || "").trim();
+    const paths = Array.isArray(d.heritagePathways) && d.heritagePathways.length ? d.heritagePathways.join(" / ") : "";
+    if (type === "futureResidual" && has("responses")) {
+      const transformative = /transform/i.test(mode);
+      const intro = transformative
+        ? `${has("timeframe") ? "By " + String(d.timeframe).replace(/^by\s+/i, "") + ", under" : "Under"}${has("scenario") ? " " + f("scenario") + " conditions," : ""} adaptation has transformed`
+        : `${has("timeframe") ? f("timeframe") + ", the community has" : "The community has"} implemented adaptations`;
+      S.push(`${intro}${has("who") ? " envisioned by " + f("who") : ""}, including ${f("responses")}${has("potential") ? ", which could " + f("potential") : ""}.`);
+    } else if (has("responses")) {
+      S.push(`In response, ${has("who") ? f("who") : "the community"} have begun ${f("responses")}.`);
+    }
+    if (has("lossDamageResponses")) S.push(`Responses to residual risk and loss and damage include ${f("lossDamageResponses")}.`);
+    if (has("responseEffectiveness")) S.push(`Response effectiveness is rated ${f("responseEffectiveness")}.`);
+    if (has("attribute") && (has("integrityOutcome") || has("integrityRating") || has("authenticityOutcome") || has("authenticityRating"))) {
+      S.push(`These measures support ${f("attribute")}${has("value") ? " and " + f("value") : ""}${has("integrityRating") ? "; integrity is " + f("integrityRating").toLowerCase() : ""}${has("integrityOutcome") ? " (" + f("integrityOutcome") + ")" : ""}${has("authenticityRating") ? "; authenticity is " + f("authenticityRating").toLowerCase() : ""}${has("authenticityOutcome") ? " (" + f("authenticityOutcome") + ")" : ""}.`);
+    }
+    if (has("limits")) S.push(`However, ${f("limits")}.`);
+    if (has("residualRisk") || has("residualLevel")) {
+      const pathNote = paths ? `, reflecting ${paths} pathways` : "";
+      S.push(`Residual risk remains ${has("residualLevel") ? f("residualLevel") : "present"}${has("residualRisk") ? " — " + f("residualRisk") : ""}${pathNote}.`);
+    }
+    if (has("residualImpacts")) S.push(`The residual impacts include ${f("residualImpacts")}.`);
+    if (has("confidence")) S.push(`This assessment is made with ${f("confidence")} confidence${has("evidenceBasis") ? ", based on " + f("evidenceBasis") : ""}.`);
+  }
+  return S;
+}
+
+/* ---------- examples (4 statements each) ---------- */
+const GARDENS_EXAMPLE = {
+  siteName: "Worked example — Sacred medicinal gardens",
+  statements: [
+    {
+      type: "presentImpact",
+      label: "Sacred gardens — present impacts & inherent risk",
+      data: {
+        attribute: "the sacred medicinal gardens",
+        value: "cultural identity, spiritual well-being, and intergenerational continuity",
+        observers: "Elders",
+        hazard: "longer and more irregular droughts",
+        impacts: "Several key plants now bloom less often, making traditional remedies harder to prepare and raising concern about the availability of culturally important species. These changes threaten healing rituals, spiritual practices, and the passing down of ecological knowledge",
+        exposure: "located on shallow, unirrigated soils and depend entirely on rainfall",
+        vulnerability: "The absence of water infrastructure and the community's cultural dependence on specific medicinal plants",
+        impactIntensity: "3 — High",
+        likelihood: "3 — Likely",
+        riskLevel: "3 — High",
+        riskOf: "loss of critical medicinal species and disruption of healing rituals and knowledge transmission",
+        confidence: "3 — High",
+        hazardTypes: ["Drought", "Aridity / drying", "Extreme heat / heatwaves", "Mean warming / shifting seasons"]
+      },
+      final: ""
+    },
+    {
+      type: "presentResidual",
+      label: "Sacred gardens — present adaptation, loss and damage responses & residual risk",
+      data: {
+        attribute: "the sacred medicinal gardens",
+        value: "cultural identity, spiritual well-being, and intergenerational continuity",
+        adaptationMode: "Coping",
+        who: "Elders",
+        responses: "adjusting planting and harvesting schedules and increasing monitoring of plant behaviour",
+        lossDamageResponses: "documenting plants that no longer bloom reliably, sharing remedy knowledge across households, and providing mutual support when ceremonial preparations fail",
+        integrityOutcome: "maintaining key elements of integrity (gardens with native plant species)",
+        authenticityOutcome: "upholding the authenticity of ritual practice and ecological knowledge",
+        limits: "because the gardens still depend on rainfall and shallow soils, integrity is under growing pressure and authenticity of traditional remedy preparation is becoming strained",
+        residualRisk: "ecological loss, irregular blooming, and cultural disconnection that coping measures cannot fully avert",
+        residualLevel: "2 — Moderate",
+        integrityRating: "Maintained",
+        authenticityRating: "At risk",
+        responseEffectiveness: "2 — Moderate (moderately effective)",
+        riskActedOn: ["Vulnerability and adaptive capacity", "Experienced or anticipated impacts", "Residual risk and losses and damages"],
+        responseFunction: ["Anticipate and prepare", "Respond and cope", "Address enduring or unavoidable loss and damage"],
+        heritagePathways: ["Protect", "Accommodate"],
+        heritageContinuity: ["Adapted in situ", "Sustained through continued practice", "Transmitted across generations", "Recorded or documented"],
+        timeHorizon: "Near term",
+        hazardTypes: ["Drought", "Aridity / drying", "Extreme heat / heatwaves"]
+      },
+      final: ""
+    },
+    {
+      type: "futureInherent",
+      label: "Sacred gardens — future potential impacts & inherent risk by 2060",
+      data: {
+        attribute: "our sacred medicinal gardens",
+        value: "cultural identity, spiritual well-being, and intergenerational continuity",
+        timeframe: "by 2060",
+        scenario: "SSP2-4.5",
+        observers: "elders",
+        hazard: "droughts continue to lengthen",
+        possibleOutcome: "begin to dry up entirely",
+        impacts: "Some plants are already blooming less frequently, making traditional remedies harder to prepare and raising concern about the future availability of critical species. Continued drought and rainfall irregularity could reduce plant growth, flowering, and survival, leading to the decline or possible loss of critical medicinal species and limiting the preparation of traditional remedies. These disruptions threaten healing rituals, spiritual practices, and the passing down of ecological knowledge — practices that sustain identity, cultural continuity, and spiritual well-being",
+        exposure: "located in shallow soils without irrigation and are fully dependent on rainfall; elders note increasing irregularities in plant growth cycles, pointing to climate-induced disruption",
+        vulnerability: "The lack of formal water infrastructure and the strong cultural dependence on specific species for ceremonies",
+        intensityReason: "they could affect both the physical survival of medicinal species and the continuation of cultural, spiritual, and knowledge practices associated with them",
+        likelihoodCondition: "droughts continue to lengthen and no additional water-management or adaptation measures are introduced",
+        impactIntensity: "3 — High",
+        likelihood: "3 — Likely",
+        riskLevel: "3 — High",
+        riskOf: "losing critical medicinal plant species, disrupting associated cultural and spiritual practices, and creating disconnection between younger generations, ancestral knowledge, and the sacred gardens",
+        confidence: "3 — High",
+        evidenceBasis: "the alignment between scientific climate projections, observed local trends, ancestral knowledge, and Indigenous observations of plant behaviour and landscape change",
+        hazardTypes: ["Drought", "Aridity / drying", "Extreme heat / heatwaves", "Mean warming / shifting seasons"]
+      },
+      final: ""
+    },
+    {
+      type: "futureResidual",
+      label: "Sacred gardens — future adaptation, loss and damage responses & residual risk by 2060",
+      data: {
+        attribute: "the sacred medicinal gardens",
+        value: "belonging, resilience and well-being",
+        timeframe: "By 2060",
+        scenario: "SSP2-4.5",
+        adaptationMode: "Incremental adaptation",
+        timeHorizon: "Medium term",
+        who: "the community and stakeholders",
+        responses: "water-harvesting infrastructure, seed-banks for key species and modified ritual calendars",
+        potential: "preserve garden function for ritual use while securing a larger share of the original species assemblage",
+        lossDamageResponses: "recording species already lost, co-creating remembrance practices for plants that cannot be restored, and revitalising remedy knowledge with substituted or banked species",
+        integrityOutcome: "integrity maintained in a modified, rather than original, form",
+        authenticityOutcome: "material culture, knowledge and practice systems continue to align with cultural identity and healing traditions, even as timing and species composition evolve",
+        limits: "the ecosystem is altered and practices have shifted, so authenticity is clearly evolving; some original species may not return",
+        residualRisk: "degradation under persistent aridity and extreme heat, and non-economic losses to species-specific ritual meaning",
+        residualImpacts: "continued loss of plant diversity, irregular blooming, and reduced availability of some key ceremonial species",
+        residualLevel: "2 — Moderate",
+        integrityRating: "At risk",
+        authenticityRating: "At risk",
+        responseEffectiveness: "3 — High (effective)",
+        riskActedOn: ["Hazard or hazard pathway", "Exposure", "Vulnerability and adaptive capacity", "Residual risk and losses and damages"],
+        responseFunction: ["Anticipate and prepare", "Avoid or reduce risk", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
+        heritagePathways: ["Accommodate", "Revitalise", "Acknowledge and carry loss forward"],
+        heritageContinuity: ["Adapted in situ", "Revitalised", "Transformed or reinterpreted", "Recorded or documented", "Remembered or memorialised"],
+        confidence: "3 — High",
+        hazardTypes: ["Drought", "Aridity / drying", "Extreme heat / heatwaves"]
+      },
+      final: ""
+    }
+  ]
+};
+
+const EXAMPLE = {
+  siteName: "Worked example — Kherlen River Basin (mobile pastoral culture)",
+  statements: [
+    {
+      type: "presentImpact",
+      label: "Mobile pastoralism — present impacts & inherent risk",
+      data: {
+        attribute: "mobile pastoralism — the seasonal herd movements across pasturelands and water sources practised by around 170,000 herders",
+        value: "livelihoods, cultural identity, and continuity of mobile pastoral culture",
+        observers: "Herders and local authorities",
+        hazard: "more frequent and compound dzud events, recurring drought, and increasingly uneven seasonal rainfall",
+        impacts: "In the winter and spring of 2023–2024, roughly 90% of the basin experienced dzud conditions and approximately three million head of livestock were lost, undermining the economic and livelihood foundations of many herder households. These changes threaten herding livelihoods, seasonal mobility traditions, and the transmission of pastoral knowledge to younger generations",
+        exposure: "dependent directly on open pasturelands, natural water sources, and the freedom to move herds seasonally across the steppe",
+        vulnerability: "Livestock numbers exceeding pasture carrying capacity, limited financial capacity to absorb dzud losses, and water and vegetation decline linked to mining",
+        impactIntensity: "4 — Very high",
+        likelihood: "4 — Very likely",
+        riskLevel: "4 — Very high",
+        riskOf: "disruption to mobile herding livelihoods and seasonal mobility traditions",
+        confidence: "3 — High",
+        hazardTypes: ["Extreme heat / heatwaves", "Drought", "Winter extremes / dzud", "Compound / cascading hazards"]
+      },
+      final: ""
+    },
+    {
+      type: "presentResidual",
+      label: "Mobile pastoralism — present adaptation, loss and damage responses & residual risk",
+      data: {
+        attribute: "mobile pastoralism",
+        value: "livelihoods, cultural identity, and continuity of mobile pastoral culture",
+        adaptationMode: "Coping",
+        who: "herders and local government",
+        responses: "organising seasonal mobility flexibly, rotating pasture and water sources, adjusting herd size and composition, supporting one another during dzud, and providing government assistance and early-warning information",
+        lossDamageResponses: "mutual herder solidarity after livestock loss, emergency feed and cash support, and oral recording of migration routes that can no longer be used in dry years",
+        integrityOutcome: "seasonal mobility and herding livelihoods still function, though under strain",
+        authenticityOutcome: "pastoral knowledge and mobility practices continue, but are increasingly reactive",
+        limits: "these measures remain largely reactive rather than preventive, and integrated planning that also encompasses cultural heritage is still insufficient",
+        residualRisk: "livestock losses, livelihood instability, and gradual erosion of mobile cultural practices",
+        residualLevel: "3 — High",
+        integrityRating: "At risk",
+        authenticityRating: "At risk",
+        responseEffectiveness: "2 — Moderate (moderately effective)",
+        riskActedOn: ["Vulnerability and adaptive capacity", "Experienced or anticipated impacts", "Residual risk and losses and damages"],
+        responseFunction: ["Anticipate and prepare", "Respond and cope", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
+        heritagePathways: ["Protect", "Accommodate"],
+        heritageContinuity: ["Sustained through continued practice", "Transmitted across generations", "Adapted in situ", "Recorded or documented"],
+        timeHorizon: "Near term",
+        hazardTypes: ["Drought", "Winter extremes / dzud", "Compound / cascading hazards"]
+      },
+      final: ""
+    },
+    {
+      type: "futureInherent",
+      label: "Mobile pastoralism — future potential impacts & inherent risk 2080–2100",
+      data: {
+        attribute: "mobile pastoralism and traditional herding",
+        value: "livelihoods, mobile cultural identity, intergenerational knowledge",
+        timeframe: "By 2080–2100",
+        scenario: "high-emissions SSP5-8.5",
+        observers: "herders and meteorological records",
+        hazard: "warming, uneven seasonal rainfall, and sequential drought–dzud cycles become more regular",
+        possibleOutcome: "reach existential-level risk",
+        impacts: "The 2023–2024 dzud, and the 2024 flood when the Kherlen exceeded its danger threshold by 14 cm, already show how compounding hazards strain herding households. Projected continued sharp warming, longer heatwaves, more uneven precipitation, and more frequent compound dzud and drought events will likely lead to sustained pasture degradation, water scarcity, and weakened ecosystem recovery capacity, with herd losses, shrinking usable pasture, and forced reductions in mobility. These disruptions threaten herding livelihoods, seasonal rituals and festivals tied to the pastoral calendar, and accelerate youth migration away from herding life",
+        exposure: "wholly dependent on open pasture, natural water sources, and the freedom to move herds seasonally",
+        vulnerability: "Pasture carrying capacity already being exceeded, limited financial buffers, monitoring gaps, and growing pressure from mining and land-use change",
+        intensityReason: "they could affect both the physical survival of herding livelihoods and the continuation of mobile cultural identity and knowledge transmission",
+        likelihoodCondition: "compound dzud and drought events continue to intensify and no preventive dzud planning, pasture and water management, and feed reserve systems are introduced",
+        impactIntensity: "4 — Very high",
+        likelihood: "3 — Likely",
+        riskLevel: "4 — Very high",
+        riskOf: "existential disruption to mobile pastoral culture",
+        confidence: "3 — High",
+        evidenceBasis: "the convergence of CMIP6 scenario projections with herders' observations and recent dzud and flood events",
+        hazardTypes: ["Extreme heat / heatwaves", "Drought", "Winter extremes / dzud", "River flooding", "Compound / cascading hazards"]
+      },
+      final: ""
+    },
+    {
+      type: "futureResidual",
+      label: "Mobile pastoralism — future adaptation, loss and damage responses & residual risk 2080–2100",
+      data: {
+        attribute: "mobile herding systems",
+        value: "livelihoods, mobile cultural identity, intergenerational knowledge",
+        timeframe: "By 2080–2100",
+        scenario: "high-emissions SSP5-8.5",
+        adaptationMode: "Incremental adaptation",
+        timeHorizon: "Long term",
+        who: "herders, local government, and basin stakeholders",
+        responses: "preventive pasture and water management, feed and hay reserves, livestock quality-over-quantity policies, early-warning systems, and protection of seasonal mobility corridors",
+        potential: "reduce livestock losses, keep seasonal mobility viable, and sustain herding livelihoods for many households",
+        lossDamageResponses: "documenting and teaching traditional mobility knowledge that may no longer be practicable on every route, community memorialisation of lost herds, psychosocial support after dzud, and revitalising pastoral festivals in adapted form",
+        integrityOutcome: "herding systems continue in adapted form",
+        authenticityOutcome: "mobility traditions evolve under pressure but remain culturally meaningful",
+        limits: "unlikely to fully offset sudden extreme events, uncertainty in climate trajectories, and financial and institutional constraints",
+        residualRisk: "periodic livestock losses and continued pressure on mobile cultural practices",
+        residualImpacts: "episodic dzud losses, reduced pasture productivity in dry years, and gradual changes in migration patterns",
+        residualLevel: "2 — Moderate",
+        integrityRating: "At risk",
+        authenticityRating: "At risk",
+        responseEffectiveness: "3 — High (effective)",
+        riskActedOn: ["Exposure", "Vulnerability and adaptive capacity", "Residual risk and losses and damages"],
+        responseFunction: ["Anticipate and prepare", "Avoid or reduce risk", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
+        heritagePathways: ["Accommodate", "Revitalise", "Transform", "Acknowledge and carry loss forward"],
+        heritageContinuity: ["Adapted in situ", "Sustained through continued practice", "Transmitted across generations", "Revitalised", "Recorded or documented", "Remembered or memorialised"],
+        confidence: "2 — Moderate",
+        evidenceBasis: "scenario modelling, dzud risk assessments, and the documented effectiveness of traditional coping practices",
+        hazardTypes: ["Extreme heat / heatwaves", "Drought", "River flooding", "Fire weather / wildfires", "Winter extremes / dzud", "Compound / cascading hazards"]
+      },
+      final: ""
+    }
+  ]
+};
+
+/* ---------- state & UI ---------- */
+let state = { siteName: "", statements: [], current: -1, view: "editor" };
+const STORE_KEY = "pl-impacts-risks-responses-statements";
+const LEGACY_KEYS = ["pl-risk-statements-v3", "pl-risk-statements"];
+function newStatement(type) {
+  return { id: uid(), type: type || "presentImpact", label: "", data: {}, final: "" };
+}
+function persist() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+function restore() {
+  try {
+    let raw = localStorage.getItem(STORE_KEY);
+    /* carry over work saved by earlier versions of the builder in this browser */
+    for (let i = 0; !raw && i < LEGACY_KEYS.length; i++) raw = localStorage.getItem(LEGACY_KEYS[i]);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s && Array.isArray(s.statements)) {
+        s.statements = migrateStatements(s.statements);
+        if (s.current == null || s.current >= s.statements.length) s.current = s.statements.length ? 0 : -1;
+        s.view = s.view === "overview" ? "overview" : "editor";
+        state = s;
+      }
+    }
+  } catch (e) {}
+}
+
+const $ = id => document.getElementById(id);
+function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+/* ---------- risk helpers (1–4 scales; inherent risk = impact intensity × likelihood, out of 16) ---------- */
+const BAND_NAMES = { 1: "Low", 2: "Moderate", 3: "High", 4: "Very high" };
+const BAND_RANGE = { 1: "1–3", 2: "4–6", 3: "8–9", 4: "12–16" };
+const BAND_VAR = n => `var(--band-${n})`;
+const BAND_HEX = { 1: "#e99677", 2: "#dd6738", 3: "#b94610", 4: "#8c3001" }; /* Word export has no CSS variables */
+const BAND_INK = { 1: "#183C1C", 2: "#183C1C", 3: "#ffffff", 4: "#ffffff" };
+const BAND_STATUS = { 1: "green", 2: "amber", 3: "red", 4: "red" };
+const Y_TICKS = { 4: "Very high", 3: "High", 2: "Moderate", 1: "Low" };
+const X_TICKS = { 1: "Very unlikely", 2: "Unlikely", 3: "Likely", 4: "Very likely" };
+const SSP_OPTIONS = ["SSP1-2.6 (low emissions)", "SSP2-4.5 (intermediate emissions)", "SSP3-7.0 (high emissions)", "SSP5-8.5 (very high emissions)"];
+const TYPE_TAB = { presentImpact: "Present · inherent", presentResidual: "Present · residual", futureInherent: "Future · inherent", futureResidual: "Future · residual" };
+const SEC_COLOR = {
+  "Heritage": "var(--amber)", "Scenario": "var(--teal-dk)", "Qualitative": "var(--teal)", "Quantitative": "var(--orange)",
+  "Responses": "var(--olive)", "Outcomes": "var(--olive-dk)", "Characterise the action": "var(--teal-dk)", "Ratings": "var(--orange)", "Hazard tags": "var(--orange-dk)"
+};
+const EXAMPLES = { kherlen: () => EXAMPLE, gardens: () => GARDENS_EXAMPLE };
+function bandNum(p) { return p >= 12 ? 4 : p >= 8 ? 3 : p >= 4 ? 2 : 1; }
+function lvl(v) { const n = scaleNumeric(v); return n == null ? null : Math.min(4, Math.max(1, Math.round(n))); }
+function lvlLabel(n) { return n ? `${n} — ${BAND_NAMES[n]}` : ""; }
+const isInherent = t => t === "presentImpact" || t === "futureInherent";
+const isResidual = t => t === "presentResidual" || t === "futureResidual";
+const isFuture = t => t === "futureInherent" || t === "futureResidual";
+const resCls = t => isResidual(t) ? "res" : "";
+function numBadge(s, n) { return `<span class="num ${resCls(s.type)} ${isFuture(s.type) ? "future" : ""}">${n}</span>`; }
+function numOf(s) { return state.statements.indexOf(s) + 1; }
+function displayLabel(s) {
+  const l = String(s.label || "").trim();
+  if (l && l !== "Untitled statement") return l;
+  const a = String(s.data.attribute || "").trim();
+  return a ? a.charAt(0).toUpperCase() + a.slice(1) : "Untitled statement";
+}
+function shortName(s, max) {
+  max = max || 30;
+  const n = displayLabel(s).split(/\s+[—–]\s+/)[0].trim() || "Untitled";
+  return n.length > max ? n.slice(0, max - 1).trim() + "…" : n;
+}
+function inherentRating(s) {
+  const i = lvl(s.data.impactIntensity), l = lvl(s.data.likelihood);
+  const prod = i && l ? i * l : null;
+  const suggested = prod ? bandNum(prod) : null;
+  const entered = lvl(s.data.riskLevel);
+  return { i, l, prod, suggested, entered, level: entered || suggested };
+}
+function linkTypeFor(t) { return t === "presentResidual" ? "presentImpact" : t === "futureResidual" ? "futureInherent" : null; }
+function autoLinkOf(s) {
+  const want = linkTypeFor(s.type); if (!want) return null;
+  /* stay within the same group: an example links to its own example, your statements to your statements */
+  const same = x => x.type === want && (x.example || "") === (s.example || "");
+  const idx = state.statements.indexOf(s);
+  for (let k = idx - 1; k >= 0; k--) if (same(state.statements[k])) return state.statements[k];
+  for (let k = idx + 1; k < state.statements.length; k++) if (same(state.statements[k])) return state.statements[k];
+  return null;
+}
+function linkedInherentOf(s) {
+  const want = linkTypeFor(s.type); if (!want) return null;
+  const v = s.data.linkedInherent || "";
+  if (v === "none") return null;
+  if (v) { const t = state.statements.find(x => x.id === v && x.type === want); if (t) return t; }
+  return autoLinkOf(s);
+}
+function changeText(d) {
+  if (d == null) return "—";
+  if (d === 0) return "No change";
+  const a = Math.abs(d), unit = a === 1 ? "level" : "levels";
+  return (d < 0 ? "−" : "+") + (Number.isInteger(a) ? a : a.toFixed(1)) + " " + unit;
+}
+function bandTag(n) { return n ? `<span class="bandtag"><i style="background:${BAND_VAR(n)}"></i>${lvlLabel(n)}</span>` : `<span class="dash">—</span>`; }
+
+/* ---------- example statements: flag them so they can be removed as a group ---------- */
+function markExamples() {
+  const byLabel = {};
+  Object.entries(EXAMPLES).forEach(([k, get]) => get().statements.forEach(st => { byLabel[st.label] = k; }));
+  state.statements.forEach(s => { if (!s.example && byLabel[s.label]) s.example = byLabel[s.label]; });
+}
+const exampleSiteNames = () => Object.values(EXAMPLES).map(g => g().siteName);
+
+/* ---------- delete with undo ---------- */
+let undoSnap = null;
+function snapshot() { return JSON.stringify({ siteName: state.siteName, statements: state.statements, current: state.current, view: state.view }); }
+function restoreSnapshot(snap) {
+  const s = JSON.parse(snap);
+  state.siteName = s.siteName; state.statements = s.statements; state.current = s.current; state.view = s.view;
+  renderAll(); persist(); toast("Restored");
+}
+function deleteStatements(ids, msg) {
+  if (!ids.length) return;
+  undoSnap = snapshot();
+  const cur = state.statements[state.current];
+  state.statements = state.statements.filter(s => !ids.includes(s.id));
+  if (!state.statements.some(s => s.example) && exampleSiteNames().includes(state.siteName)) state.siteName = "";
+  const keep = cur ? state.statements.indexOf(cur) : -1;
+  state.current = keep >= 0 ? keep : Math.min(state.current, state.statements.length - 1);
+  if (!state.statements.length) { state.current = -1; if (state.view !== "overview") state.view = "editor"; }
+  renderAll(); persist();
+  const snap = undoSnap;
+  toast(msg, "Undo", () => restoreSnapshot(snap), 8000);
+}
+
+/* ---------- chart tooltip (content set with textContent) ---------- */
+let TIPS = {};
+function showTip(evt, rows) {
+  const t = $("chartTip"); t.textContent = "";
+  (rows || []).forEach(r => {
+    if (!r) return;
+    if (r.v) { const b = document.createElement("span"); b.className = "tv"; b.textContent = r.v; t.appendChild(b); }
+    if (r.l) { const sp = document.createElement("span"); sp.className = "tl"; sp.textContent = r.l; t.appendChild(sp); }
+  });
+  positionTip(evt); t.classList.add("show");
+}
+function positionTip(evt) {
+  const t = $("chartTip"); let x, y;
+  if (evt.type !== "focus" && evt.clientX != null) { x = evt.clientX + 14; y = evt.clientY + 14; }
+  else { const r = evt.currentTarget.getBoundingClientRect(); x = r.right + 8; y = r.top; }
+  const w = t.offsetWidth, h = t.offsetHeight;
+  if (x + w > innerWidth - 8) x = Math.max(8, x - w - 28);
+  if (y + h > innerHeight - 8) y = Math.max(8, innerHeight - h - 8);
+  t.style.left = x + "px"; t.style.top = y + "px";
+}
+function hideTip() { $("chartTip").classList.remove("show"); }
+function bindChart(root, openable) {
+  root.querySelectorAll("[data-tip]").forEach(el => {
+    const rows = () => TIPS[el.dataset.tip];
+    el.addEventListener("pointerenter", e => showTip(e, rows()));
+    el.addEventListener("pointermove", positionTip);
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", e => showTip(e, rows()));
+    el.addEventListener("blur", hideTip);
+  });
+  if (!openable) return;
+  root.querySelectorAll("[data-open]").forEach(el => {
+    const go = () => openStatementById(el.dataset.open);
+    el.addEventListener("click", go);
+    el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+}
+
+/* ---------- chart: 4 × 4 inherent risk matrix ---------- */
+function matrixSVG(points, o) {
+  const cs = o.cell, small = !!o.small, left = 84, top = 6;
+  const W = left + cs * 4 + 6, H = top + cs * 4 + 50;
+  const cx = l => left + (l - 1) * cs, cy = i => top + (4 - i) * cs;
+  const tick = small ? 10 : 11;
+  let g = "";
+  for (let i = 4; i >= 1; i--) for (let l = 1; l <= 4; l++) {
+    const p = i * l, b = bandNum(p), key = `${o.id}-cell-${i}-${l}`;
+    TIPS[key] = [{ v: `${p}/16 · ${BAND_NAMES[b]} risk` }, { l: `Impact intensity ${i} — ${Y_TICKS[i]} × likelihood ${l} — ${X_TICKS[l]}` }];
+    g += `<g class="cellhit" data-tip="${key}"><rect x="${cx(l) + 1}" y="${cy(i) + 1}" width="${cs - 2}" height="${cs - 2}" rx="6" fill="${BAND_VAR(b)}"/>` +
+      `<text x="${cx(l) + 8}" y="${cy(i) + 16}" font-size="10.5" font-weight="600" style="fill:${BAND_INK[b]}">${p}</text></g>`;
+  }
+  for (let i = 1; i <= 4; i++) {
+    g += `<text class="axis-t" font-size="${tick}" text-anchor="end" y="${cy(i) + cs / 2 - 2}"><tspan x="${left - 8}" font-weight="600">${i}</tspan><tspan x="${left - 8}" dy="13">${Y_TICKS[i]}</tspan></text>`;
+  }
+  for (let l = 1; l <= 4; l++) {
+    const x = cx(l) + cs / 2;
+    g += `<text class="axis-t" font-size="${tick}" text-anchor="middle" y="${top + cs * 4 + 14}"><tspan x="${x}" font-weight="600">${l}</tspan><tspan x="${x}" dy="12">${X_TICKS[l]}</tspan></text>`;
+  }
+  g += `<text class="axis-title" x="${left + cs * 2}" y="${H - 3}" text-anchor="middle">Likelihood →</text>`;
+  g += `<text class="axis-title" text-anchor="middle" transform="translate(12 ${top + cs * 2}) rotate(-90)">Impact intensity →</text>`;
+
+  const groups = {};
+  points.forEach(p => { const k = p.i + "-" + p.l; (groups[k] = groups[k] || []).push(p); });
+  const r = small ? 11 : 10, sp = 2 * r + 7, MAX = 6;
+  Object.entries(groups).forEach(([k, arr]) => {
+    const [i, l] = k.split("-").map(Number);
+    const items = arr.length > MAX ? arr.slice(0, MAX - 1).map(p => ({ p })).concat([{ extra: arr.slice(MAX - 1), k }]) : arr.map(p => ({ p }));
+    const c = items.length, cols = c === 1 ? 1 : c <= 4 ? 2 : 3, rows = Math.ceil(c / cols);
+    const ox = cx(l) + cs / 2, oy = cy(i) + cs / 2 + (c > 1 ? 5 : 3);
+    items.forEach((it, j) => {
+      const row = Math.floor(j / cols), col = j % cols, inRow = Math.min(cols, c - row * cols);
+      g += markerSVG(it, ox + (col - (inRow - 1) / 2) * sp, oy + (row - (rows - 1) / 2) * sp, r, o);
+    });
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="group" aria-label="${esc(o.aria || "Inherent risk matrix")}">${g}</svg>`;
+}
+function markerSVG(it, x, y, r, o) {
+  const ring = `<circle cx="${x}" cy="${y}" r="${r + 7}" fill="transparent"/><circle class="focus-ring" cx="${x}" cy="${y}" r="${r + 4.5}" fill="none" stroke="transparent"/>`;
+  if (it.extra) {
+    const key = `${o.id}-more-${it.k}`;
+    TIPS[key] = [{ v: `${it.extra.length} more statements here` }].concat(it.extra.map(p => ({ l: `S${p.n} · ${displayLabel(p.s)}` })));
+    return `<g class="hit" tabindex="0" data-tip="${key}" aria-label="${it.extra.length} more statements">${ring}` +
+      `<circle cx="${x}" cy="${y}" r="${r + 2}" fill="var(--panel)"/><circle cx="${x}" cy="${y}" r="${r}" fill="var(--ink-soft)"/>` +
+      `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="600" style="fill:#fff">+${it.extra.length}</text></g>`;
+  }
+  const p = it.p, prod = p.i * p.l, b = bandNum(prod), key = `${o.id}-mk-${p.s.id}`;
+  TIPS[key] = [
+    { v: `${prod}/16 · ${BAND_NAMES[b]} inherent risk` },
+    { l: `S${p.n} · ${displayLabel(p.s)}` },
+    { l: `${p.future ? "Future" : "Present"} · intensity ${p.i} × likelihood ${p.l}` },
+    p.entered && p.entered !== b ? { l: `Entered risk level: ${lvlLabel(p.entered)}` } : null
+  ];
+  const fill = p.future ? "#fff" : "var(--teal-dk)", txt = p.future ? "var(--teal-dk)" : "#fff";
+  const cur = p.current ? `<circle cx="${x}" cy="${y}" r="${r + 4.5}" fill="none" stroke="var(--amber)" stroke-width="2.5"/>` : "";
+  const open = o.openable ? ` role="button" data-open="${p.s.id}"` : "";
+  return `<g class="hit" tabindex="0" data-tip="${key}"${open} aria-label="${esc(`S${p.n} ${displayLabel(p.s)}: ${prod} out of 16, ${BAND_NAMES[b]}`)}">${ring}${cur}` +
+    `<circle cx="${x}" cy="${y}" r="${r + 2}" fill="var(--panel)"/>` +
+    `<circle cx="${x}" cy="${y}" r="${p.future ? r - 1 : r}" fill="${fill}"${p.future ? ` stroke="var(--teal-dk)" stroke-width="2.5"` : ""}/>` +
+    `<text x="${x}" y="${y + 3.6}" text-anchor="middle" font-size="${p.n > 9 ? 9.5 : 10.5}" font-weight="600" style="fill:${txt}">${p.n}</text></g>`;
+}
+function bandKeysHTML(markers) {
+  let h = `<div class="keys">` + [1, 2, 3, 4].map(n => `<span><span class="sw" style="background:${BAND_VAR(n)}"></span>${BAND_NAMES[n]} ${BAND_RANGE[n]}</span>`).join("");
+  if (markers) h += `<span><span class="dot" style="background:var(--teal-dk)"></span>Present</span><span><span class="dot" style="background:#fff;box-shadow:inset 0 0 0 2px var(--teal-dk)"></span>Future</span>`;
+  return h + `</div>`;
+}
+
+/* ---------- chart: inherent → residual risk (dumbbell) ---------- */
+function dumbbellSVG(rows, o) {
+  const W = 580, labelW = 196, x0 = labelW + 22, x1 = W - 96, rowH = 46, top = 30;
+  const H = top + rows.length * rowH + 4;
+  const X = v => x0 + (v - 1) * (x1 - x0) / 3;
+  let g = "";
+  for (let v = 1; v <= 4; v++) {
+    g += `<line x1="${X(v)}" x2="${X(v)}" y1="${top - 6}" y2="${H - 2}" stroke="var(--line)" stroke-width="1"/>`;
+    g += `<text class="axis-t" x="${X(v)}" y="13" text-anchor="middle"><tspan font-weight="600">${v}</tspan> ${BAND_NAMES[v]}</text>`;
+  }
+  g += `<text class="axis-t" x="${W - 4}" y="13" text-anchor="end" font-weight="600">Change</text>`;
+  rows.forEach((r, k) => {
+    const y = top + k * rowH + rowH / 2, key = `${o.id}-db-${r.s.id}`;
+    const d = r.inh && r.res ? r.res - r.inh : null;
+    TIPS[key] = [
+      { v: r.inh && r.res ? `${lvlLabel(r.inh)} → ${lvlLabel(r.res)}` : r.res ? `Residual ${lvlLabel(r.res)}` : r.inh ? `Inherent ${lvlLabel(r.inh)}` : "Not rated yet" },
+      { l: `S${r.n} · ${displayLabel(r.s)}` },
+      { l: r.link ? `Inherent risk from S${numOf(r.link)} · ${displayLabel(r.link)}` : "No inherent risk statement linked" },
+      { l: `Change: ${changeText(d)}` },
+      r.s.data.responseEffectiveness ? { l: `Response effectiveness: ${r.s.data.responseEffectiveness}` } : null
+    ];
+    g += `<g class="hit" tabindex="0" role="button" data-tip="${key}" data-open="${r.s.id}" aria-label="${esc(`S${r.n} ${displayLabel(r.s)}: ${TIPS[key][0].v}, ${changeText(d)}`)}">`;
+    g += `<rect x="0" y="${y - rowH / 2}" width="${W}" height="${rowH}" fill="transparent"/>`;
+    if (k > 0) g += `<line x1="0" x2="${W}" y1="${y - rowH / 2}" y2="${y - rowH / 2}" stroke="var(--line)" stroke-width="1" opacity="0.7"/>`;
+    const bf = r.future ? "#fff" : "var(--olive-dk)", bt = r.future ? "var(--olive-dk)" : "#fff";
+    g += `<circle class="focus-ring" cx="11" cy="${y}" r="13" fill="none" stroke="transparent"/>`;
+    g += `<circle cx="11" cy="${y}" r="${r.future ? 9 : 10}" fill="${bf}"${r.future ? ` stroke="var(--olive-dk)" stroke-width="2.5"` : ""}/>`;
+    g += `<text x="11" y="${y + 3.6}" text-anchor="middle" font-size="${r.n > 9 ? 9.5 : 10.5}" font-weight="600" style="fill:${bt}">${r.n}</text>`;
+    g += `<text x="29" y="${y - 2}" font-size="12.5" font-weight="600">${esc(shortName(r.s, 24))}</text>`;
+    g += `<text class="axis-t" x="29" y="${y + 13}">${r.future ? "Future" : "Present"} · ${r.link ? "acts on S" + numOf(r.link) : "not linked"}</text>`;
+    let xi = r.inh ? X(r.inh) : null, xr = r.res ? X(r.res) : null;
+    if (xi != null && xr != null && xi === xr) { xi -= 6; xr += 6; }
+    if (xi != null && xr != null) g += `<line x1="${xi}" x2="${xr}" y1="${y}" y2="${y}" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" opacity="0.45"/>`;
+    if (xi != null) g += `<circle cx="${xi}" cy="${y}" r="8" fill="var(--panel)"/><circle cx="${xi}" cy="${y}" r="6" fill="var(--inh)"/>`;
+    if (xr != null) g += `<circle cx="${xr}" cy="${y}" r="8" fill="var(--panel)"/><circle cx="${xr}" cy="${y}" r="6" fill="var(--res)"/>`;
+    if (xi == null && xr == null) g += `<text class="axis-t" x="${x0}" y="${y + 4}">Not rated yet</text>`;
+    g += `<text x="${W - 4}" y="${y + 4}" text-anchor="end" font-size="12" font-weight="600">${changeText(d)}</text>`;
+    g += `</g>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="group" aria-label="Inherent and residual risk by response statement">${g}</svg>`;
+}
+const DUMBBELL_KEYS = `<div class="keys"><span><span class="dot" style="background:var(--inh)"></span>Inherent</span><span><span class="dot" style="background:var(--res)"></span>Residual</span></div>`;
+
+/* ---------- chart: single inherent → residual track (editor) ---------- */
+function trackSVG(inh, res) {
+  const W = 320, x0 = 24, x1 = W - 24, y = 34, H = 70;
+  const X = v => x0 + (v - 1) * (x1 - x0) / 3;
+  let g = `<line x1="${x0}" x2="${x1}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`;
+  for (let v = 1; v <= 4; v++) {
+    g += `<line x1="${X(v)}" x2="${X(v)}" y1="${y - 5}" y2="${y + 5}" stroke="var(--line)" stroke-width="1"/>`;
+    g += `<text class="axis-t" x="${X(v)}" y="${y + 22}" text-anchor="middle"><tspan font-weight="600">${v}</tspan> ${BAND_NAMES[v]}</text>`;
+  }
+  let xi = inh ? X(inh) : null, xr = res ? X(res) : null;
+  const same = xi != null && xr != null && xi === xr;
+  if (same) { xi -= 7; xr += 7; }
+  if (xi != null && xr != null) g += `<line x1="${xi}" x2="${xr}" y1="${y}" y2="${y}" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" opacity="0.45"/>`;
+  if (xi != null) g += `<circle cx="${xi}" cy="${y}" r="9" fill="var(--panel)"/><circle cx="${xi}" cy="${y}" r="7" fill="var(--inh)"/>`;
+  if (xr != null) g += `<circle cx="${xr}" cy="${y}" r="9" fill="var(--panel)"/><circle cx="${xr}" cy="${y}" r="7" fill="var(--res)"/>`;
+  if (same) g += `<text class="axis-t" x="${(xi + xr) / 2}" y="${y - 15}" text-anchor="middle">inherent = residual</text>`;
+  else {
+    if (xi != null) g += `<text class="axis-t" x="${xi}" y="${y - 15}" text-anchor="middle" style="fill:var(--teal-dk)">inherent</text>`;
+    if (xr != null) g += `<text class="axis-t" x="${xr}" y="${y - 15}" text-anchor="middle" style="fill:var(--orange-dk)">residual</text>`;
+  }
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Inherent ${inh || "not rated"} to residual ${res || "not rated"} on the 1 to 4 risk scale">${g}</svg>`;
+}
+
+/* ---------- figures ---------- */
+const STATUS = { "Maintained": ["var(--green)", "✓", "#3f5f26"], "At risk": ["var(--amber)", "!", "var(--amber-txt)"], "Compromised": ["var(--orange)", "✕", "var(--orange-dk)"] };
+function statusChip(v) {
+  if (!v) return `<span class="none">not rated</span>`;
+  const [bg, ic, tx] = STATUS[v] || ["var(--muted)", "?", "var(--ink)"];
+  return `<span class="st" style="color:${tx}"><b style="background:${bg}" aria-hidden="true">${ic}</b>${esc(v)}</span>`;
+}
+function statusAccent(v) { return v ? (STATUS[v] || ["var(--muted)"])[0] : "var(--line)"; }
+function meterHTML(v, color, track) {
+  const n = lvl(v);
+  return `<span class="meter" aria-hidden="true">${[1, 2, 3, 4].map(k => `<span style="background:${n && k <= n ? color : track}"></span>`).join("")}</span>`;
+}
+function hevChip(k, value, note, accent, textColor) {
+  return `<div class="hevchip" style="--ca:${accent || "var(--teal)"};${textColor ? `--ct:${textColor}` : ""}"><div class="k">${k}</div><div class="r">${value}</div>${note ? `<div class="n">${note}</div>` : ""}</div>`;
+}
+function scoreVal(v, of) { const n = lvl(v); return n ? `${n}<small>/${of}</small>` : `<span class="none">—</span>`; }
+function scoreWord(v) { return v ? esc(String(v).replace(/^\d\s*—\s*/, "").replace(/\s*\(.*\)$/, "")) : ""; }
+
+/* ---------- statement tabs ---------- */
+function renderTabs() {
+  const el = $("tabs");
+  const ov = `<button class="tab ov ${state.view === "overview" ? "active" : ""}" data-tab="overview" type="button">Risk overview</button>`;
+  const items = state.statements.map((s, i) => {
+    const on = state.view === "editor" && i === state.current;
+    return `<span class="tabwrap"><button class="tab ${resCls(s.type)} ${on ? "active" : ""}" data-tab="${i}" type="button" title="${esc(displayLabel(s))}">` +
+      `<span class="n">${i + 1}</span><span class="nm">${esc(shortName(s, 26))}</span><span class="kind">${TYPE_TAB[s.type] || ""}</span></button>` +
+      `<button class="tab-x" data-del="${esc(s.id)}" type="button" title="Delete" aria-label="Delete statement ${i + 1}, ${esc(displayLabel(s))}">×</button></span>`;
+  }).join("");
+  el.innerHTML = ov + items + `<button class="tab add ${state.view === "new" ? "active" : ""}" data-tab="add" type="button">+ New statement</button>`;
+  el.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => {
+    const t = b.dataset.tab;
+    if (t === "overview") return showOverview();
+    if (t === "add") return showChooser();
+    state.current = +t; state.view = "editor"; renderAll(); persist();
+  }));
+  el.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => {
+    const s = state.statements.find(x => x.id === b.dataset.del);
+    if (s) deleteStatements([s.id], `Deleted ${numOf(s)} · ${shortName(s, 30)}`);
+  }));
+  const exIds = state.statements.filter(s => s.example).map(s => s.id);
+  const tools = $("tabsTools");
+  tools.innerHTML = (exIds.length ? `<button class="btn link danger" id="btnRemoveEx" type="button">Remove examples</button>` : "") +
+    (state.statements.length ? `<button class="btn link danger" id="btnClearAll" type="button">Clear all</button>` : "");
+  $("btnRemoveEx")?.addEventListener("click", () => deleteStatements(exIds, `Removed ${exIds.length} example statement${exIds.length > 1 ? "s" : ""}`));
+  $("btnClearAll")?.addEventListener("click", () => {
+    if (!confirm("Remove all statements? You can undo straight after.")) return;
+    deleteStatements(state.statements.map(s => s.id), "Cleared all statements");
+  });
+}
+
+/* ---------- new statement: choose a type ---------- */
+function typeCardsHTML() {
+  return `<div class="types">` + Object.entries(TYPES).map(([k, v]) =>
+    `<button class="typecard ${resCls(k)}" data-new="${k}" type="button"><span class="tk"><span class="num tdot ${resCls(k)} ${isFuture(k) ? "future" : ""}" aria-hidden="true"></span>${TYPE_TAB[k]}</span><h3>${v.name}</h3><p>${v.desc}</p></button>`).join("") + `</div>`;
+}
+function bindTypeCards(root) {
+  root.querySelectorAll("[data-new]").forEach(b => b.addEventListener("click", () => addStatement(b.dataset.new)));
+}
+function renderChooser() {
+  const ed = $("editor");
+  ed.innerHTML = `<div class="card"><div class="rlabel">New statement — choose a type</div>${typeCardsHTML()}</div>`;
+  bindTypeCards(ed);
+}
+function showChooser() { state.view = "new"; renderAll(); }
+
+/* ---------- editor ---------- */
+function fieldHTML(fdef, val, s) {
+  const c = CATS[fdef.cat];
+  let input;
+  if (fdef.kind === "textarea") {
+    input = `<textarea id="f-${fdef.key}" data-key="${fdef.key}">${esc(val || "")}</textarea>`;
+  } else if (fdef.kind === "select") {
+    input = `<select id="f-${fdef.key}" data-key="${fdef.key}"><option value="">— select —</option>` +
+      fdef.opts.map(o => `<option value="${esc(o)}" ${val === o ? "selected" : ""}>${esc(o)}</option>`).join("") + `</select>`;
+  } else if (fdef.kind === "link") {
+    const cands = state.statements.filter(x => x.type === fdef.linkType);
+    const auto = autoLinkOf(s);
+    const autoTxt = auto ? `Automatic — S${numOf(auto)} · ${displayLabel(auto)}` : cands.length ? `Choose a statement…` : `No ${TYPES[fdef.linkType].short.toLowerCase()} statement yet`;
+    input = `<select id="f-${fdef.key}" data-key="${fdef.key}"><option value="">${esc(autoTxt)}</option>` +
+      cands.map(x => `<option value="${esc(x.id)}" ${val === x.id ? "selected" : ""}>S${numOf(x)} · ${esc(displayLabel(x))}</option>`).join("") +
+      `<option value="none" ${val === "none" ? "selected" : ""}>None</option></select>`;
+  } else if (fdef.kind === "multi") {
+    const sel = Array.isArray(val) ? val : [];
+    const group = `<div class="chk-group">` + fdef.opts.map(o =>
+      `<label class="chk"><input type="checkbox" data-key="${fdef.key}" value="${esc(o)}" ${sel.includes(o) ? "checked" : ""}/>${esc(o)}</label>`).join("") + `</div>`;
+    input = fdef.opts.length > 12
+      ? `<details class="more"><summary><span data-sum="${fdef.key}">${multiSummary(sel)}</span></summary>${group}</details>`
+      : group;
+  } else {
+    input = `<input type="text" id="f-${fdef.key}" data-key="${fdef.key}" value="${esc(typeof val === "string" ? val : "")}"${fdef.list ? ` list="${fdef.list}"` : ""} />` +
+      (fdef.list === "ssp-list" ? `<datalist id="ssp-list">${SSP_OPTIONS.map(o => `<option value="${esc(o)}"></option>`).join("")}</datalist>` : "");
+  }
+  const showEl = !fdef.label.toLowerCase().includes(c.name.toLowerCase().split(/[ (]/)[0]);
+  const lab = fdef.kind === "multi" ? `<div class="fl">` : `<label class="fl" for="f-${fdef.key}">`;
+  const labEnd = fdef.kind === "multi" ? `</div>` : `</label>`;
+  const hint = fdef.hint ? `<p class="hint" id="h-${fdef.key}">${esc(fdef.hint)}</p>` : "";
+  if (fdef.hint) input = input.replace(`id="f-${fdef.key}"`, `id="f-${fdef.key}" aria-describedby="h-${fdef.key}"`);
+  return `<div class="field ${fdef.span === 2 ? "span2" : ""}" style="border-left-color:${c.color}">
+    ${lab}${fdef.label}${showEl ? `<span class="el"><i style="background:${c.color}"></i>${c.name}</span>` : ""}${labEnd}
+    ${hint}${input}</div>`;
+}
+function multiSummary(sel) {
+  return sel.length ? `<span class="sel">${sel.map(v => `<span>${esc(v)}</span>`).join("")}</span> Edit` : `Choose…`;
+}
+
+function emptyHTML() {
+  return `<div class="card empty">
+    <div class="intro"><h2>Start with a statement</h2><p>Pick a statement type, or add a worked example.</p>
+      <button class="btn amber" data-empty="kherlen">Add Kherlen example</button>
+      <button class="btn amber" data-empty="gardens">Add gardens example</button></div>
+    ${typeCardsHTML()}</div>`;
+}
+function bindEmpty(root) {
+  root.querySelector('[data-empty="kherlen"]')?.addEventListener("click", () => loadExampleKey("kherlen"));
+  root.querySelector('[data-empty="gardens"]')?.addEventListener("click", () => loadExampleKey("gardens"));
+  bindTypeCards(root);
+}
+
+function renderEditor() {
+  const ed = $("editor");
+  if (state.current < 0 || !state.statements[state.current]) {
+    ed.innerHTML = emptyHTML();
+    bindEmpty(ed);
+    return;
+  }
+  const s = state.statements[state.current];
+  const T = TYPES[s.type];
+  let lastSec = "";
+  const fieldsHtml = T.fields.map(fd => {
+    let h = "";
+    if (fd.sec !== lastSec) { lastSec = fd.sec; h += `<div class="rlabel section-h" style="--sec:${SEC_COLOR[fd.sec] || "var(--olive)"}">${fd.sec}</div>`; }
+    return h + fieldHTML(fd, s.data[fd.key], s);
+  }).join("");
+  const usedCats = [...new Set(T.fields.filter(fd => fd.kind !== "multi" && fd.kind !== "link").map(fd => fd.cat))];
+
+  ed.innerHTML = `
+    <div class="card stmt ${resCls(s.type)}">
+      <div class="card-head">
+        ${numBadge(s, state.current + 1)}
+        <input type="text" class="title" id="stmtLabel" value="${esc(s.label)}" placeholder="Name this statement" aria-label="Statement name" />
+        <select id="stmtType" aria-label="Statement type">${Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${s.type === k ? "selected" : ""}>${v.name}</option>`).join("")}</select>
+        <span class="grow"></span>
+        <button class="btn small" id="btnDup">Duplicate</button>
+        <button class="btn small" id="btnDel">Delete</button>
+      </div>
+      <div class="unit">${T.desc}</div>
+      <div class="grid2">${fieldsHtml}</div>
+    </div>
+
+    <div class="rlabel" id="riskLabel"></div>
+    <div class="card" id="ratingCard"></div>
+
+    <div class="rlabel">Draft statement</div>
+    <div class="card accent-a">
+      <div class="keyrow">${usedCats.map(k => `<span class="key"><i style="background:${CATS[k].color}"></i>${CATS[k].name}</span>`).join("")}</div>
+      <div class="preview" id="preview"></div>
+      <div class="actions">
+        <button class="btn" id="btnCopyDraft">Copy draft</button>
+        <button class="btn primary" id="btnUseDraft">Use as final statement</button>
+      </div>
+      <div class="rlabel" style="margin-top:20px">Final statement</div>
+      <textarea class="final" id="finalText" placeholder="Click “Use as final statement” above, then edit the wording here in your own words.">${esc(s.final || "")}</textarea>
+      <div id="staleNote"></div>
+      <div class="actions">
+        <button class="btn" id="btnCopyFinal">Copy final statement</button>
+        <span class="count" id="wordCount"></span>
+      </div>
+      <div class="tabs-head" style="margin-top:16px"><span class="rlabel">Includes</span><span class="prog" id="progress"></span></div>
+      <div class="checks" id="checklist"></div>
+    </div>`;
+
+  $("stmtLabel").addEventListener("input", e => { s.label = e.target.value; renderTabs(); persist(); });
+  $("stmtType").addEventListener("change", e => changeType(s, e.target.value));
+  $("btnDup").addEventListener("click", () => {
+    const i = state.current, copy = JSON.parse(JSON.stringify(s));
+    copy.id = uid(); delete copy.example;
+    copy.label = displayLabel(s) + " (copy)";
+    state.statements.splice(i + 1, 0, copy);
+    state.current = i + 1; renderAll(); persist(); toast("Duplicated");
+  });
+  $("btnDel").addEventListener("click", () => deleteStatements([s.id], `Deleted S${state.current + 1} · ${shortName(s, 30)}`));
+  ed.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.dataset.key;
+    const sync = () => {
+      if (el.type === "checkbox") {
+        s.data[key] = Array.from(ed.querySelectorAll(`input[data-key="${key}"]:checked`)).map(c => c.value);
+        const sum = ed.querySelector(`[data-sum="${key}"]`); if (sum) sum.innerHTML = multiSummary(s.data[key]);
+      } else s.data[key] = el.value;
+      if (key === "attribute" && (!s.label || s.label === "Untitled statement")) renderTabs();
+      updatePreview(); persist();
+    };
+    /* text boxes update as you type; lists and ticks on change (a second update on blur would swallow the next click) */
+    const isText = el.tagName === "TEXTAREA" || (el.tagName === "INPUT" && el.type === "text");
+    el.addEventListener(isText ? "input" : "change", sync);
+  });
+  $("finalText").addEventListener("input", e => { s.final = e.target.value; persist(); updateWordCount(); });
+  $("btnCopyDraft").addEventListener("click", () => copyText(draftPlain(s), "Draft copied"));
+  $("btnCopyFinal").addEventListener("click", () => copyText(s.final || "", "Final statement copied"));
+  $("btnUseDraft").addEventListener("click", () => useDraftAsFinal(s));
+  updatePreview(); updateWordCount();
+}
+function updateWordCount() {
+  const t = ($("finalText")?.value || "").trim();
+  const n = t ? t.split(/\s+/).length : 0;
+  if ($("wordCount")) $("wordCount").textContent = n ? `${n} words` : "";
+}
+
+const TOOL_NAME = "Inherent and Residual Impacts and Risks, Adaptation and Responses to Losses and Damages";
+function useDraftAsFinal(s) {
+  const draft = draftPlain(s);
+  if (!draft) { toast("Fill in some fields first"); return; }
+  const prev = s.final, prevBase = s.finalDraft;
+  s.final = draft; s.finalDraft = draft;
+  $("finalText").value = s.final; persist(); updateWordCount(); updateStale(s);
+  if (prev && prev.trim() && prev !== draft) {
+    toast("Final statement replaced with the draft", "Undo", () => {
+      s.final = prev; s.finalDraft = prevBase; $("finalText").value = prev; persist(); updateWordCount(); updateStale(s);
+    }, 8000);
+  } else toast("Draft copied to final statement");
+}
+function updateStale(s) {
+  const el = $("staleNote"); if (!el) return;
+  const stale = s.final && s.final.trim() && s.finalDraft && s.finalDraft !== draftPlain(s);
+  const html = stale ? `<div class="stale">The draft has changed since you used it. <button class="btn small" id="btnRefreshFinal" type="button">Update final statement</button></div>` : "";
+  if (el._html === html && el._sid === s.id) return;
+  el._html = html; el._sid = s.id;
+  el.innerHTML = html;
+  $("btnRefreshFinal")?.addEventListener("click", () => useDraftAsFinal(s));
+}
+function gotoField(key) {
+  const ed = $("editor");
+  const input = ed.querySelector(`#f-${key}`) || ed.querySelector(`[data-key="${key}"]`);
+  if (!input) return;
+  const field = input.closest(".field");
+  const det = input.closest("details"); if (det) det.open = true;
+  input.focus({ preventScroll: true });
+  field.scrollIntoView({ block: "center", behavior: "smooth" });
+  field.classList.remove("flash"); void field.offsetWidth; field.classList.add("flash");
+}
+
+function escRe(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+function changeType(s, newType) {
+  const oldType = s.type; if (newType === oldType) return;
+  const snap = snapshot();
+  s.type = newType;
+  s.data = migrateData(s.data, s.type);
+  /* keep the statement name in step with its type (e.g. "Dome — future potential impacts & inherent risk") */
+  const oldName = TYPES[oldType].name, newName = TYPES[newType].name;
+  const m = String(s.label || "").match(new RegExp(escRe(oldName), "i"));
+  if (m) s.label = s.label.replace(m[0], m.index === 0 ? newName : newName.charAt(0).toLowerCase() + newName.slice(1));
+  /* the final statement was written for the previous type, so clear it */
+  const hadFinal = !!(s.final && s.final.trim());
+  s.final = ""; delete s.finalDraft;
+  if (linkTypeFor(newType) !== linkTypeFor(oldType)) delete s.data.linkedInherent;
+  renderAll(); persist();
+  toast(hadFinal ? `Changed to ${TYPE_TAB[newType]}. The final statement was cleared because it was written for the previous type.` : `Changed to ${TYPE_TAB[newType]}.`,
+    "Undo", () => restoreSnapshot(snap), 9000);
+}
+function createLinkedInherent(s) {
+  const want = linkTypeFor(s.type); if (!want) return;
+  const fresh = newStatement(want);
+  ["attribute", "value", "timeframe", "scenario", "hazardTypes"].forEach(k => {
+    if (s.data[k] && TYPES[want].fields.some(f => f.key === k)) fresh.data[k] = JSON.parse(JSON.stringify(s.data[k]));
+  });
+  if (s.example) fresh.example = s.example;
+  const idx = state.statements.indexOf(s);
+  state.statements.splice(idx, 0, fresh);
+  s.data.linkedInherent = fresh.id;
+  state.current = idx; state.view = "editor";
+  renderAll(); persist();
+  toast(`Created S${idx + 1}. Add its impacts and ratings, then return to S${idx + 2}.`);
+  $("tabs").scrollIntoView({ block: "start" });
+}
+
+/* ---------- risk panel ---------- */
+function renderRatingCard(s) {
+  const card = $("ratingCard"); if (!card) return;
+  hideTip();
+  if (isInherent(s.type)) {
+    $("riskLabel").textContent = "Inherent risk = impact intensity × likelihood";
+    card.className = "card accent-o";
+    const r = inherentRating(s);
+    const pts = r.i && r.l ? [{ s, n: numOf(s), i: r.i, l: r.l, future: isFuture(s.type), entered: r.entered }] : [];
+    const chips = `<div class="hev">
+        ${hevChip("Impact intensity", scoreVal(s.data.impactIntensity, 4), scoreWord(s.data.impactIntensity), "var(--c-intensity)", "var(--c-intensity)")}
+        ${hevChip("Likelihood", scoreVal(s.data.likelihood, 4), scoreWord(s.data.likelihood), "var(--amber)", "var(--amber-txt)")}
+        ${hevChip("Score", r.prod ? `${r.prod}<small>/16</small>` : `<span class="none">—</span>`, r.suggested ? BAND_NAMES[r.suggested] : "", r.suggested ? BAND_VAR(r.suggested) : "var(--line)", "var(--orange-dk)")}
+        ${hevChip("Confidence", scoreVal(s.data.confidence, 4), scoreWord(s.data.confidence), "var(--c-confidence)", "var(--ink-soft)")}
+      </div>`;
+    let status;
+    if (!r.prod) status = `<div class="status amber">Rate impact intensity and likelihood to place this statement on the matrix.</div>`;
+    else {
+      const b = r.suggested;
+      status = `<div class="status ${BAND_STATUS[b]}">${BAND_NAMES[b]} inherent risk`;
+      if (!r.entered) status += `<span class="sub">No risk level entered yet. <button class="btn small" id="btnUseSuggested">Use ${lvlLabel(b)}</button></span>`;
+      else if (r.entered !== b) status += `<span class="sub">Entered level (${esc(s.data.riskLevel)}) differs from the matrix. <button class="btn small" id="btnUseSuggested">Use ${lvlLabel(b)}</button></span>`;
+      status += `</div>`;
+    }
+    card.innerHTML = `<div class="rgrid"><div>${matrixSVG(pts, { cell: 64, small: true, id: "ed", aria: "Where this statement sits on the inherent risk matrix" })}${bandKeysHTML(false)}</div><div>${chips}${status}</div></div>`;
+    bindChart(card, false);
+    $("btnUseSuggested")?.addEventListener("click", () => {
+      s.data.riskLevel = SCALE.magnitude[4 - r.suggested];
+      const sel = document.querySelector('#editor select[data-key="riskLevel"]'); if (sel) sel.value = s.data.riskLevel;
+      updatePreview(); persist(); toast("Risk level set from the matrix");
+    });
+    return;
+  }
+  $("riskLabel").textContent = "Inherent → residual risk";
+  card.className = "card accent-t";
+  const link = linkedInherentOf(s);
+  const inh = link ? inherentRating(link).level : null;
+  const res = lvl(s.data.residualLevel);
+  const d = inh && res ? res - inh : null;
+  const chips = `<div class="hev">
+      ${hevChip("Response effectiveness", scoreVal(s.data.responseEffectiveness, 4), meterHTML(s.data.responseEffectiveness, "var(--olive)", "#e0dac9"), "var(--olive)", "var(--olive-dk)")}
+      ${hevChip("Integrity", statusChip(s.data.integrityRating), "", statusAccent(s.data.integrityRating))}
+      ${hevChip("Authenticity", statusChip(s.data.authenticityRating), "", statusAccent(s.data.authenticityRating))}
+      ${s.type === "futureResidual" ? hevChip("Confidence", scoreVal(s.data.confidence, 4), scoreWord(s.data.confidence), "var(--c-confidence)", "var(--ink-soft)") : ""}
+    </div>`;
+  let status = "";
+  if (!link) {
+    const want = linkTypeFor(s.type), cands = state.statements.filter(x => x.type === want);
+    status = cands.length
+      ? `<div class="status amber">Choose the inherent risk statement these responses act on, so the tool can show how far they reduce risk.<span class="sub"><button class="btn small" id="btnPickLink" type="button">Choose statement</button></span></div>`
+      : `<div class="status amber">There is no ${TYPES[want].short.toLowerCase()} statement to compare with yet.<span class="sub"><button class="btn small" id="btnMakeLink" type="button">Create one from this statement</button> It copies the attribute, values${isFuture(s.type) ? ", timeframe and scenario" : ""} so you only add the impacts and ratings.</span></div>`;
+  }
+  else if (d != null) status = `<div class="status ${d < 0 ? "green" : d === 0 ? "amber" : "red"}">${d < 0 ? "Risk reduced" : d === 0 ? "No change in risk level" : "Risk increased"} · ${changeText(d)}<span class="sub">S${numOf(link)} · ${esc(displayLabel(link))}</span></div>`;
+  card.innerHTML = `<div class="rgrid"><div>${trackSVG(inh, res)}
+      <div class="readouts"><span><span class="b">inherent</span> <b>${inh || "—"}</b></span><span><span class="b">change</span> <b>${d == null ? "—" : d === 0 ? "0" : (d < 0 ? "−" : "+") + Math.abs(d)}</b></span><span><span class="b">residual</span> <b>${res || "—"}</b></span></div></div>
+    <div>${chips}${status}</div></div>`;
+  $("btnPickLink")?.addEventListener("click", () => gotoField("linkedInherent"));
+  $("btnMakeLink")?.addEventListener("click", () => createLinkedInherent(s));
+}
+
+function draftSentences(s, highlight) {
+  const T = TYPES[s.type];
+  const catOf = {}; T.fields.forEach(fd => catOf[fd.key] = fd.cat);
+  const f = key => {
+    const raw = s.data[key];
+    const v = Array.isArray(raw) ? raw.join(", ") : String(raw || "").trim().replace(/\.+$/, "");
+    if (!v) return "";
+    return highlight ? `<mark style="--m:${CATS[catOf[key]].color}" title="${esc(CATS[catOf[key]].name)}">${esc(v)}</mark>` : v;
+  };
+  return buildDraft(s.type, s.data, f);
+}
+function draftPlain(s) { return draftSentences(s, false).join(" "); }
+
+function tagSummary(s) {
+  const out = [];
+  TYPES[s.type].fields.forEach(fd => {
+    if (!fd.tag) return;
+    const v = s.data[fd.key];
+    const txt = Array.isArray(v) ? v.join("; ") : (v || "").trim();
+    if (txt) out.push([fd.tag, txt]);
+  });
+  return out;
+}
+
+function updatePreview() {
+  const s = state.statements[state.current]; if (!s) return;
+  const sentences = draftSentences(s, true);
+  const tags = tagSummary(s);
+  const tagsHtml = tags.length ? `<div class="tagline">` + tags.map(([l, v]) => `<span class="tag"><b>${l}:</b> ${esc(v)}</span>`).join("") + `</div>` : "";
+  $("preview").innerHTML = (sentences.length ? sentences.join(" ") : `<span class="ph">Your draft assembles here as you fill in the fields.</span>`) + tagsHtml;
+  renderRatingCard(s);
+  const T = TYPES[s.type];
+  let done = 0;
+  const checksHtml = T.checklist.map(([k, txt]) => {
+    const v = s.data[k];
+    const ok = Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim());
+    if (ok) done++;
+    return `<button type="button" class="ck ${ok ? "done" : ""}" data-goto="${k}" title="${ok ? "Go to" : "Add"} ${esc(txt)}">${txt}</button>`;
+  }).join("");
+  const cl = $("checklist");
+  if (cl._html !== checksHtml) {
+    cl._html = checksHtml; cl.innerHTML = checksHtml;
+    cl.querySelectorAll("[data-goto]").forEach(b => b.addEventListener("click", () => gotoField(b.dataset.goto)));
+  }
+  updateStale(s);
+  const pct = Math.round(100 * done / T.checklist.length);
+  $("progress").innerHTML = `<span class="bar"><span style="width:${pct}%"></span></span><span style="font-size:.78rem;color:var(--ink-soft)">${done}/${T.checklist.length}</span>`;
+}
+
+/* ---------- risk overview ---------- */
+function overviewData() {
+  const S = state.statements;
+  const inh = S.filter(s => isInherent(s.type));
+  const res = S.filter(s => isResidual(s.type));
+  const pts = [];
+  inh.forEach(s => { const r = inherentRating(s); if (r.i && r.l) pts.push({ s, n: numOf(s), i: r.i, l: r.l, future: isFuture(s.type), entered: r.entered }); });
+  const rows = res.map(s => {
+    const link = linkedInherentOf(s);
+    return { s, n: numOf(s), future: isFuture(s.type), link, inh: link ? inherentRating(link).level : null, res: lvl(s.data.residualLevel) };
+  });
+  return { S, inh, res, pts, rows };
+}
+function renderOverview() {
+  const ed = $("editor");
+  TIPS = {};
+  const { S, inh, res, pts, rows } = overviewData();
+  if (!S.length) {
+    ed.innerHTML = emptyHTML();
+    bindEmpty(ed);
+    return;
+  }
+  const levels = inh.map(s => ({ s, v: inherentRating(s).level })).filter(x => x.v);
+  const maxV = levels.length ? Math.max(...levels.map(x => x.v)) : null;
+  const top = levels.filter(x => x.v === maxV).map(x => "S" + numOf(x.s));
+  const pairs = rows.filter(r => r.inh && r.res);
+  const avg = pairs.length ? pairs.reduce((a, r) => a + (r.res - r.inh), 0) / pairs.length : null;
+  const unplaced = inh.filter(s => !pts.find(p => p.s === s));
+
+  const dash = `<span class="dash">—</span>`;
+  const cell = v => v ? esc(v) : dash;
+  const tableRows = S.map((s, idx) => {
+    const n = idx + 1, name = `<td class="stmt">${esc(shortName(s, 60))}<small>${TYPE_TAB[s.type]}</small></td>`;
+    const numCell = `<td>${numBadge(s, n)}</td>`;
+    if (isInherent(s.type)) {
+      const r = inherentRating(s);
+      return `<tr data-open="${esc(s.id)}" title="${esc(displayLabel(s))}">${numCell}${name}<td>${cell(lvlLabel(r.i))}</td><td>${cell(r.l ? `${r.l} — ${X_TICKS[r.l]}` : "")}</td>
+        <td>${r.prod ? r.prod + "/16" : dash}</td><td>${bandTag(r.level)}</td><td>${dash}</td><td>${dash}</td><td>${dash}</td><td>${dash}</td><td>${cell(s.data.confidence)}</td></tr>`;
+    }
+    const link = linkedInherentOf(s), il = link ? inherentRating(link).level : null;
+    return `<tr data-open="${esc(s.id)}" title="${esc(displayLabel(s))}">${numCell}${name}<td>${dash}</td><td>${dash}</td><td>${dash}</td>
+      <td>${il ? `${bandTag(il)} <span class="dash">(S${numOf(link)})</span>` : dash}</td><td>${bandTag(lvl(s.data.residualLevel))}</td>
+      <td>${cell(String(s.data.responseEffectiveness || "").replace(/\s*\(.*\)$/, ""))}</td><td>${s.data.integrityRating ? statusChip(s.data.integrityRating) : dash}</td><td>${s.data.authenticityRating ? statusChip(s.data.authenticityRating) : dash}</td><td>${cell(s.data.confidence)}</td></tr>`;
+  }).join("");
+
+  ed.innerHTML = `
+    <div class="hev">
+      ${hevChip("Statements", `${S.length}`, `<span style="color:var(--teal-dk)">${inh.length} inherent</span> · <span style="color:var(--olive-dk)">${res.length} residual</span>`, "var(--ink)", "var(--ink)")}
+      ${hevChip("Highest inherent risk", maxV ? BAND_NAMES[maxV] : dash, maxV ? top.join(", ") : "", maxV ? BAND_VAR(maxV) : "var(--line)", "var(--orange-dk)")}
+      ${hevChip("Average change after responses", avg == null ? dash : changeText(avg), pairs.length ? `${pairs.length} linked response statement${pairs.length > 1 ? "s" : ""}` : "", "var(--olive)", "var(--olive-dk)")}
+    </div>
+    <div class="ovgrid">
+      <div class="card accent-o"><div class="rlabel">Inherent risk matrix</div>
+        ${pts.length ? matrixSVG(pts, { cell: 80, id: "ov", openable: true, aria: "Inherent risk matrix of all statements" }) : `<p class="none">No statement rated yet.</p>`}
+        ${bandKeysHTML(true)}
+        ${unplaced.length ? `<p class="none" style="margin:8px 0 0">Not placed yet: ${unplaced.map(s => "S" + numOf(s)).join(", ")}</p>` : ""}
+      </div>
+      <div class="card accent-t"><div class="rlabel">Inherent → residual risk</div>
+        ${rows.length ? dumbbellSVG(rows, { id: "ov" }) + DUMBBELL_KEYS : `<p class="none">No response statements yet.</p>`}
+      </div>
+    </div>
+    <div class="rlabel" style="margin-top:22px">All ratings</div>
+    <div class="card table-wrap">
+      <table class="ratings"><thead><tr><th>#</th><th>Statement</th><th>Impact intensity</th><th>Likelihood</th><th>Score</th><th>Inherent risk</th><th>Residual risk</th><th>Effectiveness</th><th>Integrity</th><th>Authenticity</th><th>Confidence</th></tr></thead>
+      <tbody>${tableRows}</tbody></table>
+    </div>`;
+  bindChart(ed, true);
+  ed.querySelectorAll("tr[data-open]").forEach(tr => tr.addEventListener("click", () => openStatementById(tr.dataset.open)));
+}
+
+function openStatementById(id) {
+  const i = state.statements.findIndex(s => s.id === id);
+  if (i < 0) return;
+  hideTip();
+  state.current = i; state.view = "editor";
+  renderAll(); persist();
+  $("tabs").scrollIntoView({ block: "start" });
+}
+function showOverview() { state.view = "overview"; renderAll(); persist(); }
+
+function renderAll() {
+  hideTip();
+  $("siteName").value = state.siteName || "";
+  renderTabs();
+  if (state.view === "overview") renderOverview();
+  else if (state.view === "new") renderChooser();
+  else renderEditor();
+}
+
+function addStatement(type) {
+  state.statements.push(newStatement(type));
+  state.current = state.statements.length - 1; state.view = "editor";
+  renderAll(); persist();
+  $("stmtLabel")?.focus();
+}
+function loadExampleKey(key) {
+  const example = EXAMPLES[key](), label = key === "gardens" ? "Sacred gardens example" : "Kherlen example";
+  const existing = state.statements.findIndex(s => s.example === key);
+  if (existing >= 0) {
+    state.current = existing; state.view = "editor"; renderAll(); persist();
+    toast(`${label} is already loaded`);
+    return;
+  }
+  const added = migrateStatements(JSON.parse(JSON.stringify(example.statements))).map(st => ({ ...st, example: key }));
+  const prevSite = state.siteName;
+  added.forEach(st => state.statements.push(st));
+  if (!state.siteName) state.siteName = example.siteName || "";
+  state.current = state.statements.length - added.length; state.view = "editor";
+  renderAll(); persist();
+  const ids = added.map(a => a.id);
+  toast(`${label} added (${added.length} statements)`, "Remove", () => {
+    state.statements = state.statements.filter(s => !ids.includes(s.id));
+    state.siteName = prevSite;
+    state.current = Math.min(state.current, state.statements.length - 1);
+    renderAll(); persist(); toast(`${label} removed`);
+  });
+}
+function loadExample() { loadExampleKey("kherlen"); }
+function loadGardensExample() { loadExampleKey("gardens"); }
+
+function copyText(t, msg) {
+  if (!t) { toast("Nothing to copy yet"); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(() => toast(msg), () => fallbackCopy(t, msg));
+  } else fallbackCopy(t, msg);
+}
+function fallbackCopy(t, msg) {
+  const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta);
+  ta.select(); try { document.execCommand("copy"); toast(msg); } catch (e) { toast("Copy failed"); }
+  document.body.removeChild(ta);
+}
+let toastTimer, toastAction = null;
+function toast(msg, actionLabel, action, ms) {
+  const t = $("toast");
+  $("toastMsg").textContent = msg;
+  $("toastBtn").textContent = actionLabel || "";
+  toastAction = action || null;
+  t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.remove("show"); toastAction = null; }, ms || 2600);
+}
+$("toastBtn").addEventListener("click", () => {
+  const fn = toastAction; toastAction = null;
+  $("toast").classList.remove("show");
+  if (fn) fn();
+});
+function download(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+/* ---------- Word export: statements + risk ratings summary ---------- */
+function exportRiskSummary() {
+  const { S, pts, rows } = overviewData();
+  const td = "border:1px solid #cfc8b4;padding:4pt 6pt;vertical-align:top;font-size:10pt";
+  const th = td + ";background:#ece6d5;font-weight:bold";
+  let h = `<h2 style="color:#183C1C">Risk ratings summary</h2>
+    <p style="font-size:10pt">Inherent risk = impact intensity × likelihood (1–4 each), scored out of 16: Low 1–3, Moderate 4–6, High 8–9, Very high 12–16.</p>`;
+  h += `<h3>Inherent risk matrix</h3><table style="border-collapse:collapse"><tr><td style="${td};border:none"></td>` +
+    [1, 2, 3, 4].map(l => `<td style="${th};text-align:center;width:80pt">${l} — ${X_TICKS[l]}</td>`).join("") + `</tr>`;
+  for (let i = 4; i >= 1; i--) {
+    h += `<tr><td style="${th}">${i} — ${Y_TICKS[i]}</td>`;
+    for (let l = 1; l <= 4; l++) {
+      const p = i * l, b = bandNum(p), here = pts.filter(x => x.i === i && x.l === l).map(x => "S" + x.n);
+      h += `<td bgcolor="${BAND_HEX[b]}" style="${td};background:${BAND_HEX[b]};color:${BAND_INK[b]};text-align:center;height:34pt">` +
+        `<span style="font-size:8pt">${p} · ${BAND_NAMES[b]}</span><br><b>${here.join(", ")}</b></td>`;
+    }
+    h += `</tr>`;
+  }
+  h += `<tr><td style="${td};border:none"></td><td colspan="4" style="${td};border:none;text-align:center;font-size:9pt;color:#4a5f4a">Likelihood → (rows: impact intensity)</td></tr></table>`;
+  if (rows.length) {
+    h += `<h3>Inherent → residual risk</h3><table style="border-collapse:collapse"><tr>` +
+      ["Response statement", "Acts on", "Inherent risk", "Residual risk", "Change", "Response effectiveness"].map(x => `<td style="${th}">${x}</td>`).join("") + `</tr>`;
+    rows.forEach(r => {
+      h += `<tr><td style="${td}">S${r.n} — ${esc(displayLabel(r.s))}</td><td style="${td}">${r.link ? "S" + numOf(r.link) : "—"}</td>` +
+        `<td style="${td}">${r.inh ? lvlLabel(r.inh) : "—"}</td><td style="${td}">${r.res ? lvlLabel(r.res) : "—"}</td>` +
+        `<td style="${td}">${changeText(r.inh && r.res ? r.res - r.inh : null)}</td><td style="${td}">${esc(r.s.data.responseEffectiveness || "—")}</td></tr>`;
+    });
+    h += `</table>`;
+  }
+  h += `<h3>All ratings</h3><table style="border-collapse:collapse"><tr>` +
+    ["#", "Statement", "Intensity", "Likelihood", "Score", "Inherent risk", "Residual risk", "Integrity", "Authenticity", "Confidence"].map(x => `<td style="${th}">${x}</td>`).join("") + `</tr>`;
+  S.forEach((s, idx) => {
+    const r = isInherent(s.type) ? inherentRating(s) : null;
+    const c = v => `<td style="${td}">${v ? esc(v) : "—"}</td>`;
+    h += `<tr>${c("S" + (idx + 1))}${c(displayLabel(s))}${c(r ? lvlLabel(r.i) : "")}${c(r && r.l ? `${r.l} — ${X_TICKS[r.l]}` : "")}${c(r && r.prod ? r.prod + "/16" : "")}` +
+      `${c(r ? lvlLabel(r.level) : "")}${c(s.data.residualLevel)}${c(s.data.integrityRating)}${c(s.data.authenticityRating)}${c(s.data.confidence)}</tr>`;
+  });
+  return h + `</table>`;
+}
+function exportDoc() {
+  if (!state.statements.length) { toast("No statements to export yet"); return; }
+  const order = ["presentImpact", "presentResidual", "futureInherent", "futureResidual"];
+  let body = `<h1 style="color:#183C1C">${TOOL_NAME}</h1>`;
+  if (state.siteName) body += `<h2 style="color:#4a5f4a">${esc(state.siteName)}</h2>`;
+  body += `<p><i>Preserving Legacies statement builder · ${new Date().toLocaleDateString()}</i></p>`;
+  order.forEach(tp => {
+    const group = state.statements.filter(s => s.type === tp);
+    if (!group.length) return;
+    body += `<h2 style="color:${isResidual(tp) ? "#4f6b2f" : "#0a7a86"}">${TYPES[tp].name} Statements</h2>`;
+    group.forEach(s => {
+      body += `<h3>S${numOf(s)} — ${esc(displayLabel(s))}</h3>`;
+      const text = (s.final && s.final.trim()) ? s.final : draftPlain(s);
+      body += `<p>${esc(text)}</p>`;
+    });
+  });
+  body += exportRiskSummary();
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Statements</title></head><body style="font-family:Calibri,Arial,sans-serif;color:#183C1C">${body}</body></html>`;
+  download((state.siteName || "risk-statements").replace(/\s+/g, "-") + ".doc", html, "application/msword");
+  toast("Word file downloaded");
+}
+
+$("siteName").addEventListener("input", e => { state.siteName = e.target.value; persist(); });
+$("btnLoadEx").addEventListener("click", () => loadExampleKey($("exSel").value));
+$("btnSaveJson").addEventListener("click", () => {
+  download((state.siteName || "risk-statements").replace(/\s+/g, "-") + "-statements.json", JSON.stringify(state, null, 2), "application/json");
+  toast("Progress saved");
+});
+$("btnLoadJson").addEventListener("click", () => $("fileInput").click());
+$("fileInput").addEventListener("change", e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const s = JSON.parse(reader.result);
+      if (!s.statements) throw new Error("Invalid file");
+      const snap = snapshot();
+      s.statements = migrateStatements(s.statements);
+      state = s;
+      markExamples();
+      if (state.current == null || state.current >= state.statements.length) state.current = state.statements.length ? 0 : -1;
+      state.view = "editor";
+      renderAll(); persist(); toast("Progress loaded", "Undo", () => restoreSnapshot(snap), 8000);
+    } catch (err) { toast("Could not load file"); }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+$("btnExportDoc").addEventListener("click", exportDoc);
+window.addEventListener("scroll", hideTip, { passive: true });
+
+restore();
+if (!["editor", "overview"].includes(state.view)) state.view = "editor";
+markExamples();
+renderAll();
+</script>
+</body>
+</html>
