@@ -6,7 +6,7 @@ Interactive tools for Preserving Legacies Activation Sites.
 
 A statement builder that helps custodians bring what they know about their heritage places and cultural practices together into clear, connected statements: from hazards, exposure and vulnerability, to impacts and inherent risk, and on to adaptation and loss and damage responses and the residual risk that remains.
 
-- Version 3 (November 2026): [`statement-builder-3/index.html`](statement-builder-3/index.html), a usability redesign: start screen with worked examples or your own set, a set map with review status, Describe → Rate → Finalise steps beside a live draft, plain-language definitions, safer clearing and clearer saving. Calculations and drafts are unchanged from version 2.
+- Version 3 (November 2026): [`statement-builder-3/index.html`](statement-builder-3/index.html). Version 2’s layout with small fixes: plainer hints, text boxes that grow, a save status line, a clear-all dialog that offers a copy first, attribute and values carried into new statements, residual ratings worded as a comparison of judgements, and notes on the ratings.
 - Version 2 (November 2026): [`statement-builder-2/index.html`](statement-builder-2/index.html), updated from reviewer comments. It adds the UNESCO definitions of integrity and authenticity, clearer hints and instructions, and removes the strategic pathway field from response statements.
 - Version 1: [`statement-builder/index.html`](statement-builder/index.html)
 - Works in any modern browser. Once downloaded, it works without an internet connection.
