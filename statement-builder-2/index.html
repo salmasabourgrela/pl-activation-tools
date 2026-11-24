@@ -412,7 +412,8 @@ const H = {
   limits: "What holds the responses back, written to follow “However, …”.",
   residualRisk: "The risk that remains after the responses. For example: “periodic livestock losses and continued pressure on mobile cultural practices”.",
   residualImpacts: "The losses and damages expected even with the responses in place.",
-  horizonNow: "How long the responses are meant to keep working. Present statements describe today’s climate, so they have no climate scenario (SSP); future statements ask for one.",
+  horizonNow: "How long the responses are meant to keep working, from the near term to beyond 2100.",
+  scenarioNow: "How long the responses can keep working depends on how the climate develops. Pick the climate scenario (SSP) they are planned for, or type your own.",
   linkNow: "The present impacts and inherent risk statement these responses act on. It shows how far the responses reduce risk.",
   linkFuture: "The future potential impacts and inherent risk statement these responses act on. It shows how far the responses reduce risk."
 };
@@ -477,11 +478,12 @@ const TYPES = {
       { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE, hint: H.depth },
       { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.responsesNow },
       { key: "lossDamageResponses", label: "Responses to loss and damage", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
+      { key: "timeHorizon", label: "How far ahead the responses are designed to work", cat: "scenario", kind: "select", sec: "Scenario", opts: TIMING_HORIZON, hint: H.horizonNow },
+      { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: H.scenarioNow },
       F.integrityOutcome, F.authenticityOutcome,
       { key: "limits", label: "Limits and constraints", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2, hint: H.limits },
       F.residualRisk,
       F.riskActedOn, F.responseFunction, F.continuity,
-      { key: "timeHorizon", label: "How far ahead the responses are designed to work", cat: "scenario", kind: "select", sec: "Describe the action", opts: TIMING_HORIZON, hint: H.horizonNow, span: 2 },
       { key: "linkedInherent", label: "Linked inherent risk statement", cat: "risk", kind: "link", sec: "Ratings", span: 2, linkType: "presentImpact", hint: H.linkNow },
       F.effectiveness, F.integrityRating, F.authenticityRating, F.residualLevel,
       F.hazardTypes
@@ -749,6 +751,11 @@ function buildDraft(type, d, f) {
     if (/coping/i.test(mode)) S.push(`These responses are mainly a way of ${f("adaptationMode", "coping")} with the impacts.`);
     else if (/incremental/i.test(mode)) S.push(`They are a form of ${f("adaptationMode", "incremental adaptation")}.`);
     else if (/transform/i.test(mode)) S.push(`They are a form of ${f("adaptationMode", "transformational adaptation")}.`);
+    if (type === "presentResidual" && (has("timeHorizon") || has("scenario"))) {
+      const hz = has("timeHorizon") ? lowerFirst(t("timeHorizon")) : "";
+      const when = hz ? (/^beyond/.test(hz) ? hz : "in the " + hz) : "";
+      S.push(`They are designed to keep working${when ? " " + f("timeHorizon", when) : ""}${has("scenario") ? (when ? "," : "") + " under " + f("scenario") : ""}.`);
+    }
     if (A && has("value")) S.push(`They aim to sustain ${attrMid()} and the ${f("value")} ${plural ? "they support" : "it supports"}.`);
     if (has("lossDamageResponses")) S.push(`Responses to loss and damage include ${f("lossDamageResponses", lowerFirst(t("lossDamageResponses")))}.`);
     if (has("responseEffectiveness")) S.push(`Overall, these responses are ${f("responseEffectiveness", ratingWord(d.responseEffectiveness) + ratingNum(d.responseEffectiveness))}.`);
@@ -817,6 +824,7 @@ const GARDENS_EXAMPLE = {
         responseFunction: ["Anticipate and prepare", "Respond and cope", "Address enduring or unavoidable loss and damage"],
         heritageContinuity: ["Adapted in situ", "Sustained through continued practice", "Transmitted across generations", "Recorded or documented"],
         timeHorizon: "Near term",
+        scenario: "SSP2-4.5 (intermediate emissions)",
         hazardTypes: ["Drought", "Aridity / drying", "Extreme heat / heatwaves"]
       },
       final: ""
@@ -926,6 +934,7 @@ const EXAMPLE = {
         responseFunction: ["Anticipate and prepare", "Respond and cope", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
         heritageContinuity: ["Sustained through continued practice", "Transmitted across generations", "Adapted in situ", "Recorded or documented"],
         timeHorizon: "Near term",
+        scenario: "SSP5-8.5 (very high emissions)",
         hazardTypes: ["Drought", "Winter extremes / dzud", "Compound / cascading hazards"]
       },
       final: ""
@@ -1041,7 +1050,7 @@ const SEC_NOTE = {
   "Heritage": "What matters, and why it matters to people.",
   "What is happening": "From the hazard to its impacts, and what makes the attribute exposed and vulnerable.",
   "What could happen": "How the hazard may develop, what it could do to the attribute, and why.",
-  "Scenario": "The period and climate scenario this statement looks at.",
+  "Scenario": "The period and climate scenario this statement looks at, or that the responses are planned for.",
   "Responses": "What people are doing, or plan to do, to adapt and to address loss and damage.",
   "Outcomes": "What the responses mean for the attribute, and what remains at risk. Integrity and authenticity are judged after all the responses, adaptation and loss and damage together.",
   "Describe the action": "Tick all that apply. These become tags under the draft, not part of the sentence.",
