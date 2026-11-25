@@ -62,10 +62,17 @@
   .defs-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
   .defs-head h2{margin:0}
   #defsFind{width:100%;margin-bottom:6px}
+  .defs-note{font-size:13px;color:var(--muted);margin:0 0 4px}
   #defsList h3{font-size:15px;margin:16px 0 6px;color:var(--teal-dk,#0a7a86)}
   #defsList dl{margin:0;display:grid;gap:9px}
   #defsList dt{font-weight:600}
   #defsList dd{margin:0;font-size:14.5px;line-height:1.5}
+  #defsList .dfull{font:inherit;font-size:13.5px;font-weight:600;color:var(--teal-dk);background:none;border:0;padding:2px 0;margin-left:4px;text-decoration:underline;text-underline-offset:2px;cursor:pointer;white-space:nowrap}
+  #defsList .dfull:hover{text-decoration-thickness:2px}
+  #defsList .dfull:focus-visible{outline:2px solid var(--teal-dk);outline-offset:2px;border-radius:3px}
+  #defsList .full{margin:8px 0 4px;padding:10px 12px;background:var(--panel,#f7f4ee);border-radius:8px;font-size:13.5px;line-height:1.55;color:var(--ink-soft,#40553f)}
+  #defsList .full p{margin:0 0 8px}
+  #defsList .full p:last-child{margin:0}
   .dsrc{display:inline-block;margin-left:4px;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 7px}
   .defs-src{font-size:12px;color:var(--muted);margin-top:16px}
   .terms summary{cursor:pointer;font-weight:600;width:max-content;max-width:100%}
@@ -320,7 +327,7 @@
         <li><strong>Rate the risk.</strong> Impact intensity × likelihood determines where an inherent risk statement appears on the matrix. Link each response statement to the inherent risk it addresses to compare inherent and residual risk.</li>
         <li><strong>Save and export.</strong> Your work stays in this browser. Use <em>Save progress</em> to keep a separate copy as a file, and <em>Export to Word</em> to create a document for your report.</li>
       </ul>
-      <p class="terms"><button type="button" class="btn link" id="btnDefs2">See all definitions</button> <span class="muted">· IPCC, UNESCO and the tool’s own terms in one place</span></p>
+      <p class="terms"><button type="button" class="btn link" id="btnDefs2">See all definitions</button> <span class="muted">· from the Preserving Legacies glossary, the IPCC and UNESCO, in one place</span></p>
     </div>
   </header>
 
@@ -358,6 +365,7 @@
 <dialog id="dlgDefs" class="defs" aria-labelledby="defsT">
   <div class="defs-head"><h2 id="defsT">Definitions</h2><button class="btn" type="button" id="defsClose">Close</button></div>
   <label class="vh" for="defsFind">Find a term</label><input type="text" id="defsFind" placeholder="Find a term, e.g. exposure" autocomplete="off">
+  <p class="defs-note">Short definitions first. Select “Full definition” for the complete wording and its source.</p>
   <div id="defsList" aria-live="polite"></div>
   <p class="defs-src" id="defsSrc"></p>
 </dialog>
@@ -438,31 +446,32 @@ const TIMING_HORIZON = ["Near term", "Medium term", "Long term", "Very long term
 
 /* ---------- shared field definitions and guidance ---------- */
 const H = {
-  attribute: "The feature of the heritage place or practice that carries its values. For example: “the sacred medicinal gardens”.",
-  value: "What the attribute means to people. For example: “cultural identity, spiritual well-being and intergenerational continuity”.",
+  attribute: "The aspect of the place or practice that carries or expresses its values: tangible, intangible or a process. For example: “the sacred medicinal gardens”.",
+  value: "The meanings and importance people give it: why it matters, and to whom. For example: “cultural identity, spiritual well-being and intergenerational continuity”.",
   observersNow: "Who is noticing the change. For example: “elders” or “herders and local authorities”.",
   observersFuture: "Who has begun to notice the trend. For example: “elders” or “herders and local meteorologists”.",
   hazardNow: "Each climate-related event or trend that may cause harm, in its own box. For example: “longer and more irregular droughts”.",
   hazardFuture: "How each hazard may develop, in its own box. For example: “droughts continue to lengthen”.",
-  impactsNow: "The consequences already seen for the attribute and its values. Write in full sentences.",
-  impactsFuture: "The consequences that could follow for the attribute and its values. Write in full sentences.",
+  impactsNow: "The effects already seen on the attribute: on its condition and on its ability to convey its values. Write in full sentences.",
+  impactsFuture: "The effects that could follow for the attribute: on its condition and on its ability to convey its values. Write in full sentences.",
   outcome: "In a few words, what may happen to the attribute. For example: “begin to dry up entirely”.",
   exposure: "Why the attribute is in places or settings the hazards can reach: its location, setting or what it depends on. For example: “located on shallow soils and fully dependent on rainfall”.",
-  vulnerability: "What makes the attribute prone to harm: its sensitivity, and any lack of capacity to cope and adapt. For example: “the lack of water infrastructure and dependence on specific plant species”.",
+  vulnerability: "What makes the attribute prone to harm: its sensitivity, and limits to its capacity to cope and adapt. For example: “the lack of water infrastructure and dependence on specific plant species”.",
   intensityReason: "Why the consequences would be this severe. You can draw on climate projections, observed changes, and Indigenous and local knowledge. For example: “they could affect both the survival of medicinal species and the rituals that depend on them”.",
   likelihoodCondition: "What would make the impact likely, such as how the hazard develops and what protection or support is missing. For example: “droughts continue to lengthen and no new water-management measures are introduced”.",
-  likelihood: "IPCC terms: very likely means 90–100%, likely 66–100%, unlikely 0–33% and very unlikely 0–10% probability. Where probabilities aren’t known, use them as a judgement.",
+  likelihood: "The chance of the impacts occurring. IPCC terms: very likely means 90–100%, likely 66–100%, unlikely 0–33% and very unlikely 0–10% probability. Where probabilities aren’t known, use them as a judgement.",
   confidence: "In IPCC terms, how robust the finding is, given the type, amount, quality and consistency of the evidence and how far sources agree.",
+  intensity: "Magnitude: how severe the impacts would be for the attribute and its values, from 1 (low) to 4 (very high).",
   riskLevel: "Usually the level shown on the matrix below (impact intensity × likelihood). Choose another level only if you have a reason, and say why in the statement.",
   riskOf: "The adverse consequences that could follow. For example: “losing critical medicinal species and the rituals that depend on them”.",
-  evidence: "The evidence behind your confidence, including Indigenous and local knowledge. For example: “agreement between climate projections, observed trends and elders’ knowledge”.",
+  evidence: "The evidence behind your confidence, including Indigenous, local and traditional knowledge. For example: “agreement between climate projections, observed trends and elders’ knowledge”.",
   timeframe: "The period the statement looks at. For example: “by 2060” or “by the end of the century (2080–2100)”.",
   scenario: "Pick an IPCC climate scenario (Shared Socioeconomic Pathway, SSP) from the list, or type your own.",
   who: "Who is acting. For example: “elders” or “herders and local government”.",
   whoFuture: "Who has envisioned these responses. For example: “the community and stakeholders”.",
-  depth: "Coping manages adverse conditions in the short to medium term with existing skills and resources; incremental adaptation keeps the essence and integrity of the system; transformational adaptation changes its fundamental attributes.",
-  responsesNow: "What is being done now to adjust to the changing climate and moderate harm. For example: “adjusting planting schedules and monitoring plant behaviour”.",
-  responsesFuture: "The adaptation responses envisioned to adjust to the expected climate and moderate harm, as a list. For example: “water harvesting, seed banks and modified ritual calendars”.",
+  depth: "Coping manages conditions in the short to medium term with the resources at hand. Incremental adaptation adjusts existing systems while keeping their essence. Transformational adaptation is profound, systemic change that addresses the root causes of vulnerability.",
+  responsesNow: "Adaptation: actions to adjust to the changing climate and moderate harm. What is being done now? For example: “adjusting planting schedules and monitoring plant behaviour”.",
+  responsesFuture: "Adaptation: actions to adjust to the expected climate and moderate harm. List what is envisioned. For example: “water harvesting, seed banks and modified ritual calendars”.",
   potential: "What the responses could achieve. For example: “keep the gardens in use for rituals”.",
   lossDamage: "What is done about losses and damages that adaptation does not prevent, economic or non-economic. For example: recording what is being lost, sharing knowledge, remembrance or mutual support.",
   integrity: "Describe how all the responses above, both adaptation and loss and damage, affect how whole and intact the attribute remains. For example: “the gardens remain whole, though in a modified form”.",
@@ -487,7 +496,7 @@ const F = {
   hazardTypes: { key: "hazardTypes", label: "Climate hazard types", cat: "hazard", kind: "multi", tag: "Climate hazards", sec: "Climate hazards", span: 2, opts: HAZARD_OPTS },
   timeframe: { key: "timeframe", label: "Timeframe", cat: "scenario", kind: "text", sec: "Scenario", hint: H.timeframe },
   scenario: { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: H.scenario },
-  intensity: { key: "impactIntensity", label: "Impact intensity", cat: "impactIntensity", kind: "select", sec: "Ratings", opts: SCALE.magnitude },
+  intensity: { key: "impactIntensity", label: "Impact intensity", cat: "impactIntensity", kind: "select", sec: "Ratings", opts: SCALE.magnitude, hint: H.intensity },
   likelihood: { key: "likelihood", label: "Likelihood", cat: "likelihood", kind: "select", sec: "Ratings", opts: SCALE.likelihood, hint: H.likelihood },
   riskLevel: { key: "riskLevel", label: "Inherent risk level", cat: "risk", kind: "select", sec: "Ratings", opts: SCALE.magnitude, hint: H.riskLevel, span: 2 },
   riskOf: { key: "riskOf", label: "Risk of what", cat: "risk", kind: "textarea", sec: "Ratings", span: 2, hint: H.riskOf },
@@ -1115,7 +1124,7 @@ const SEC_COLOR = {
 /* one short line under each section heading */
 const SEC_NOTE = {
   "Heritage": "What matters, and why it matters to people.",
-  "What is happening": "Risk comes from hazards interacting with the exposure and vulnerability of what you value. Impacts are the consequences when that risk is realised.",
+  "What is happening": "Risk comes from hazards interacting with the exposure and vulnerability of what you value. Impacts are the effects on the attribute and on its ability to convey its values.",
   "What could happen": "How the hazards, exposure and vulnerability may change, and the consequences that could follow.",
   "Scenario": "The period and climate scenario this statement looks at, or that the responses are planned for.",
   "Responses": "Adaptation adjusts to actual or expected climate to moderate harm. Responses to losses and damages deal with the harm that adaptation does not prevent.",
@@ -1734,48 +1743,378 @@ const IPCC_TERMS = [
 ];
 const IPCC_SRC = "IPCC, 2022: Annex II: Glossary [Möller, V., R. van Diemen, J.B.R. Matthews, C. Méndez, S. Semenov, J.S. Fuglestvedt, A. Reisinger (eds.)]. In: Climate Change 2022: Impacts, Adaptation and Vulnerability. Contribution of Working Group II to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change. Cambridge University Press, pp. 2897–2930, doi:10.1017/9781009325844.029.";
 
-/* every definition used in the tool, in one place (Definitions button) */
+/* every definition used in the tool, in one place (Definitions button).
+   Short wording first; the full definition, mostly from the Preserving Legacies glossary, opens on click. */
 const DEFS = [
-  ["Climate risk", "Hazard", IPCC_TERMS[0][1], "IPCC"],
-  ["Climate risk", "Compound hazards", "The combination of multiple drivers and/or hazards that contributes to societal and/or environmental risk.", "IPCC"],
-  ["Climate risk", "Cascading impacts", "Occur when an extreme hazard generates a sequence of secondary events in natural and human systems that result in physical, natural, social or economic disruption, whereby the resulting impact is significantly larger than the initial impact.", "IPCC"],
-  ["Climate risk", "Exposure", IPCC_TERMS[1][1], "IPCC"],
-  ["Climate risk", "Vulnerability", IPCC_TERMS[2][1], "IPCC"],
-  ["Climate risk", "Impacts", IPCC_TERMS[3][1], "IPCC"],
-  ["Climate risk", "Risk", IPCC_TERMS[4][1], "IPCC"],
-  ["Climate risk", "Inherent risk", "The risk from hazards, exposure and vulnerability before the responses described in the matching response statement. This is the tool’s term; it is not in the IPCC glossary.", "This tool"],
-  ["Climate risk", "Residual risk", IPCC_TERMS[8][1], "IPCC"],
-  ["Climate risk", "Climate scenario (SSP)", "Shared Socioeconomic Pathways: scenarios of how society, emissions and warming may develop, used by the IPCC. SSP1-2.6 is a low-emissions future; SSP5-8.5 is a very high-emissions future.", "IPCC"],
-  ["Responses", "Adaptation", IPCC_TERMS[5][1], "IPCC"],
-  ["Responses", "Coping capacity", "The ability of people, institutions, organisations and systems, using available skills, values, beliefs, resources and opportunities, to address, manage and overcome adverse conditions in the short to medium term.", "IPCC"],
-  ["Responses", "Incremental adaptation", "Adaptation that maintains the essence and integrity of a system or process at a given scale.", "IPCC"],
-  ["Responses", "Transformational adaptation", "Adaptation that changes the fundamental attributes of a social-ecological system in anticipation of climate change and its impacts.", "IPCC"],
-  ["Responses", "Losses and damages", IPCC_TERMS[6][1], "IPCC"],
-  ["Responses", "Adaptation limits", IPCC_TERMS[7][1] + " Hard limit: no adaptive actions are possible to avoid intolerable risks. Soft limit: options may exist but are currently not available to avoid intolerable risks through adaptive action.", "IPCC"],
-  ["Responses", "Maladaptation", "Actions that may lead to increased risk of adverse climate-related outcomes, including via increased greenhouse gas emissions, increased or shifted vulnerability to climate change, more inequitable outcomes, or diminished welfare, now or in the future.", "IPCC"],
-  ["Heritage", "Attribute", "The part of a heritage place or practice that carries its value, such as a building, a garden, a ritual, a route or a skill.", "This tool"],
-  ["Heritage", "Values", "Why the attribute matters to people, such as identity, spiritual meaning, livelihoods or knowledge passed between generations.", "This tool"],
-  ["Heritage", "Integrity", DEF.integrity.html.replace(/<[^>]+>/g, ""), "UNESCO, para. 88"],
-  ["Heritage", "Authenticity", DEF.authenticity.html.replace(/<[^>]+>/g, ""), "UNESCO, para. 82"],
-  ["Evidence and ratings", "Indigenous knowledge", "The understandings, skills and philosophies developed by societies with long histories of interaction with their natural surroundings.", "IPCC"],
-  ["Evidence and ratings", "Local knowledge", "The understandings and skills developed by individuals and populations, specific to the places where they live.", "IPCC"],
-  ["Evidence and ratings", "Likelihood", IPCC_TERMS[9][1] + " IPCC terms used here: very likely 90–100%, likely 66–100%, unlikely 0–33%, very unlikely 0–10%.", "IPCC"],
-  ["Evidence and ratings", "Confidence", IPCC_TERMS[10][1] + " Used here as low, medium, high or very high.", "IPCC"],
-  ["Evidence and ratings", "Impact intensity", "How severe the consequences would be for the attribute and its values, from 1 (low) to 4 (very high).", "This tool"],
-  ["Evidence and ratings", "Inherent risk level", "Impact intensity × likelihood, scored out of 16: Low 1–3, Moderate 4–6, High 8–9, Very high 12–16.", "This tool"],
-  ["Evidence and ratings", "Residual risk level", "Your judgement of the risk that remains, on the same 1–4 scale as inherent risk.", "This tool"],
-  ["Evidence and ratings", "Response effectiveness", "Your judgement of how well the responses reduce the risk, from 1 (somewhat effective) to 4 (very effective). The tool does not measure it.", "This tool"]
+[
+"Heritage",
+"Heritage place",
+"A location with cultural or natural heritage values that reflect people’s interaction with the environment over time. A heritage site is one formally designated for protection, for example on the World Heritage List.",
+"A heritage place is a geographical location associated with cultural or natural heritage values reflecting human interaction with the environment over time. A heritage site, on the other hand, refers to areas formally designated for protection under frameworks like UNESCO’s World Heritage List (UNESCO World Heritage Centre)",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Heritage practice",
+"The activities and processes through which heritage is kept alive and passed on, such as rituals, oral traditions, craft techniques and caring for the land.",
+"Heritage practice refers to the diverse activities, expressions, and processes through which cultural or natural heritage is continuously maintained, transmitted, and revitalized. These practices may include rituals, oral traditions, craftsmanship techniques, environmental stewardship, and conservation methods, often rooted in local knowledge systems and intergenerational transmission.\n\nUnlike a heritage place, which is typically spatially and materially defined, heritage practice emphasizes the dynamic, lived, and relational dimensions of heritage. It highlights the ongoing actions that sustain the meanings, values, and significance of heritage over time and across changing contexts (UNESCO World Heritage Centre, UNESCO Convention for the Safeguarding of Intangible Cultural Heritage, 2003).",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Attributes",
+"Aspects of a heritage place or practice that carry or express its values. They can be tangible, intangible or processes: physical fabric, the relationships between features, or the cultural practices that shaped a landscape.",
+"Attributes are aspects of a property which are associated with or express the site's values (for World Heritage Sites their Outstanding Universal Value). Attributes can be tangible, intangible or process based. Attributes can be physical qualities or fabric, or the relationships between them. Attributes can also be processes impacting on physical qualities, such as natural or agricultural processes, social arrangements or cultural practices that have shaped distinctive landscapes. For natural properties, they can include landscape features, habitats, aspects of environmental quality (such as intactness, high/pristine environmental quality), scale and naturalness of habitats, and size and viability of wildlife populations.",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Values",
+"The meanings and importance people give a heritage place or practice: why it matters, and to whom. Values can be historical, cultural, spiritual, aesthetic, ecological, economic and more, and often several at once.",
+"Values refer to the meanings, importance, and significance that people, whether individuals, communities, or institutions, associate with a heritage place. These values reflect \"why\" a site matters and what it represents, both tangibly and intangibly, to diverse groups. Values guide decisions about what should be protected and why, for present and future generations (de la Torre, 2002; Avrami et al., 2000).\n\nAs outlined in the Enhancing Our Heritage Toolkit, values are the qualities for which a heritage place is considered important to be protected (UNESCO, 2008). These may be cultural or natural, tangible or intangible, and are often multiple and overlapping. They can include, but are not limited to, historical, cultural, spiritual, aesthetic, scientific, recreational, ecological, educational, economic, philosophical, political, and health-related significance (UNESCO, 2008; Mason, 2002).\n\nWhile a site may hold many kinds of values, not all of them will necessarily contribute to its Outstanding Universal Value (OUV) as defined by UNESCO.",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Integrity",
+"How whole and intact the heritage and its attributes are.",
+"@integrity",
+"UNESCO, para. 88"
+],
+[
+"Heritage",
+"Authenticity",
+"Whether the attributes still truthfully and credibly express the heritage’s cultural values.",
+"@authenticity",
+"UNESCO, para. 82"
+],
+[
+"Heritage",
+"Cultural heritage",
+"The tangible and intangible legacy inherited from past generations, kept in the present and passed on. It includes places, buildings, landscapes and objects, and living traditions, knowledge, languages and rituals, whether or not they are formally designated.",
+"Cultural heritage refers to the diverse legacy of tangible and intangible elements inherited from past generations, maintained in the present, and passed on to future generations. It encompasses monuments, buildings, sites, landscapes, and objects, as well as living traditions, practices, knowledge systems, languages, rituals, and forms of expression that communities, groups, and individuals recognize as meaningful to their identity, history, and ways of life.\n\nWhile cultural heritage includes sites formally recognized by UNESCO for their Outstanding Universal Value, defined as “cultural and/or natural significance which is so exceptional as to transcend national boundaries” (UNESCO, 1972), it also extends well beyond the World Heritage List. Many forms of heritage are not officially designated yet hold deep local, national, or regional importance.\n\nUNESCO’s 2003 Convention for the Safeguarding of the Intangible Cultural Heritage emphasizes this broader scope, defining intangible cultural heritage as: “The practices, representations, expressions, knowledge, skills…that communities, groups and, in some cases, individuals recognize as part of their cultural heritage” (UNESCO, 2003, Art. 2).\n\nSimilarly, the Council of Europe’s Faro Convention (2005) highlights the right of individuals and communities to engage with the cultural heritage of their choice, framing heritage as a dynamic process shaped by values, identities, and collective memory.\n\nThis inclusive understanding recognizes that heritage is not limited to formal designations, and that its meaning and value are often defined and sustained by the people who engage with it through memory, care, and daily life.",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Intangible heritage",
+"Practices, expressions, knowledge and skills passed down through generations, such as oral traditions, rituals, festive events and craftsmanship.",
+"Intangible cultural heritage consists of practices, representations, expressions, knowledge, and skills transmitted through generations. These include oral traditions, performing arts, rituals, festive events, and traditional craftsmanship. It provides communities with a sense of identity and continuity while promoting respect for cultural diversity (UNESCO Convention for the Safeguarding of Intangible Cultural Heritage, 2003)",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Tangible heritage",
+"Physical heritage such as buildings, monuments, archaeological sites and objects.",
+"Tangible heritage refers to physical artifacts such as artistic creations, historic buildings, monuments, archaeological sites, and other material objects produced by human creativity. These are preserved intergenerationally as symbols of cultural significance (UNESCO World Heritage Centre)",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Rights holders",
+"People or groups with legal or customary rights to heritage resources.",
+"Actors socially endowed with legal or customary rights with respect to heritage resources. (Enhancing our Heritage Toolkit)",
+"Preserving Legacies glossary"
+],
+[
+"Heritage",
+"Stakeholders",
+"People or groups with an interest in heritage resources, without necessarily having a recognised right to them.",
+"Actors who possess direct or indirect interests and concerns about heritage resources, but do not necessarily enjoy a legally or socially recognized entitlement to them. (Enhancing our Heritage Toolkit).",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Climate change",
+"A lasting change in the climate, over decades or longer, from natural causes or human activity. The UNFCCC uses the term for change caused by human activity.",
+"A change in the state of the climate that can be identified (e.g., by using statistical tests) by changes in the mean and/or the variability of its properties and that persists for an extended period, typically decades or longer. Climate change may be due to natural internal processes or external forcings such as modulations of the solar cycles, volcanic eruptions and persistent anthropogenic changes in the composition of the atmosphere or in land use. \n\nNote that the United Nations Framework Convention on Climate Change (UNFCCC), in its Article 1, defines climate change as: ’a change of climate which is attributed directly or indirectly to human activity that alters the composition of the global atmosphere and which is in addition to natural climate variability observed over comparable time periods’. \n\nThe UNFCCC thus makes a distinction between climate change attributable to human activities altering the atmospheric composition and climate variability attributable to natural causes. (IPCC-2021,2022, WGI,WGIII,WGII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Hazard",
+"A climate-related event or trend that may cause harm to people, livelihoods, property, ecosystems or heritage.",
+"The potential occurrence of a natural or human-induced physical event or trend that may cause loss of life, injury, or other health impacts, as well as damage and loss to property, infrastructure, livelihoods, service provision, ecosystems and environmental resources. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Compound hazards",
+"Several hazards or drivers combining to create risk.",
+"The terms ‘compound events’, ‘compound extremes’ and ‘compound extreme events’ are used interchangeably … and refer to the combination of multiple drivers and/or hazards that contributes to societal and/or environmental risk. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Climate risk",
+"Cascading impacts",
+"A chain of secondary effects set off by an extreme hazard, ending up larger than the first impact.",
+"Cascading impacts from extreme weather/climate events occur when an extreme hazard generates a sequence of secondary events in natural and human systems that result in physical, natural, social or economic disruption, whereby the resulting impact is significantly larger than the initial impact. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Climate risk",
+"Exposure",
+"Being in places and settings that could be adversely affected: people, livelihoods, ecosystems, infrastructure, or cultural assets.",
+"The presence of people; livelihoods; species or ecosystems; environmental functions, services, and resources; infrastructure; or economic, social, or cultural assets in places and settings that could be adversely affected. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Sensitivity",
+"How much something is affected, for better or worse, by climate variability or change.",
+"The degree to which a system or species is affected, either adversely or beneficially, by climate variability or change. The effect may be direct (e.g., a change in crop yield in response to a change in the mean, range, or variability of temperature) or indirect (e.g., damages caused by an increase in the frequency of coastal flooding due to sea level rise) (IPCC-2022, AR6-WGII).",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Adaptive capacity",
+"The ability to adjust to potential damage, take advantage of opportunities, or respond to consequences.",
+"The ability of systems, institutions, humans and other organisms to adjust to potential damage, to take advantage of opportunities, or to respond to consequences (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII).",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Vulnerability",
+"The tendency to be harmed. It combines sensitivity with a lack of capacity to cope and adapt.",
+"The propensity or predisposition to be adversely affected. Vulnerability encompasses a variety of concepts and elements, including sensitivity or susceptibility to harm and lack of capacity to cope and adapt. Vulnerability is then a function of sensitivity and adaptive capacity. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Impacts",
+"The effects on the attributes: on their condition and on their ability to convey the heritage values. In IPCC terms, the consequences of risks that have been realised.",
+"The effects or consequences of a factor on the attributes of the property, both in terms of the attributes’ state of conservation and their ability to convey the heritage values.(Enhancing our Heritage Toolkit)\n\nThe consequences of realized risks on natural and human systems, where risks result from the interactions of climate-related hazards (including extreme weather/climate events), exposure, and vulnerability. Impacts generally refer to effects on lives, livelihoods, health and well-being, ecosystems and species, economic, social and cultural assets, services (including ecosystem services), and infrastructure. Impacts may be referred to as consequences or outcomes and can be adverse or beneficial. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Risk",
+"The potential for harmful consequences, recognising that people hold different values. In climate change, risk comes from hazards interacting with exposure and vulnerability.",
+"The potential for adverse consequences for human or ecological systems, recognising the diversity of values and objectives associated with such systems. In the context of climate change, risks can arise from potential impacts of climate change as well as human responses to climate change. Relevant adverse consequences include those on lives, livelihoods, health and wellbeing, economic, social and cultural assets and investments, infrastructure, services (including ecosystem services), ecosystems and species. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)\n\nThe word “potential” makes clear that uncertainty, or more broadly, incomplete knowledge (as defined in IPCC), is a key element of the concept of risk. This uncertainty does not necessarily have to be quantified, but authors need to provide some sense of the nature and degree of uncertainty to allow a meaningful risk assessment and risk management responses to be undertaken. (IPCC-2020, Guidance for IPCC authors)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Risk from climate change impacts",
+"Risk that results from hazards interacting with exposure and vulnerability. All three can change over time and from place to place.",
+"In the context of climate change impacts, risks result from dynamic interactions between climate-related hazards with the exposure and vulnerability of the affected human or ecological system to the hazards. Hazards, exposure and vulnerability may each be subject to uncertainty in terms of magnitude and likelihood of occurrence, and each may change over time and space due to socio-economic changes and human decision-making (see also risk management, adaptation, mitigation). (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Risk from climate change responses",
+"The chance that responses don’t achieve their aims, or have negative side effects on other goals.",
+"In the context of climate change responses, risks result from the potential for such responses not achieving the intended objective(s), or from potential trade-offs with, or negative side-effects on, other societal objectives, such as the Sustainable Development Goals (SDGs) (see also risk trade-off). Risks can arise, for example, from uncertainty in implementation, effectiveness or outcomes of climate policy, climate-related investments, technology development or adoption, and system transitions. See also Hazard and Impacts (consequences, outcomes). (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Inherent risk",
+"The risk from hazards, exposure and vulnerability before the responses described in the matching response statement. This is the tool’s term.",
+"",
+"This tool"
+],
+[
+"Climate risk",
+"Residual risk",
+"The risk that remains after adaptation and mitigation efforts.",
+"The risk related to climate change impacts that remains following adaptation and mitigation efforts. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Climate risk",
+"Magnitude",
+"The scale, intensity or severity of a hazard or of the impacts it produces. In this tool it is rated as impact intensity.",
+"Magnitude refers to the scale, intensity, or severity of a hazard, or the degree of exposure, vulnerability, or impact it produces. It helps characterize the potential or observed extent of disruption, damage, or loss associated with a specific climate-related event or condition.(IPCC-2021,2022, WGI,WGIII,WGII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Likelihood",
+"The chance of a specific outcome occurring. IPCC terms used here: very likely 90–100%, likely 66–100%, unlikely 0–33%, very unlikely 0–10%.",
+"The chance of a specific outcome occurring, where this might be estimated probabilistically. Likelihood is expressed in this report using a standard terminology (Mastrandrea et al., 2010).  (IPCC-2021,2022, WGI,WGIII,WGII)",
+"Preserving Legacies glossary"
+],
+[
+"Climate risk",
+"Confidence",
+"How robust a finding is, given the evidence and how far sources agree. Used here as low, medium, high or very high.",
+"The robustness of a finding based on the type, amount, quality and consistency of evidence (e.g., mechanistic understanding, theory, data, models, expert judgement) and on the degree of agreement across multiple lines of evidence. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Climate risk",
+"Climate scenario (SSP)",
+"Shared Socioeconomic Pathways: scenarios of how society, emissions and warming may develop, used by the IPCC. SSP1-2.6 is a low-emissions future; SSP5-8.5 a very high-emissions future.",
+"",
+"IPCC AR6"
+],
+[
+"Responses",
+"Responses",
+"Actions taken to address a situation. In this tool they include adaptation and responses to losses and damages.",
+"Response refers to the immediate actions taken to address a situation, while adaptive capacity is the ability of a system to  adjust to climate change, moderate potential damages, and cope with  consequences. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Adaptation",
+"Adjusting to actual or expected climate and its effects, to moderate harm or make use of opportunities.",
+"In human systems, the process of adjustment to actual or expected climate and its effects, in order to moderate harm or exploit beneficial opportunities. In natural systems, the process of adjustment to actual climate and its effects; human intervention may facilitate adjustment to expected climate and its effects. (IPCC-2021,2022, WGI,WGIII,WGII).",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Coping capacity",
+"Managing and overcoming adverse conditions in the short to medium term, with the skills and resources at hand.",
+"The ability of people, institutions, organisations and systems, using available skills, values, beliefs, resources and opportunities, to address, manage and overcome adverse conditions in the short to medium term. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Responses",
+"Incremental adaptation",
+"Adjusting existing systems while keeping their essence and integrity.",
+"Adaptation that maintains the essence and integrity of a system or process at a given scale. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Responses",
+"Transition (adaptation)",
+"Moving from existing systems and practices to more resilient ones, often gradually but with significant shifts, including cultural transitions in how communities live and relate to their environment.",
+"In the adaptation context, a transition refers to the process of evolving from existing systems, practices, or structures to more resilient, sustainable, and climate-conscious models in response to the challenges posed by climate change. While these transitions can often be gradual, they involve significant shifts in policies, technologies, governance, and behaviors, all aimed at enhancing adaptive capacity and fostering long-term resilience.\n\nTransitions are essential for ensuring that societies, economies, and ecosystems can effectively adjust to and cope with the evolving nature of climate risks. These processes are key to reducing vulnerability and preparing for future climate impacts. Examples of transitions in the adaptation context include:\n1. Energy transitions, such as shifting from fossil fuel reliance to renewable energy sources, which not only mitigate emissions but also enhance resilience to energy-related climate disruptions.\n2. Agricultural transitions, where farming communities adopt more climate-resilient crops and practices to withstand changing climatic conditions.\n3. Urban transitions, in which cities overhaul infrastructure, zoning, and governance models to better handle hazards such as flooding, heatwaves, and extreme weather events.\n4. Cultural transitions, in which communities, groups, or societies undergo change in their cultural practices, beliefs, and ways of life as they respond to climate change and its associated risks. These transitions are essential for preserving cultural identity while integrating new methods and values for sustainability and resilience. Unlike technical or economic transitions, cultural transitions reflect a deeper, more profound change in how communities relate to their natural environment and each other.\n\nAs highlighted by the IPCC, such transitions are integral to sustainable development and crucial for ensuring that societies are equipped to manage and reduce climate-related risks and vulnerabilities (IPCC, 2022).",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Transformation (adaptation)",
+"Profound, systemic change that addresses the root causes of vulnerability, needed when adjusting existing systems is not enough.",
+"Transformation in the adaptation context refers to profound, systemic shifts in societal, economic, and environmental structures and practices to address the root causes of vulnerability and build long-term resilience to climate change. Unlike incremental changes, which typically involve adjustments to existing systems, transformative adaptation involves restructuring systems, changing governance models, and reimagining development pathways to ensure sustainability and equity. Transformation is essential when current structures or systems are insufficient to cope with the severity of climate impacts, and is particularly important in addressing high-risk or marginalized communities.\n\nTransformation can manifest in various forms, such as:\n1. Shifts in governance and policy frameworks to integrate climate resilience as a central goal.\n2. Technological innovations that radically reduce carbon emissions or increase resilience.\n3. Cultural or social transformations, where communities change their values and behaviors in response to climate risks.\n4. Economic transitions that emphasize sustainable development, equitable distribution of resources, and adaptive capacity.\n\nThe Intergovernmental Panel on Climate Change (IPCC) emphasizes the importance of transformation in adaptation strategies for achieving sustainable development goals, noting that transformation is necessary in scenarios where incremental adaptation fails to provide sufficient protection from increasing climate risks (IPCC, 2022).",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Locally-led adaptation",
+"Adaptation in which local actors hold real power over decisions, priorities and funding.",
+"Locally-led Adaptation (LLA) is a distinct approach that goes beyond consultative, participatory, and community-based methods by empowering local actors with agency over adaptation decisions and processes. This is crucial to ensure that those most affected by climate change have a direct say in adaptation finance and programming that impacts their lives. LLA has the potential to address structural inequalities faced by marginalized groups such as women, youth, children, people with disabilities, displaced persons, Indigenous Peoples, and ethnic minorities. It can aid in mobilizing more climate finance by improving the quality of funding and adjusting governance and decision-making processes to ensure the agency of local actors in adaptation planning and implementation. Furthermore, LLA serves as a catalyst to integrate social equity into standard processes and decisions, and by investing in mechanisms specifically designed to support groups that experience disproportional vulnerabilities due to climate change. (ICCCAD)",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Resilience",
+"The capacity to cope with a hazard and to respond or reorganise while keeping essential function, identity and structure.",
+"The capacity of interconnected social, economic and ecological systems to cope with a hazardous event, trend or disturbance, responding or reorganizing in ways that maintain their essential function, identity and structure. Resilience is a positive attribute when it maintains capacity for adaptation, learning and/ or transformation (Arctic Council, 2016). (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)\n\nThe ability of a system, community or society exposed to hazards to resist, absorb, accommodate to and recover from the effects of a hazard in a timely and efficient manner, including through the preservation and restoration of its essential basic structures and functions. (UNISDR, 2009).",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Mitigation",
+"Reducing greenhouse gas emissions or enhancing the sinks that absorb them.",
+"A human intervention to reduce emissions or enhance the sinks of greenhouse gases. (IPCC-2021,2022, WGI,WGIII,WGII)",
+"Preserving Legacies glossary"
+],
+[
+"Responses",
+"Losses and damages",
+"Harm from observed impacts and projected risks, economic or non-economic, such as the loss of knowledge, identity or sense of place.",
+"Lowercase letters (losses and damages) have been taken to refer broadly to harm from (observed) impacts and (projected) risks and can be economic or non-economic. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Responses",
+"Adaptation limits",
+"The point where adaptation can no longer avoid intolerable risk. Hard limits: no options exist. Soft limits: options exist but are not yet available.",
+"Adaptation limits: the point at which an actor’s objectives (or system needs) cannot be secured from intolerable risks through adaptive actions. Hard adaptation limit: no adaptive actions are possible to avoid intolerable risks. Soft adaptation limit: options may exist but are currently not available to avoid intolerable risks through adaptive action. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Responses",
+"Maladaptation",
+"Actions that end up increasing climate risk, shifting vulnerability to others, or deepening inequity, usually unintentionally.",
+"Actions that may lead to increased risk of adverse climate-related outcomes, including via increased greenhouse gas emissions, increased or shifted vulnerability to climate change, more inequitable outcomes, or diminished welfare, now or in the future. Most often, maladaptation is an unintended consequence. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Knowledge and evidence",
+"Indigenous knowledge",
+"The understandings, skills and philosophies of societies with long histories of interaction with their surroundings: holistic, place-based and passed between generations. Also called Indigenous knowledge systems (IKS).",
+"There is no single internationally accepted definition of Indigenous peoples or Indigenous knowledge systems (Petzold et al., 2020). \n\nHowever, Indigenous knowledge systems are integral to cultural complexes, encompassing language, classification systems, resource use practices, social interactions, values, rituals, and spirituality (Cajete, 2016). While there are cultural and linguistic differences, Indigenous knowledge systems share underlying similarities in their approach to the interrelationship and development of individuals within the community (Cajete, 2016). Little Bear (2020) states that Indigenous knowledge systems are holistic, cyclical, generalist, process-oriented, and place-based. The Inuit Circumpolar Council (2021) states that Indigenous knowledge is a systematic way of thinking applied across biological, physical, cultural, and spiritual systems based on direct and long-term experiences, multi-generational observations, lessons, and skills passed on from generation to generation (ICSM CHC White Paper I: Intangible cultural heritage, diverse knowledge systems and climate change)\n\nThe understandings, skills and philosophies developed by societies with long histories of interaction with their natural surroundings. For many Indigenous peoples, IK informs decision-making about fundamental aspects of life, from day-to-day activities to longer-term actions. This knowledge is integral to cultural complexes, which also encompass language, systems of classification, resource use practices, social interactions, values, ritual and spirituality. These distinctive ways of knowing are important facets of the world’s cultural diversity (UNESCO 2018). See also Traditional Knowledge",
+"Preserving Legacies glossary"
+],
+[
+"Knowledge and evidence",
+"Local knowledge",
+"The understandings and skills people develop specific to the places where they live.",
+"The understandings and skills developed by individuals and populations, specific to the places where they live. Local knowledge informs decision-making about fundamental aspects of life, from day-to-day activities to longer-term actions. This knowledge is a key element of the social and cultural systems which influence observations of and responses to climate change; it also informs governance decisions (UNESCO, 2018; ICSM CHC White Paper I: Intangible cultural heritage, diverse knowledge systems and climate change). See also Traditional Knowledge",
+"Preserving Legacies glossary"
+],
+[
+"Knowledge and evidence",
+"Traditional knowledge",
+"Knowledge, innovations and practices of Indigenous and local communities, developed over centuries and usually passed on orally.",
+"A term used commonly to describe local and Indigenous Knowlegde, this incoporates the innovations and practices of Indigenous and local communities around the world. Developed from experience gained over the centuries and adapted to the local culture and environment, traditional knowledge is transmitted orally from generation to generation. It tends to be collectively owned and takes the form of stories, songs, folklore, proverbs, cultural values, beliefs, rituals, community laws, local language and agricultural practices, including the development of plant species and animal breeds. Traditional knowledge is mainly of a practical nature, particularly in such fields as agriculture, fisheries, health, horticulture, forestry and environmental management in general (Secretariat of the Convention on Biological Diversity - SCBD, Art.8(j), 2007). See also Local Knowledge and Indigenous Knowledge.",
+"Preserving Legacies glossary"
+],
+[
+"Knowledge and evidence",
+"Knowledge systems",
+"The connected people, practices and institutions through which knowledge is produced, shared and used, linking tangible and intangible heritage.",
+"Knowledge systems are inherently holistic, composed of many interacting constituent parts that may span or be embedded within different interrelated aspects of social practice, including economic, social, environmental, political, cultural, and spiritual dimensions. They relate to and connect both material components or tangible heritage (e.g., humans, animals/plants, landscapes, built structures, and objects, including tools), and non-material components or intangible heritage (e.g., languages, ideas, values, beliefs, epistemologies and worldviews). At the same time, knowledge systems reflect how these components interconnect with each other, blurring the boundaries between what is defined as tangible and intangible. Knowledge systems are sets of interacting ‘agents, practices and institutions that organise the production, transfer and use of knowledge’ (Cornel et al 2013) (ICSM CHC White Paper I: Intangible cultural heritage, diverse knowledge systems and climate change).",
+"Preserving Legacies glossary"
+],
+[
+"Knowledge and evidence",
+"Local communities",
+"Non-Indigenous communities with long-term, often multigenerational, links to places and livelihoods.",
+"Local communities refers to non-Indigenous communities with historical linkages to places and livelihoods characterized by long- term relationships with the natural environment, often over generations. (Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services Glossary)",
+"Preserving Legacies glossary"
+],
+[
+"Ratings in this tool",
+"Impact intensity",
+"How severe the impacts would be for the attribute and its values (their magnitude), from 1 (low) to 4 (very high).",
+"",
+"This tool"
+],
+[
+"Ratings in this tool",
+"Inherent risk level",
+"Impact intensity × likelihood, scored out of 16: Low 1–3, Moderate 4–6, High 8–9, Very high 12–16.",
+"",
+"This tool"
+],
+[
+"Ratings in this tool",
+"Residual risk level",
+"Your judgement of the risk that remains, on the same 1–4 scale as inherent risk.",
+"",
+"This tool"
+],
+[
+"Ratings in this tool",
+"Response effectiveness",
+"Your judgement of how well the responses reduce the risk, from 1 (somewhat effective) to 4 (very effective). The tool does not measure it.",
+"",
+"This tool"
+]
 ];
+DEFS.forEach(d => { if (d[3] === "@integrity") d[3] = DEF.integrity.html.replace(/<[^>]+>/g, "") + " (" + UNESCO_SRC + ", para. 88)"; if (d[3] === "@authenticity") d[3] = DEF.authenticity.html.replace(/<[^>]+>/g, "") + " (" + UNESCO_SRC + ", para. 82)"; });
+const paras = t => t.split(/\n\s*\n/).map(p => `<p>${esc(p.trim()).replace(/\n/g, "<br>")}</p>`).join("");
 function renderDefs(filter) {
   const q = String(filter || "").trim().toLowerCase();
   const groups = [...new Set(DEFS.map(d => d[0]))];
-  let html = "";
+  let html = "", n = 0;
   groups.forEach(g => {
-    const rows = DEFS.filter(d => d[0] === g && (!q || (d[1] + " " + d[2]).toLowerCase().includes(q)));
+    const rows = DEFS.map((d, i) => [d, i]).filter(([d]) => d[0] === g && (!q || (d[1] + " " + d[2]).toLowerCase().includes(q)))
+      .sort(([x], [y]) => q ? (y[1].toLowerCase().includes(q) - x[1].toLowerCase().includes(q)) : 0);
     if (!rows.length) return;
-    html += `<h3>${g}</h3><dl>${rows.map(d => `<div><dt>${esc(d[1])}</dt><dd>${esc(d[2])} <span class="dsrc">${esc(d[3])}</span></dd></div>`).join("")}</dl>`;
+    html += `<h3>${g}</h3><dl>${rows.map(([d, i]) => { n++; return `<div><dt>${esc(d[1])}</dt><dd>${esc(d[2])} <span class="dsrc">${esc(d[4])}</span>` +
+      (d[3] ? ` <button type="button" class="link dfull" aria-expanded="false" aria-controls="df-${i}">Full definition</button><div class="full" id="df-${i}" hidden>${paras(d[3])}</div>` : "") + `</dd></div>`; }).join("")}</dl>`;
   });
   $("defsList").innerHTML = html || `<p class="muted">No definition matches “${esc(filter)}”.</p>`;
+  $("defsList").querySelectorAll(".dfull").forEach(b => b.addEventListener("click", () => {
+    const box = $(b.getAttribute("aria-controls")), open = box.hidden;
+    box.hidden = !open; b.setAttribute("aria-expanded", String(open)); b.textContent = open ? "Hide full definition" : "Full definition";
+  }));
 }
 function openDefs() { $("defsFind").value = ""; renderDefs(""); $("dlgDefs").showModal(); $("defsFind").focus(); }
 /* conceptual points that are easy to misread */
@@ -2101,7 +2440,8 @@ function exportRiskSummary() {
       `${c(r ? lvlLabel(r.level) : "")}${c(s.data.residualLevel)}${c(s.data.integrityRating)}${c(s.data.authenticityRating)}${c(s.data.confidence)}</tr>`;
   });
   h += `</table><h3>About the ratings</h3><ul>${METHOD_NOTES.map(n => `<li style="font-size:10pt">${n}</li>`).join("")}</ul>`;
-  h += `<h3>Key terms</h3>${IPCC_TERMS.map(([t, d]) => `<p style="font-size:10pt;margin:0 0 4pt"><b>${t}:</b> “${d}”</p>`).join("")}<p style="font-size:9pt;color:#4a5f4a">${esc(IPCC_SRC)}</p>`;
+  const KEY = ["Attributes", "Values", "Hazard", "Exposure", "Vulnerability", "Impacts", "Risk", "Inherent risk", "Residual risk", "Adaptation", "Responses", "Losses and damages", "Likelihood", "Confidence", "Integrity", "Authenticity"];
+  h += `<h3>Key terms</h3>${KEY.map(k => DEFS.find(d => d[1] === k)).filter(Boolean).map(d => `<p style="font-size:10pt;margin:0 0 4pt"><b>${esc(d[1])}:</b> ${esc(d[2])} <span style="color:#4a5f4a">(${esc(d[4])})</span></p>`).join("")}<p style="font-size:9pt;color:#4a5f4a">Main source: Preserving Legacies glossary, drawing on the IPCC Sixth Assessment Report and UNESCO. ${esc(IPCC_SRC)}</p>`;
   return h;
 }
 function exportDoc() {
@@ -2154,7 +2494,7 @@ $("btnDefs").addEventListener("click", openDefs);
 $("btnDefs2").addEventListener("click", openDefs);
 $("defsFind").addEventListener("input", e => renderDefs(e.target.value));
 $("defsClose").addEventListener("click", () => $("dlgDefs").close());
-$("defsSrc").textContent = "Sources: " + IPCC_SRC + " " + UNESCO_SRC + ", paras 82 and 88.";
+$("defsSrc").textContent = "Main source: Preserving Legacies glossary, which draws on the IPCC Sixth Assessment Report, UNESCO and others (each full definition gives its source). Also: " + IPCC_SRC + " " + UNESCO_SRC + ", paras 82 and 88.";
 function saveCopy() {
   download((state.siteName || "risk-statements").replace(/\s+/g, "-") + "-statements.json", JSON.stringify(state, null, 2), "application/json");
   toast("Progress saved to a file");
