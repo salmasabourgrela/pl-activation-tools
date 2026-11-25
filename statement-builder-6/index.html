@@ -172,6 +172,8 @@
   details.more summary .sel{display:inline-flex;gap:5px;flex-wrap:wrap}
   details.more summary .sel span{background:var(--orange-lt);border:1px solid var(--orange);color:#9a3a12;border-radius:999px;padding:1px 9px;font-size:.76rem;font-weight:500}
   details.more .chk-group{padding:2px 0 12px}
+  .chk-h{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:4px 0 6px}
+  details.more .chk-sub + .chk-sub .chk-h{margin-top:0}
   details.more .chk:has(input:checked){background:var(--orange-lt);border-color:var(--orange);color:#9a3a12}
   details.more .chk input{accent-color:var(--orange-dk)}
 
@@ -442,6 +444,15 @@ const HERITAGE_CONTINUITY = [
   "Recorded or documented", "Remembered or memorialised", "Released or allowed to change",
   "Lost, disconnected or inaccessible"
 ];
+/* losses and damages: the harmful part of the impacts (UNFCCC groups economic and non-economic losses) */
+const LD_STATUS_NOW = ["Yes, already experienced", "None identified", "Not reported", "Not assessed"];
+const LD_STATUS_FUTURE = ["Yes, projected", "None expected", "Not reported", "Not assessed"];
+const LD_GROUPS = [
+  ["Economic", ["Damage to property or infrastructure", "Loss of livelihoods or income"]],
+  ["Non-economic", ["Damage to physical heritage", "Loss of access to land or resources", "Disruption of cultural practices", "Disruption of knowledge transmission",
+    "Effects on identity, belonging and wellbeing", "Effects on health or life", "Displacement or loss of mobility", "Loss of biodiversity or ecosystem services"]]
+];
+const LD_ECONOMIC = LD_GROUPS[0][1];
 const TIMING_HORIZON = ["Near term", "Medium term", "Long term", "Very long term", "Beyond 2100"];
 
 /* ---------- shared field definitions and guidance ---------- */
@@ -452,8 +463,11 @@ const H = {
   observersFuture: "Who has begun to notice the trend. For example: “elders” or “herders and local meteorologists”.",
   hazardNow: "Each climate-related event or trend that may cause harm, in its own box. For example: “longer and more irregular droughts”.",
   hazardFuture: "How each hazard may develop, in its own box. For example: “droughts continue to lengthen”.",
-  impactsNow: "The effects already seen on the attribute: on its condition and on its ability to convey its values. Write in full sentences.",
-  impactsFuture: "The effects that could follow for the attribute: on its condition and on its ability to convey its values. Write in full sentences.",
+  impactsNow: "What has been damaged, disrupted or lost, and what does this mean for the people, heritage and ecosystems concerned? Describe the effects on the attribute’s condition and on its ability to convey its values. Impacts can also be beneficial. Write in full sentences.",
+  impactsFuture: "What could be damaged, disrupted or lost, and what would this mean for the people, heritage and ecosystems concerned? Describe the effects on the attribute’s condition and on its ability to convey its values. Impacts can also be beneficial. Write in full sentences.",
+  ldNow: "Losses and damages are the harmful impacts, economic or non-economic. Have any already happened? If your sources say nothing, choose “Not reported” or “Not assessed” rather than assuming there are none.",
+  ldFuture: "Losses and damages are the harmful impacts, economic or non-economic. Are any projected under this scenario and timeframe? If your sources say nothing, choose “Not reported” or “Not assessed” rather than assuming there are none.",
+  ldKinds: "Tick all that apply. Economic losses and damages affect property, infrastructure, production or income. Non-economic ones are hard to put a price on, such as lost knowledge, identity or sense of place.",
   outcome: "In a few words, what may happen to the attribute. For example: “begin to dry up entirely”.",
   exposure: "Why the attribute is in places or settings the hazards can reach: its location, setting or what it depends on. For example: “located on shallow soils and fully dependent on rainfall”.",
   vulnerability: "What makes the attribute prone to harm: its sensitivity, and limits to its capacity to cope and adapt. For example: “the lack of water infrastructure and dependence on specific plant species”.",
@@ -524,14 +538,16 @@ const TYPES = {
       { key: "hazard", label: "Hazards", cat: "hazard", kind: "list", item: "hazard", sec: "What is happening", span: 2, hint: H.hazardNow },
       { ...F.hazardTypes, sec: "What is happening", label: "Hazard types (for comparing statements)" },
       { key: "observers", label: "Who is observing this", cat: "hazard", kind: "text", sec: "What is happening", hint: H.observersNow },
-      { key: "impacts", label: "Present impacts", cat: "impact", kind: "textarea", sec: "What is happening", span: 2, hint: H.impactsNow },
+      { key: "impacts", label: "Present impacts, including losses and damages", cat: "impact", kind: "textarea", sec: "What is happening", span: 2, hint: H.impactsNow },
+      { key: "lossDamageStatus", label: "Losses and damages so far", cat: "impact", kind: "select", sec: "What is happening", span: 2, opts: LD_STATUS_NOW, hint: H.ldNow },
+      { key: "lossDamageKinds", label: "Kinds of losses and damages", cat: "impact", kind: "multi", sec: "What is happening", span: 2, groups: LD_GROUPS, opts: LD_GROUPS.flatMap(g => g[1]), collapse: true, hint: H.ldKinds },
       { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "What is happening", span: 2, hint: H.exposure },
       { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "What is happening", span: 2, hint: H.vulnerability },
       F.intensity, F.likelihood, F.riskLevel, F.riskOf, F.confidence, F.evidence
     ],
     checklist: [
       ["attribute", "Attribute"], ["value", "Values"], ["hazard", "Hazards"],
-      ["impacts", "Present impacts"], ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
+      ["impacts", "Present impacts"], ["lossDamageStatus", "Losses and damages"], ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
       ["impactIntensity", "Impact intensity"], ["likelihood", "Likelihood"], ["riskLevel", "Risk"], ["confidence", "Confidence"]
     ]
   },
@@ -571,7 +587,9 @@ const TYPES = {
       { key: "hazard", label: "Hazards", cat: "hazard", kind: "list", item: "hazard", sec: "What could happen", span: 2, hint: H.hazardFuture },
       { ...F.hazardTypes, sec: "What could happen", label: "Hazard types (for comparing statements)" },
       { key: "possibleOutcome", label: "What may happen to the attribute", cat: "impact", kind: "text", sec: "What could happen", span: 2, hint: H.outcome },
-      { key: "impacts", label: "Potential impacts", cat: "impact", kind: "textarea", sec: "What could happen", span: 2, hint: H.impactsFuture },
+      { key: "impacts", label: "Potential impacts, including losses and damages", cat: "impact", kind: "textarea", sec: "What could happen", span: 2, hint: H.impactsFuture },
+      { key: "lossDamageStatus", label: "Losses and damages expected", cat: "impact", kind: "select", sec: "What could happen", span: 2, opts: LD_STATUS_FUTURE, hint: H.ldFuture },
+      { key: "lossDamageKinds", label: "Kinds of losses and damages", cat: "impact", kind: "multi", sec: "What could happen", span: 2, groups: LD_GROUPS, opts: LD_GROUPS.flatMap(g => g[1]), collapse: true, hint: H.ldKinds },
       { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "What could happen", span: 2, hint: H.exposure },
       { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "What could happen", span: 2, hint: H.vulnerability },
       { key: "intensityReason", label: "Why the impact would be this severe", cat: "impactIntensity", kind: "textarea", sec: "What could happen", span: 2, hint: H.intensityReason },
@@ -580,7 +598,7 @@ const TYPES = {
     ],
     checklist: [
       ["attribute", "Attribute"], ["value", "Values"], ["scenario", "Scenario"], ["timeframe", "Timeframe"],
-      ["hazard", "Hazards"], ["impacts", "Potential impacts"],
+      ["hazard", "Hazards"], ["impacts", "Potential impacts"], ["lossDamageStatus", "Losses and damages"],
       ["exposure", "Exposure"], ["vulnerability", "Vulnerability"],
       ["impactIntensity", "Impact intensity"], ["likelihood", "Likelihood"], ["riskLevel", "Risk"], ["confidence", "Confidence"]
     ]
@@ -779,11 +797,27 @@ function buildDraft(type, d, f) {
     if (has("confidence")) S.push(`Confidence in this assessment is ${f("confidence", ratingWord(d.confidence))}${has("evidenceBasis") ? ", based on " + f("evidenceBasis", lowerFirst(t("evidenceBasis"))) : ""}.`);
   };
   const exposureSentence = () => { if (has("exposure")) S.push(`${attrStart()} ${be} ${f("exposure", lowerFirst(t("exposure")).replace(/^(is|are)\s+/i, ""))}.`); };
+  /* losses and damages, right after the impacts */
+  const ldSentence = future => {
+    const st = String(d.lossDamageStatus || ""), kinds = Array.isArray(d.lossDamageKinds) ? d.lossDamageKinds.filter(Boolean) : [];
+    if (/^none/i.test(st)) return S.push(f("lossDamageStatus", future ? "No losses and damages are expected" : "No losses and damages have been identified so far") + ".");
+    if (/not reported/i.test(st)) return S.push(f("lossDamageStatus", "Losses and damages are not reported") + ".");
+    if (/not assessed/i.test(st)) return S.push(f("lossDamageStatus", "Losses and damages have not been assessed") + ".");
+    if (!/^yes/i.test(st) && !kinds.length) return;
+    const list = arr => { const a = arr.map(lowerFirst); return a.some(x => x.includes(",")) ? (a.length < 2 ? a[0] : a.slice(0, -1).join("; ") + "; and " + a[a.length - 1]) : joinAnd(a); };
+    const econ = kinds.filter(k => LD_ECONOMIC.includes(k)), non = kinds.filter(k => !LD_ECONOMIC.includes(k));
+    const lead = future ? "These impacts would include" : "These impacts already include";
+    const ld = st ? f("lossDamageStatus", "losses and damages") : "losses and damages";
+    if (econ.length && non.length) S.push(`${lead} ${ld}, both economic (${f("lossDamageKinds", list(econ))}) and non-economic (${f("lossDamageKinds", list(non))}).`);
+    else if (econ.length || non.length) S.push(`${lead} ${econ.length ? "economic" : "non-economic"} ${ld}: ${f("lossDamageKinds", list(econ.length ? econ : non))}.`);
+    else S.push(`${lead} ${ld}.`);
+  };
   const vulnerabilitySentence = () => { if (has("vulnerability")) S.push(`The vulnerability of ${attrMid()} comes from ${f("vulnerability", lowerFirst(t("vulnerability")))}.`); };
 
   if (type === "presentImpact") {
     if (has("hazard")) S.push(`${has("observers") ? f("observers", upperFirst(t("observers"))) : "Community members"} report ${f("hazard", joinAnd(items("hazard").map(lowerFirst)))}${A ? " affecting " + attrMid() : ""}.`);
     if (has("impacts")) S.push(`${f("impacts", upperFirst(t("impacts")))}.`);
+    ldSentence(false);
     exposureSentence();
     vulnerabilitySentence();
     const parts = [];
@@ -801,6 +835,7 @@ function buildDraft(type, d, f) {
       S.push(`If ${f("hazard", hz)}${tf ? " " + f("timeframe", lowerFirst(tf)) : ""}${has("observers") ? ", as " + f("observers", lowerFirst(t("observers"))) + " have begun to observe" : ""}, ${attrMid()} may ${outcome}.`);
     }
     if (has("impacts")) S.push(`${f("impacts", upperFirst(t("impacts")))}.`);
+    ldSentence(true);
     exposureSentence();
     vulnerabilitySentence();
     if (has("impactIntensity")) S.push(`These impacts would be ${rate("impactIntensity", " in intensity")}${has("intensityReason") ? " because " + f("intensityReason", lowerFirst(t("intensityReason")).replace(/^because\s+/i, "")) : ""}.`);
@@ -861,6 +896,8 @@ const GARDENS_EXAMPLE = {
         observers: "Elders",
         hazard: "longer and more irregular droughts",
         impacts: "Several key plants now bloom less often, making traditional remedies harder to prepare and raising concern about the availability of culturally important species. These changes threaten healing rituals, spiritual practices, and the passing down of ecological knowledge",
+        lossDamageStatus: "Yes, already experienced",
+        lossDamageKinds: ["Disruption of cultural practices"],
         exposure: "located on shallow, unirrigated soils and depend entirely on rainfall",
         vulnerability: "The absence of water infrastructure and the community's cultural dependence on specific medicinal plants",
         impactIntensity: "3 — High",
@@ -911,6 +948,8 @@ const GARDENS_EXAMPLE = {
         hazard: "droughts continue to lengthen",
         possibleOutcome: "begin to dry up entirely",
         impacts: "Some plants are already blooming less frequently, making traditional remedies harder to prepare and raising concern about the future availability of critical species. Continued drought and rainfall irregularity could reduce plant growth, flowering, and survival, leading to the decline or possible loss of critical medicinal species and limiting the preparation of traditional remedies. These disruptions threaten healing rituals, spiritual practices, and the passing down of ecological knowledge — practices that sustain identity, cultural continuity, and spiritual well-being",
+        lossDamageStatus: "Yes, projected",
+        lossDamageKinds: ["Disruption of cultural practices", "Disruption of knowledge transmission", "Effects on identity, belonging and wellbeing", "Loss of biodiversity or ecosystem services"],
         exposure: "located in shallow soils without irrigation and are fully dependent on rainfall; elders note increasing irregularities in plant growth cycles, pointing to climate-induced disruption",
         vulnerability: "The lack of formal water infrastructure and the strong cultural dependence on specific species for ceremonies",
         intensityReason: "they could affect both the physical survival of medicinal species and the continuation of cultural, spiritual, and knowledge practices associated with them",
@@ -971,6 +1010,8 @@ const EXAMPLE = {
         observers: "Herders and local authorities",
         hazard: ["more frequent and compound dzud events", "recurring drought", "increasingly uneven seasonal rainfall"],
         impacts: "In the winter and spring of 2023–2024, roughly 90% of the basin experienced dzud conditions and approximately three million head of livestock were lost, undermining the economic and livelihood foundations of many herder households. These changes threaten herding livelihoods, seasonal mobility traditions, and the transmission of pastoral knowledge to younger generations",
+        lossDamageStatus: "Yes, already experienced",
+        lossDamageKinds: ["Loss of livelihoods or income"],
         exposure: "directly dependent on open pasturelands, natural water sources, and the freedom to move herds seasonally across the steppe",
         vulnerability: "Livestock numbers exceeding pasture carrying capacity, limited financial capacity to absorb dzud losses, and water and vegetation decline linked to mining",
         impactIntensity: "4 — Very high",
@@ -1021,6 +1062,8 @@ const EXAMPLE = {
         hazard: ["warming continues", "seasonal rainfall becomes more uneven", "sequential drought–dzud cycles become more regular"],
         possibleOutcome: "face an existential threat",
         impacts: "The 2023–2024 dzud, and the 2024 flood when the Kherlen exceeded its danger threshold by 14 cm, already show how compounding hazards strain herding households. Projected continued sharp warming, longer heatwaves, more uneven precipitation, and more frequent compound dzud and drought events could lead to sustained pasture degradation, water scarcity, and weakened ecosystem recovery capacity, with herd losses, shrinking usable pasture, and forced reductions in mobility. These disruptions threaten herding livelihoods and the seasonal rituals and festivals tied to the pastoral calendar, and could accelerate youth migration away from herding life",
+        lossDamageStatus: "Yes, projected",
+        lossDamageKinds: ["Loss of livelihoods or income", "Loss of access to land or resources", "Disruption of cultural practices", "Displacement or loss of mobility"],
         exposure: "wholly dependent on open pasture, natural water sources, and the freedom to move herds seasonally",
         vulnerability: "Pasture carrying capacity already being exceeded, limited financial buffers, monitoring gaps, and growing pressure from mining and land-use change",
         intensityReason: "they could affect both the physical survival of herding livelihoods and the continuation of mobile cultural identity and knowledge transmission",
@@ -1124,8 +1167,8 @@ const SEC_COLOR = {
 /* one short line under each section heading */
 const SEC_NOTE = {
   "Heritage": "What matters, and why it matters to people.",
-  "What is happening": "Risk comes from hazards interacting with the exposure and vulnerability of what you value. Impacts are the effects on the attribute and on its ability to convey its values.",
-  "What could happen": "How the hazards, exposure and vulnerability may change, and the consequences that could follow.",
+  "What is happening": "Risk comes from hazards interacting with the exposure and vulnerability of what you value. Impacts are the effects on the attribute and on its ability to convey its values; losses and damages are the harmful ones.",
+  "What could happen": "How the hazards, exposure and vulnerability may change, and the consequences that could follow, including losses and damages.",
   "Scenario": "The period and climate scenario this statement looks at, or that the responses are planned for.",
   "Responses": "Adaptation adjusts to actual or expected climate to moderate harm. Responses to losses and damages deal with the harm that adaptation does not prevent.",
   "Outcomes": "What the responses mean for the attribute, and the residual risk that remains. Integrity and authenticity are judged after all the responses together.",
@@ -1491,9 +1534,12 @@ function fieldHTML(fdef, val, s) {
       </div>`).join("") + `</div><button type="button" class="btn link add-row" data-list-add="${fdef.key}">+ Add another ${fdef.item}</button>`;
   } else if (fdef.kind === "multi") {
     const sel = Array.isArray(val) ? val : [];
-    const group = `<div class="chk-group">` + fdef.opts.map(o =>
-      `<label class="chk"><input type="checkbox" data-key="${fdef.key}" value="${esc(o)}" ${sel.includes(o) ? "checked" : ""}/>${esc(o)}</label>`).join("") + `</div>`;
-    input = fdef.opts.length > 12
+    const ticks = opts => opts.map(o =>
+      `<label class="chk"><input type="checkbox" data-key="${fdef.key}" value="${esc(o)}" ${sel.includes(o) ? "checked" : ""}/>${esc(o)}</label>`).join("");
+    const group = fdef.groups
+      ? fdef.groups.map(([g, opts], i) => `<div class="chk-sub" role="group" aria-labelledby="g-${fdef.key}-${i}"><span class="chk-h" id="g-${fdef.key}-${i}">${esc(g)}</span><div class="chk-group">${ticks(opts)}</div></div>`).join("")
+      : `<div class="chk-group">${ticks(fdef.opts)}</div>`;
+    input = fdef.opts.length > 12 || fdef.collapse
       ? `<details class="more"><summary><span data-sum="${fdef.key}">${multiSummary(sel)}</span></summary>${group}</details>`
       : group;
   } else {
@@ -1888,6 +1934,27 @@ const DEFS = [
 ],
 [
 "Climate risk",
+"Losses and damages",
+"Harm from observed impacts and projected risks: the harmful part of the impacts, which can also be beneficial. They can be economic or non-economic.",
+"Lowercase letters (losses and damages) have been taken to refer broadly to harm from (observed) impacts and (projected) risks and can be economic or non-economic. (IPCC-2022, AR6-WGII)",
+"IPCC AR6"
+],
+[
+"Climate risk",
+"Economic losses and damages",
+"Losses and damages to property, assets, infrastructure, or agricultural production and revenue.",
+"Non-economic losses “are additional to the loss of property, assets, infrastructure, or agricultural production and revenue”. (UNFCCC, Warsaw International Mechanism Executive Committee: Non-economic losses)",
+"UNFCCC"
+],
+[
+"Climate risk",
+"Non-economic losses and damages",
+"Losses and damages that are hard to put a price on. They affect individuals (life, health, mobility), society (territory, cultural heritage, Indigenous knowledge or local knowledge, cultural identity) or the environment (biodiversity, ecosystem services).",
+"“Non-economic losses refer to a broad range of losses that are not easily quantifiable in financial terms.” They “may affect individuals (e.g. loss of life, health, or mobility), society (e.g. loss of territory, cultural heritage, indigenous or local knowledge, or societal or cultural identity) or the environment (e.g. loss of biodiversity or ecosystem services).” (UNFCCC, Warsaw International Mechanism Executive Committee: Non-economic losses)",
+"UNFCCC"
+],
+[
+"Climate risk",
 "Risk",
 "The potential for harmful consequences, recognising that people hold different values. In climate change, risk comes from hazards interacting with exposure and vulnerability.",
 "The potential for adverse consequences for human or ecological systems, recognising the diversity of values and objectives associated with such systems. In the context of climate change, risks can arise from potential impacts of climate change as well as human responses to climate change. Relevant adverse consequences include those on lives, livelihoods, health and wellbeing, economic, social and cultural assets and investments, infrastructure, services (including ecosystem services), ecosystems and species. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)\n\nThe word “potential” makes clear that uncertainty, or more broadly, incomplete knowledge (as defined in IPCC), is a key element of the concept of risk. This uncertainty does not necessarily have to be quantified, but authors need to provide some sense of the nature and degree of uncertainty to allow a meaningful risk assessment and risk management responses to be undertaken. (IPCC-2020, Guidance for IPCC authors)",
@@ -2011,13 +2078,6 @@ const DEFS = [
 "Reducing greenhouse gas emissions or enhancing the sinks that absorb them.",
 "A human intervention to reduce emissions or enhance the sinks of greenhouse gases. (IPCC-2021,2022, WGI,WGIII,WGII)",
 "Preserving Legacies glossary"
-],
-[
-"Responses",
-"Losses and damages",
-"Harm from observed impacts and projected risks, economic or non-economic, such as the loss of knowledge, identity or sense of place.",
-"Lowercase letters (losses and damages) have been taken to refer broadly to harm from (observed) impacts and (projected) risks and can be economic or non-economic. (IPCC-2022, AR6-WGII)",
-"IPCC AR6"
 ],
 [
 "Responses",
@@ -2494,7 +2554,7 @@ $("btnDefs").addEventListener("click", openDefs);
 $("btnDefs2").addEventListener("click", openDefs);
 $("defsFind").addEventListener("input", e => renderDefs(e.target.value));
 $("defsClose").addEventListener("click", () => $("dlgDefs").close());
-$("defsSrc").textContent = "Main source: Preserving Legacies glossary, which draws on the IPCC Sixth Assessment Report, UNESCO and others (each full definition gives its source). Also: " + IPCC_SRC + " " + UNESCO_SRC + ", paras 82 and 88.";
+$("defsSrc").textContent = "Main source: Preserving Legacies glossary, which draws on the IPCC Sixth Assessment Report, UNESCO and others (each full definition gives its source). Also: " + IPCC_SRC + " " + UNESCO_SRC + ", paras 82 and 88. UNFCCC, Warsaw International Mechanism Executive Committee: Non-economic losses (unfccc.int).";
 function saveCopy() {
   download((state.siteName || "risk-statements").replace(/\s+/g, "-") + "-statements.json", JSON.stringify(state, null, 2), "application/json");
   toast("Progress saved to a file");
