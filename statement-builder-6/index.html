@@ -318,7 +318,7 @@
 <div class="wrap">
   <header>
     <h1>Inherent and Residual Impacts and Risks, Adaptation and Responses to Losses and Damages</h1>
-    <p class="lede">This tool helps you bring what you know about your heritage places and cultural practices together into clear, connected statements. It guides you from the hazards, exposure and vulnerability they face, to the impacts and risks that follow, and on to the adaptation and loss and damage responses that shape what remains, today and in the future.</p>
+    <p class="lede">This tool helps you bring what you know about your heritage places and cultural practices together into clear, connected statements. It guides you from the hazards, exposure and vulnerability they face, to the impacts and risks that follow, and on to the adaptation and the responses to losses and damages that shape what remains, today and in the future.</p>
     <div class="rule" aria-hidden="true"></div>
     <div class="how">
       <h2>How to use this tool</h2>
@@ -435,7 +435,7 @@ const RISK_ACTED_ON = [
 ];
 const RESPONSE_FUNCTION = [
   "Anticipate and prepare", "Avoid or reduce risk", "Respond and cope",
-  "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"
+  "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable losses and damages"
 ];
 const DEPTH_OF_CHANGE = ["Coping", "Incremental adaptation", "Transformational adaptation"];
 const HERITAGE_CONTINUITY = [
@@ -445,14 +445,16 @@ const HERITAGE_CONTINUITY = [
   "Lost, disconnected or inaccessible"
 ];
 /* losses and damages: the harmful part of the impacts (UNFCCC groups economic and non-economic losses) */
-const LD_STATUS_NOW = ["Yes, already experienced", "None identified", "Not reported", "Not assessed"];
+const LD_STATUS_NOW = ["Yes, observed", "None identified", "Not reported", "Not assessed"];
 const LD_STATUS_FUTURE = ["Yes, projected", "None expected", "Not reported", "Not assessed"];
 const LD_GROUPS = [
   ["Economic", ["Damage to property or infrastructure", "Loss of livelihoods or income"]],
   ["Non-economic", ["Damage to physical heritage", "Loss of access to land or resources", "Disruption of cultural practices", "Disruption of knowledge transmission",
-    "Effects on identity, belonging and wellbeing", "Effects on health or life", "Displacement or loss of mobility", "Loss of biodiversity or ecosystem services"]]
+    "Harm to identity, belonging and wellbeing", "Harm to health or loss of life", "Displacement or loss of mobility", "Loss of biodiversity or ecosystem services"]]
 ];
 const LD_ECONOMIC = LD_GROUPS[0][1];
+/* loss = near-complete, long-term or irreversible harm; damage = partial or recoverable (Simpson et al., in review) */
+const LD_EXTENT = ["Mostly losses (near-complete or irreversible)", "Mostly damages (partial or recoverable)", "Both losses and damages", "Not yet known"];
 const TIMING_HORIZON = ["Near term", "Medium term", "Long term", "Very long term", "Beyond 2100"];
 
 /* ---------- shared field definitions and guidance ---------- */
@@ -463,10 +465,11 @@ const H = {
   observersFuture: "Who has begun to notice the trend. For example: “elders” or “herders and local meteorologists”.",
   hazardNow: "Each climate-related event or trend that may cause harm, in its own box. For example: “longer and more irregular droughts”.",
   hazardFuture: "How each hazard may develop, in its own box. For example: “droughts continue to lengthen”.",
-  impactsNow: "What has been damaged, disrupted or lost, and what does this mean for the people, heritage and ecosystems concerned? Describe the effects on the attribute’s condition and on its ability to convey its values. Impacts can also be beneficial. Write in full sentences.",
-  impactsFuture: "What could be damaged, disrupted or lost, and what would this mean for the people, heritage and ecosystems concerned? Describe the effects on the attribute’s condition and on its ability to convey its values. Impacts can also be beneficial. Write in full sentences.",
-  ldNow: "Losses and damages are the harmful impacts, economic or non-economic. Have any already happened? If your sources say nothing, choose “Not reported” or “Not assessed” rather than assuming there are none.",
-  ldFuture: "Losses and damages are the harmful impacts, economic or non-economic. Are any projected under this scenario and timeframe? If your sources say nothing, choose “Not reported” or “Not assessed” rather than assuming there are none.",
+  impactsNow: "What has been damaged, disrupted or lost, and what does this mean for the people, heritage and ecosystems concerned? Describe the effects on the attribute’s condition and on its ability to convey its values. Where the harm is clear, name it as losses and damages; call an impact beneficial only where it is clearly positive for those concerned. Write in full sentences.",
+  impactsFuture: "What could be damaged, disrupted or lost, and what would this mean for the people, heritage and ecosystems concerned? Describe the effects on the attribute’s condition and on its ability to convey its values. Where the harm is clear, name it as projected losses and damages; call an impact beneficial only where it is clearly positive for those concerned. Write in full sentences.",
+  ldNow: "Losses and damages are the adverse impacts, economic or non-economic. Have any been observed? Count harm where climate change has contributed to the hazard, exposure or risk; formal attribution is not needed. If your sources say nothing, choose “Not reported” or “Not assessed” rather than assuming there are none.",
+  ldFuture: "Losses and damages are the adverse impacts, economic or non-economic. Are any projected under this scenario and timeframe? Projected losses and damages depend on the conditions you assume. If your sources say nothing, choose “Not reported” or “Not assessed” rather than assuming there are none.",
+  ldExtent: "A loss is near-complete, long-term or irreversible harm, such as a species, a practice or a place that is gone. A damage is partial or recoverable harm, such as degraded fabric or pasture that can recover.",
   ldKinds: "Tick all that apply. Economic losses and damages affect property, infrastructure, production or income. Non-economic ones are hard to put a price on, such as lost knowledge, identity or sense of place.",
   outcome: "In a few words, what may happen to the attribute. For example: “begin to dry up entirely”.",
   exposure: "Why the attribute is in places or settings the hazards can reach: its location, setting or what it depends on. For example: “located on shallow soils and fully dependent on rainfall”.",
@@ -487,12 +490,12 @@ const H = {
   responsesNow: "Adaptation: actions to adjust to the changing climate and moderate harm. What is being done now? For example: “adjusting planting schedules and monitoring plant behaviour”.",
   responsesFuture: "Adaptation: actions to adjust to the expected climate and moderate harm. List what is envisioned. For example: “water harvesting, seed banks and modified ritual calendars”.",
   potential: "What the responses could achieve. For example: “keep the gardens in use for rituals”.",
-  lossDamage: "What is done about losses and damages that adaptation does not prevent, economic or non-economic. For example: recording what is being lost, sharing knowledge, remembrance or mutual support.",
-  integrity: "Describe how all the responses above, both adaptation and loss and damage, affect how whole and intact the attribute remains. For example: “the gardens remain whole, though in a modified form”.",
-  authenticity: "Describe how all the responses above, both adaptation and loss and damage, affect how truthfully and credibly the attribute still expresses its values. For example: “ritual practice continues, though remedy preparation is becoming harder”.",
+  lossDamage: "What is done to address losses and damages that have happened or cannot be avoided, economic or non-economic. They can occur without adaptation, despite it, or beyond its limits. For example: repair, recording what is being lost, sharing knowledge, remembrance or mutual support.",
+  integrity: "Describe how all the responses above, both adaptation and responses to losses and damages, affect how whole and intact the attribute remains. For example: “the gardens remain whole, though in a modified form”.",
+  authenticity: "Describe how all the responses above, both adaptation and responses to losses and damages, affect how truthfully and credibly the attribute still expresses its values. For example: “ritual practice continues, though remedy preparation is becoming harder”.",
   limits: "What makes the responses harder to plan or carry out (constraints), and any point beyond which they can no longer avoid intolerable risk (limits). For example: “funding is short and planning does not yet include heritage”.",
   residualRisk: "The risk that remains after the responses, including any risk they shift to other people or places. For example: “periodic livestock losses and continued pressure on mobile cultural practices”.",
-  residualImpacts: "The losses and damages still expected despite the responses, including non-economic ones such as loss of knowledge, identity or sense of place.",
+  residualImpacts: "The projected losses and damages that remain despite the responses, including non-economic ones such as loss of knowledge, identity or sense of place, and any the responses themselves could cause (maladaptation).",
   horizonNow: "How long the responses are meant to keep working, from the near term to beyond 2100.",
   scenarioNow: "How long the responses can keep working depends on how the climate develops. Pick the climate scenario (SSP) they are planned for, or type your own.",
   linkNow: "The present impacts and inherent risk statement these responses act on, so you can compare your inherent and residual ratings.",
@@ -541,6 +544,7 @@ const TYPES = {
       { key: "impacts", label: "Present impacts, including losses and damages", cat: "impact", kind: "textarea", sec: "What is happening", span: 2, hint: H.impactsNow },
       { key: "lossDamageStatus", label: "Losses and damages so far", cat: "impact", kind: "select", sec: "What is happening", span: 2, opts: LD_STATUS_NOW, hint: H.ldNow },
       { key: "lossDamageKinds", label: "Kinds of losses and damages", cat: "impact", kind: "multi", sec: "What is happening", span: 2, groups: LD_GROUPS, opts: LD_GROUPS.flatMap(g => g[1]), collapse: true, hint: H.ldKinds },
+      { key: "lossOrDamage", label: "Loss or damage", cat: "impact", kind: "select", sec: "What is happening", span: 2, opts: LD_EXTENT, hint: H.ldExtent },
       { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "What is happening", span: 2, hint: H.exposure },
       { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "What is happening", span: 2, hint: H.vulnerability },
       F.intensity, F.likelihood, F.riskLevel, F.riskOf, F.confidence, F.evidence
@@ -554,13 +558,13 @@ const TYPES = {
   presentResidual: {
     name: "Present adaptation, loss and damage responses and residual risk",
     short: "Present adaptation, loss and damage responses and residual risk",
-    desc: "What is being done now, through adaptation and responses to loss and damage, how this affects integrity and authenticity, and the risk that remains.",
+    desc: "What is being done now, through adaptation and responses to losses and damages, how this affects integrity and authenticity, and the risk that remains.",
     fields: [
       F.attribute, F.value,
       { key: "who", label: "Who is responding", cat: "response", kind: "text", sec: "Responses", hint: H.who },
       { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE, hint: H.depth },
       { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.responsesNow },
-      { key: "lossDamageResponses", label: "Responses to loss and damage", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
+      { key: "lossDamageResponses", label: "Responses to losses and damages", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
       { key: "timeHorizon", label: "How far ahead the responses are designed to work", cat: "scenario", kind: "select", sec: "Scenario", opts: TIMING_HORIZON, hint: H.horizonNow },
       { key: "scenario", label: "Climate scenario", cat: "scenario", kind: "text", sec: "Scenario", list: "ssp-list", hint: H.scenarioNow },
       F.integrityOutcome, F.authenticityOutcome,
@@ -572,7 +576,7 @@ const TYPES = {
       F.hazardTypes
     ],
     checklist: [
-      ["responses", "Adaptation responses"], ["lossDamageResponses", "Responses to loss and damage"],
+      ["responses", "Adaptation responses"], ["lossDamageResponses", "Responses to losses and damages"],
       ["integrityOutcome", "Integrity"], ["authenticityOutcome", "Authenticity"],
       ["residualRisk", "Residual risk"], ["riskActedOn", "What the responses act on"], ["responseFunction", "Main purpose"]
     ]
@@ -590,6 +594,7 @@ const TYPES = {
       { key: "impacts", label: "Potential impacts, including losses and damages", cat: "impact", kind: "textarea", sec: "What could happen", span: 2, hint: H.impactsFuture },
       { key: "lossDamageStatus", label: "Losses and damages expected", cat: "impact", kind: "select", sec: "What could happen", span: 2, opts: LD_STATUS_FUTURE, hint: H.ldFuture },
       { key: "lossDamageKinds", label: "Kinds of losses and damages", cat: "impact", kind: "multi", sec: "What could happen", span: 2, groups: LD_GROUPS, opts: LD_GROUPS.flatMap(g => g[1]), collapse: true, hint: H.ldKinds },
+      { key: "lossOrDamage", label: "Loss or damage", cat: "impact", kind: "select", sec: "What could happen", span: 2, opts: LD_EXTENT, hint: H.ldExtent },
       { key: "exposure", label: "Exposure", cat: "exposure", kind: "textarea", sec: "What could happen", span: 2, hint: H.exposure },
       { key: "vulnerability", label: "Vulnerability", cat: "vulnerability", kind: "textarea", sec: "What could happen", span: 2, hint: H.vulnerability },
       { key: "intensityReason", label: "Why the impact would be this severe", cat: "impactIntensity", kind: "textarea", sec: "What could happen", span: 2, hint: H.intensityReason },
@@ -613,7 +618,7 @@ const TYPES = {
       { key: "adaptationMode", label: "Depth of change", cat: "response", kind: "select", sec: "Responses", opts: DEPTH_OF_CHANGE, hint: H.depth },
       { key: "responses", label: "Adaptation responses", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.responsesFuture },
       { key: "potential", label: "What the adaptation responses could achieve", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.potential },
-      { key: "lossDamageResponses", label: "Responses to loss and damage", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
+      { key: "lossDamageResponses", label: "Responses to losses and damages", cat: "response", kind: "textarea", sec: "Responses", span: 2, hint: H.lossDamage },
       F.integrityOutcome, F.authenticityOutcome,
       { key: "limits", label: "Limits of adaptation", cat: "vulnerability", kind: "textarea", sec: "Outcomes", span: 2, hint: H.limits },
       F.residualRisk,
@@ -624,7 +629,7 @@ const TYPES = {
       F.hazardTypes
     ],
     checklist: [
-      ["responses", "Adaptation responses"], ["lossDamageResponses", "Responses to loss and damage"],
+      ["responses", "Adaptation responses"], ["lossDamageResponses", "Responses to losses and damages"],
       ["integrityOutcome", "Integrity"], ["authenticityOutcome", "Authenticity"],
       ["residualRisk", "Residual risk"], ["riskActedOn", "What the responses act on"], ["responseFunction", "Main purpose"], ["confidence", "Confidence"]
     ]
@@ -706,6 +711,11 @@ function migrateData(d, type) {
   if (out.vulnFactors && !out.vulnerability) out.vulnerability = out.vulnFactors;
   if (out.impactLikelihood && !out.likelihood) out.likelihood = out.impactLikelihood;
   if (out.measures && !out.responses) out.responses = out.measures;
+  /* renamed values (losses and damages framing) */
+  const RENAME = { "Address enduring or unavoidable loss and damage": "Address enduring or unavoidable losses and damages", "Yes, already experienced": "Yes, observed",
+    "Effects on identity, belonging and wellbeing": "Harm to identity, belonging and wellbeing", "Effects on health or life": "Harm to health or loss of life" };
+  ["responseFunction", "lossDamageKinds"].forEach(k => { if (Array.isArray(out[k])) out[k] = out[k].map(v => RENAME[v] || v); });
+  if (RENAME[out.lossDamageStatus]) out.lossDamageStatus = RENAME[out.lossDamageStatus];
   if (out.adaptationMode === "Transition") out.adaptationMode = "Incremental adaptation";
   if (out.adaptationMode === "Transforming") out.adaptationMode = "Transformational adaptation";
   if (out.adaptationMode === "Coping") out.adaptationMode = "Coping";
@@ -806,11 +816,16 @@ function buildDraft(type, d, f) {
     if (!/^yes/i.test(st) && !kinds.length) return;
     const list = arr => { const a = arr.map(lowerFirst); return a.some(x => x.includes(",")) ? (a.length < 2 ? a[0] : a.slice(0, -1).join("; ") + "; and " + a[a.length - 1]) : joinAnd(a); };
     const econ = kinds.filter(k => LD_ECONOMIC.includes(k)), non = kinds.filter(k => !LD_ECONOMIC.includes(k));
-    const lead = future ? "These impacts would include" : "These impacts already include";
-    const ld = st ? f("lossDamageStatus", "losses and damages") : "losses and damages";
-    if (econ.length && non.length) S.push(`${lead} ${ld}, both economic (${f("lossDamageKinds", list(econ))}) and non-economic (${f("lossDamageKinds", list(non))}).`);
-    else if (econ.length || non.length) S.push(`${lead} ${econ.length ? "economic" : "non-economic"} ${ld}: ${f("lossDamageKinds", list(econ.length ? econ : non))}.`);
-    else S.push(`${lead} ${ld}.`);
+    const lead = future ? "These impacts would include" : "These impacts include";
+    const qual = future ? "projected" : "observed", ld = kind => f("lossDamageStatus", `${qual} ${kind}losses and damages`);
+    if (econ.length && non.length) S.push(`${lead} ${ld("")}, both economic (${f("lossDamageKinds", list(econ))}) and non-economic (${f("lossDamageKinds", list(non))}).`);
+    else if (econ.length || non.length) S.push(`${lead} ${ld(econ.length ? "economic " : "non-economic ")}: ${f("lossDamageKinds", list(econ.length ? econ : non))}.`);
+    else S.push(`${lead} ${ld("")}.`);
+    const ex = String(d.lossOrDamage || ""), be = future ? "would be" : "is";
+    if (/^mostly losses/i.test(ex)) S.push(`Much of this harm ${be} ${f("lossOrDamage", "near-complete or irreversible")}.`);
+    else if (/^mostly damages/i.test(ex)) S.push(`Most of this harm ${be} ${f("lossOrDamage", "partial or recoverable")}.`);
+    else if (/^both/i.test(ex)) S.push(`Some of this harm ${be} ${f("lossOrDamage", "irreversible, and some partial or recoverable")}.`);
+    else if (/not yet known/i.test(ex)) S.push(`Whether this harm ${future ? "could" : "can"} be recovered ${f("lossOrDamage", "is not yet known")}.`);
   };
   const vulnerabilitySentence = () => { if (has("vulnerability")) S.push(`The vulnerability of ${attrMid()} comes from ${f("vulnerability", lowerFirst(t("vulnerability")))}.`); };
 
@@ -862,7 +877,7 @@ function buildDraft(type, d, f) {
       S.push(`They are designed to keep working${when ? " " + f("timeHorizon", when) : ""}${has("scenario") ? (when ? "," : "") + " under " + f("scenario") : ""}.`);
     }
     if (A && has("value")) S.push(`They aim to sustain ${attrMid()} and the ${f("value")} ${plural ? "they support" : "it supports"}.`);
-    if (has("lossDamageResponses")) S.push(`Responses to loss and damage include ${f("lossDamageResponses", lowerFirst(t("lossDamageResponses")))}.`);
+    if (has("lossDamageResponses")) S.push(`Responses to losses and damages include ${f("lossDamageResponses", lowerFirst(t("lossDamageResponses")))}.`);
     if (has("responseEffectiveness")) S.push(`Overall, these responses are ${f("responseEffectiveness", ratingWord(d.responseEffectiveness) + ratingNum(d.responseEffectiveness))}.`);
     const quality = (rk, ok, label) => {
       if (!has(rk) && !has(ok)) return;
@@ -896,8 +911,9 @@ const GARDENS_EXAMPLE = {
         observers: "Elders",
         hazard: "longer and more irregular droughts",
         impacts: "Several key plants now bloom less often, making traditional remedies harder to prepare and raising concern about the availability of culturally important species. These changes threaten healing rituals, spiritual practices, and the passing down of ecological knowledge",
-        lossDamageStatus: "Yes, already experienced",
+        lossDamageStatus: "Yes, observed",
         lossDamageKinds: ["Disruption of cultural practices"],
+        lossOrDamage: "Mostly damages (partial or recoverable)",
         exposure: "located on shallow, unirrigated soils and depend entirely on rainfall",
         vulnerability: "The absence of water infrastructure and the community's cultural dependence on specific medicinal plants",
         impactIntensity: "3 — High",
@@ -928,7 +944,7 @@ const GARDENS_EXAMPLE = {
         authenticityRating: "At risk",
         responseEffectiveness: "2 — Moderate (moderately effective)",
         riskActedOn: ["Vulnerability and adaptive capacity", "Experienced or anticipated impacts", "Residual risk and losses and damages"],
-        responseFunction: ["Anticipate and prepare", "Respond and cope", "Address enduring or unavoidable loss and damage"],
+        responseFunction: ["Anticipate and prepare", "Respond and cope", "Address enduring or unavoidable losses and damages"],
         heritageContinuity: ["Adapted in situ", "Sustained through continued practice", "Transmitted across generations", "Recorded or documented"],
         timeHorizon: "Near term",
         scenario: "SSP2-4.5 (intermediate emissions)",
@@ -949,7 +965,8 @@ const GARDENS_EXAMPLE = {
         possibleOutcome: "begin to dry up entirely",
         impacts: "Some plants are already blooming less frequently, making traditional remedies harder to prepare and raising concern about the future availability of critical species. Continued drought and rainfall irregularity could reduce plant growth, flowering, and survival, leading to the decline or possible loss of critical medicinal species and limiting the preparation of traditional remedies. These disruptions threaten healing rituals, spiritual practices, and the passing down of ecological knowledge — practices that sustain identity, cultural continuity, and spiritual well-being",
         lossDamageStatus: "Yes, projected",
-        lossDamageKinds: ["Disruption of cultural practices", "Disruption of knowledge transmission", "Effects on identity, belonging and wellbeing", "Loss of biodiversity or ecosystem services"],
+        lossDamageKinds: ["Disruption of cultural practices", "Disruption of knowledge transmission", "Harm to identity, belonging and wellbeing", "Loss of biodiversity or ecosystem services"],
+        lossOrDamage: "Both losses and damages",
         exposure: "located in shallow soils without irrigation and are fully dependent on rainfall; elders note increasing irregularities in plant growth cycles, pointing to climate-induced disruption",
         vulnerability: "The lack of formal water infrastructure and the strong cultural dependence on specific species for ceremonies",
         intensityReason: "they could affect both the physical survival of medicinal species and the continuation of cultural, spiritual, and knowledge practices associated with them",
@@ -988,7 +1005,7 @@ const GARDENS_EXAMPLE = {
         authenticityRating: "At risk",
         responseEffectiveness: "3 — High (effective)",
         riskActedOn: ["Hazard or hazard pathway", "Exposure", "Vulnerability and adaptive capacity", "Residual risk and losses and damages"],
-        responseFunction: ["Anticipate and prepare", "Avoid or reduce risk", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
+        responseFunction: ["Anticipate and prepare", "Avoid or reduce risk", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable losses and damages"],
         heritageContinuity: ["Adapted in situ", "Revitalised", "Transformed or reinterpreted", "Recorded or documented", "Remembered or memorialised"],
         confidence: "3 — High",
         hazardTypes: ["Drought", "Aridity / drying", "Extreme heat / heatwaves"]
@@ -1010,8 +1027,9 @@ const EXAMPLE = {
         observers: "Herders and local authorities",
         hazard: ["more frequent and compound dzud events", "recurring drought", "increasingly uneven seasonal rainfall"],
         impacts: "In the winter and spring of 2023–2024, roughly 90% of the basin experienced dzud conditions and approximately three million head of livestock were lost, undermining the economic and livelihood foundations of many herder households. These changes threaten herding livelihoods, seasonal mobility traditions, and the transmission of pastoral knowledge to younger generations",
-        lossDamageStatus: "Yes, already experienced",
+        lossDamageStatus: "Yes, observed",
         lossDamageKinds: ["Loss of livelihoods or income"],
+        lossOrDamage: "Both losses and damages",
         exposure: "directly dependent on open pasturelands, natural water sources, and the freedom to move herds seasonally across the steppe",
         vulnerability: "Livestock numbers exceeding pasture carrying capacity, limited financial capacity to absorb dzud losses, and water and vegetation decline linked to mining",
         impactIntensity: "4 — Very high",
@@ -1042,7 +1060,7 @@ const EXAMPLE = {
         authenticityRating: "At risk",
         responseEffectiveness: "2 — Moderate (moderately effective)",
         riskActedOn: ["Vulnerability and adaptive capacity", "Experienced or anticipated impacts", "Residual risk and losses and damages"],
-        responseFunction: ["Anticipate and prepare", "Respond and cope", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
+        responseFunction: ["Anticipate and prepare", "Respond and cope", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable losses and damages"],
         heritageContinuity: ["Sustained through continued practice", "Transmitted across generations", "Adapted in situ", "Recorded or documented"],
         timeHorizon: "Near term",
         scenario: "SSP5-8.5 (very high emissions)",
@@ -1064,6 +1082,7 @@ const EXAMPLE = {
         impacts: "The 2023–2024 dzud, and the 2024 flood when the Kherlen exceeded its danger threshold by 14 cm, already show how compounding hazards strain herding households. Projected continued sharp warming, longer heatwaves, more uneven precipitation, and more frequent compound dzud and drought events could lead to sustained pasture degradation, water scarcity, and weakened ecosystem recovery capacity, with herd losses, shrinking usable pasture, and forced reductions in mobility. These disruptions threaten herding livelihoods and the seasonal rituals and festivals tied to the pastoral calendar, and could accelerate youth migration away from herding life",
         lossDamageStatus: "Yes, projected",
         lossDamageKinds: ["Loss of livelihoods or income", "Loss of access to land or resources", "Disruption of cultural practices", "Displacement or loss of mobility"],
+        lossOrDamage: "Both losses and damages",
         exposure: "wholly dependent on open pasture, natural water sources, and the freedom to move herds seasonally",
         vulnerability: "Pasture carrying capacity already being exceeded, limited financial buffers, monitoring gaps, and growing pressure from mining and land-use change",
         intensityReason: "they could affect both the physical survival of herding livelihoods and the continuation of mobile cultural identity and knowledge transmission",
@@ -1102,7 +1121,7 @@ const EXAMPLE = {
         authenticityRating: "At risk",
         responseEffectiveness: "3 — High (effective)",
         riskActedOn: ["Exposure", "Vulnerability and adaptive capacity", "Residual risk and losses and damages"],
-        responseFunction: ["Anticipate and prepare", "Avoid or reduce risk", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable loss and damage"],
+        responseFunction: ["Anticipate and prepare", "Avoid or reduce risk", "Recover, rehabilitate or reconstruct", "Address enduring or unavoidable losses and damages"],
         heritageContinuity: ["Adapted in situ", "Sustained through continued practice", "Transmitted across generations", "Revitalised", "Recorded or documented", "Remembered or memorialised"],
         confidence: "2 — Medium",
         evidenceBasis: "scenario modelling, dzud risk assessments, and the documented effectiveness of traditional coping practices",
@@ -1167,10 +1186,10 @@ const SEC_COLOR = {
 /* one short line under each section heading */
 const SEC_NOTE = {
   "Heritage": "What matters, and why it matters to people.",
-  "What is happening": "Risk comes from hazards interacting with the exposure and vulnerability of what you value. Impacts are the effects on the attribute and on its ability to convey its values; losses and damages are the harmful ones.",
-  "What could happen": "How the hazards, exposure and vulnerability may change, and the consequences that could follow, including losses and damages.",
+  "What is happening": "Risk comes from hazards interacting with the exposure and vulnerability of what you value. Impacts are the effects on the attribute and on its ability to convey its values; observed losses and damages are the adverse ones.",
+  "What could happen": "How the hazards, exposure and vulnerability may change, and the consequences that could follow, including projected losses and damages.",
   "Scenario": "The period and climate scenario this statement looks at, or that the responses are planned for.",
-  "Responses": "Adaptation adjusts to actual or expected climate to moderate harm. Responses to losses and damages deal with the harm that adaptation does not prevent.",
+  "Responses": "Adaptation adjusts to actual or expected climate to minimise harm. Responses to losses and damages address harm that has happened or cannot be avoided, through repair, recovery, remembrance and support.",
   "Outcomes": "What the responses mean for the attribute, and the residual risk that remains. Integrity and authenticity are judged after all the responses together.",
   "Describe the action": "Tick all that apply. These become tags under the draft, not part of the sentence.",
   "Ratings": "Each scale runs from 1 (lowest) to 4 (highest). The risk chart below updates as you choose.",
@@ -1928,16 +1947,37 @@ const DEFS = [
 [
 "Climate risk",
 "Impacts",
-"The effects on the attributes: on their condition and on their ability to convey the heritage values. In IPCC terms, the consequences of risks that have been realised.",
+"The effects on the attributes: on their condition and on their ability to convey the heritage values. Impact is the umbrella term: adverse impacts are losses and damages, clearly positive ones are beneficial impacts.",
 "The effects or consequences of a factor on the attributes of the property, both in terms of the attributes’ state of conservation and their ability to convey the heritage values.(Enhancing our Heritage Toolkit)\n\nThe consequences of realized risks on natural and human systems, where risks result from the interactions of climate-related hazards (including extreme weather/climate events), exposure, and vulnerability. Impacts generally refer to effects on lives, livelihoods, health and well-being, ecosystems and species, economic, social and cultural assets, services (including ecosystem services), and infrastructure. Impacts may be referred to as consequences or outcomes and can be adverse or beneficial. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
 "Preserving Legacies glossary"
 ],
 [
 "Climate risk",
 "Losses and damages",
-"Harm from observed impacts and projected risks: the harmful part of the impacts, which can also be beneficial. They can be economic or non-economic.",
-"Lowercase letters (losses and damages) have been taken to refer broadly to harm from (observed) impacts and (projected) risks and can be economic or non-economic. (IPCC-2022, AR6-WGII)",
-"IPCC AR6"
+"Adverse impacts of climate change, economic or non-economic. Mark them as observed (harm that has happened) or projected (harm that has not happened yet). Impact is the wider term; an impact is beneficial only where it is clearly positive for those concerned.",
+"Lowercase letters (losses and damages) have been taken to refer broadly to harm from (observed) impacts and (projected) risks and can be economic or non-economic. (IPCC-2022, AR6-WGII, Glossary)\n\n“Losses and damages refers to adverse observed impacts and/or projected risks and can be economic and/or non-economic.” (IPCC-2022, AR6-WGII, Summary for Policymakers, footnote 19)\n\n“Losses and damages are not only the residual of adaptation falling short. They can occur before adaptation is attempted, despite best-available adaptation, and sometimes as a consequence of adaptation responses themselves (‘maladaptation’).” (Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.)",
+"IPCC AR6; Simpson et al., in review"
+],
+[
+"Climate risk",
+"Losses versus damages",
+"A loss is near-complete, long-term or irreversible harm, such as loss of life, extinction of a species, permanent displacement or irreversible cultural loss. A damage is partial or recoverable harm, such as to assets, infrastructure or ecosystem services.",
+"“‘Loss’ for near-complete, long-term or irreversible harm and ‘damage’ for partial or reversible harm.”\n\n“Permanent and irreversible harm such as the destruction of lives, extinction of species, permanent displacement, and irreversible cultural loss is captured as losses, and partial or potentially recoverable harm to assets, infrastructure, and ecosystem services captured as damages.” (Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.)",
+"Simpson et al., in review"
+],
+[
+"Climate risk",
+"Loss and Damage (capitalised)",
+"The UNFCCC political process for averting, minimising and addressing climate-related harm, set up through the Warsaw International Mechanism in 2013 and recognised in Article 8 of the Paris Agreement. Lowercase “losses and damages”, used in this tool, names the harm itself.",
+"“‘Loss and Damage’ (capitalised) refers to the UNFCCC political process for averting, minimising and addressing climate-related harm, institutionalised through the Warsaw International Mechanism in 2013 and given legal recognition under Article 8 of the Paris Agreement. In contrast, ‘losses and damages’ (lowercase) is the scientific descriptor for observed and projected adverse outcomes of climate change, whether economic, such as damage to infrastructure and lost crops, or non-economic, such as loss of cultural heritage, biodiversity, territory and damage to mental health.” (Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.)",
+"Simpson et al., in review"
+],
+[
+"Climate risk",
+"Beneficial impacts",
+"Impacts that are clearly positive for the system affected, judged at the relevant scale and across the groups affected. Where an outcome helps some and harms others, the harm is still a loss or damage.",
+"“Where outcomes are demonstrably positive for the affected system, assessed explicitly at the relevant scale and across affected groups, ‘beneficial’ or ‘positive impacts’ applies; where an outcome is beneficial for some but adverse for others, ‘losses and damages’ still describes the adverse dimension.” (Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.)",
+"Simpson et al., in review"
 ],
 [
 "Climate risk",
@@ -2022,6 +2062,13 @@ const DEFS = [
 "Actions taken to address a situation. In this tool they include adaptation and responses to losses and damages.",
 "Response refers to the immediate actions taken to address a situation, while adaptive capacity is the ability of a system to  adjust to climate change, moderate potential damages, and cope with  consequences. (IPCC-2021, AR6-WGI; IPCC-2022, AR6-WGII & WGIII)",
 "Preserving Legacies glossary"
+],
+[
+"Responses",
+"Responses to losses and damages",
+"Actions that address harm that has happened or cannot be avoided, such as repair, reconstruction, recovery support, remembrance or compensation. The Paris Agreement speaks of averting (mitigation), minimising (adaptation) and addressing loss and damage.",
+"“The Paris Agreement frames the international response to climate-related harm through three verbs: averting, minimising, and addressing loss and damage. … ‘Averting’ corresponds to mitigation … while ‘minimising’ corresponds to adaptation … The third engages with harm that has already occurred or is unavoidable, and it calls for responses that go beyond risk management, to support recovery, finance, and justice.”\n\n“Response measures to losses and damages within communities, regions, cities, countries and globally, include, for example, repair, reconstruction, or litigation compensation mechanisms.” (Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.)",
+"Simpson et al., in review"
 ],
 [
 "Responses",
@@ -2500,8 +2547,8 @@ function exportRiskSummary() {
       `${c(r ? lvlLabel(r.level) : "")}${c(s.data.residualLevel)}${c(s.data.integrityRating)}${c(s.data.authenticityRating)}${c(s.data.confidence)}</tr>`;
   });
   h += `</table><h3>About the ratings</h3><ul>${METHOD_NOTES.map(n => `<li style="font-size:10pt">${n}</li>`).join("")}</ul>`;
-  const KEY = ["Attributes", "Values", "Hazard", "Exposure", "Vulnerability", "Impacts", "Risk", "Inherent risk", "Residual risk", "Adaptation", "Responses", "Losses and damages", "Likelihood", "Confidence", "Integrity", "Authenticity"];
-  h += `<h3>Key terms</h3>${KEY.map(k => DEFS.find(d => d[1] === k)).filter(Boolean).map(d => `<p style="font-size:10pt;margin:0 0 4pt"><b>${esc(d[1])}:</b> ${esc(d[2])} <span style="color:#4a5f4a">(${esc(d[4])})</span></p>`).join("")}<p style="font-size:9pt;color:#4a5f4a">Main source: Preserving Legacies glossary, drawing on the IPCC Sixth Assessment Report and UNESCO. ${esc(IPCC_SRC)}</p>`;
+  const KEY = ["Attributes", "Values", "Hazard", "Exposure", "Vulnerability", "Impacts", "Losses and damages", "Losses versus damages", "Risk", "Inherent risk", "Residual risk", "Adaptation", "Responses", "Responses to losses and damages", "Likelihood", "Confidence", "Integrity", "Authenticity"];
+  h += `<h3>Key terms</h3>${KEY.map(k => DEFS.find(d => d[1] === k)).filter(Boolean).map(d => `<p style="font-size:10pt;margin:0 0 4pt"><b>${esc(d[1])}:</b> ${esc(d[2])} <span style="color:#4a5f4a">(${esc(d[4])})</span></p>`).join("")}<p style="font-size:9pt;color:#4a5f4a">Main source: Preserving Legacies glossary, drawing on the IPCC Sixth Assessment Report and UNESCO. ${esc(IPCC_SRC)} Losses and damages framing: Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.</p>`;
   return h;
 }
 function exportDoc() {
@@ -2554,7 +2601,7 @@ $("btnDefs").addEventListener("click", openDefs);
 $("btnDefs2").addEventListener("click", openDefs);
 $("defsFind").addEventListener("input", e => renderDefs(e.target.value));
 $("defsClose").addEventListener("click", () => $("dlgDefs").close());
-$("defsSrc").textContent = "Main source: Preserving Legacies glossary, which draws on the IPCC Sixth Assessment Report, UNESCO and others (each full definition gives its source). Also: " + IPCC_SRC + " " + UNESCO_SRC + ", paras 82 and 88. UNFCCC, Warsaw International Mechanism Executive Committee: Non-economic losses (unfccc.int).";
+$("defsSrc").textContent = "Main source: Preserving Legacies glossary, which draws on the IPCC Sixth Assessment Report, UNESCO and others (each full definition gives its source). Also: " + IPCC_SRC + " " + UNESCO_SRC + ", paras 82 and 88. UNFCCC, Warsaw International Mechanism Executive Committee: Non-economic losses (unfccc.int). Losses and damages framing: Simpson, N.P., Howden, M., Reisinger, A., et al. (in review). Assessing losses and damages from climate change. One Earth. Preprint, not peer reviewed: ssrn.com/abstract=7607683.";
 function saveCopy() {
   download((state.siteName || "risk-statements").replace(/\s+/g, "-") + "-statements.json", JSON.stringify(state, null, 2), "application/json");
   toast("Progress saved to a file");
