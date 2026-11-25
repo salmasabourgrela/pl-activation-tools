@@ -6,6 +6,7 @@ Interactive tools for Preserving Legacies Activation Sites.
 
 A statement builder that helps custodians bring what they know about their heritage places and cultural practices together into clear, connected statements: from hazards, exposure and vulnerability, to impacts and inherent risk, and on to adaptation and loss and damage responses and the residual risk that remains.
 
+- Version 6 (November 2026): [`statement-builder-6/index.html`](statement-builder-6/index.html). Version 4’s layout; explanations open only when you click a field or section title, and a Definitions panel gathers every IPCC, UNESCO and tool definition in one searchable place.
 - Version 5 (November 2026): [`statement-builder-5/index.html`](statement-builder-5/index.html). A step-by-step data-entry flow: about the place (entered once), the four statements, then review and export. Help and worked-example entries appear only when you click ? beside a field; examples open read-only.
 - Version 4 (November 2026): [`statement-builder-4/index.html`](statement-builder-4/index.html). Hints and notes follow the IPCC AR6 glossary, with a collapsed key-terms panel; several hazards per statement; confidence uses the IPCC “medium”.
 - Version 3 (November 2026): [`statement-builder-3/index.html`](statement-builder-3/index.html). Version 2’s layout with small fixes: plainer hints, text boxes that grow, a save status line, a clear-all dialog that offers a copy first, attribute and values carried into new statements, residual ratings worded as a comparison of judgements, and notes on the ratings.
@@ -19,7 +20,7 @@ Developed by Salma Sabour for the Preserving Legacies Activation Sites programme
 ### Embedding
 
 ```html
-<iframe src="https://pl-activation-tools.netlify.app/statement-builder-5/"
+<iframe src="https://pl-activation-tools.netlify.app/statement-builder-6/"
         title="Inherent and Residual Impacts and Risks, Adaptation and Responses to Losses and Damages"
         style="width:100%; border:0; height:1600px;"
         loading="lazy"
